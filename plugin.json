@@ -1,0 +1,22 @@
+{
+  "author":"BuildFire"
+,"pluginName":"SoundCloudPlugin"
+,"pluginDescription":"This plugin is used for playing audio and video media files using sound Cloud."
+,"supportEmail":"support@buildfire.com"
+,"control":{
+  "content":{
+    "enabled":true
+  }
+, "design":{
+    "enabled":true
+  }
+, "settings":{
+    "enabled":false
+  }
+}
+,"widget":{
+
+},
+  "features" : [],
+  "languages" : ["en"]
+}
