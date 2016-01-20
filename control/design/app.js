@@ -2,7 +2,7 @@
     "use strict";
     //created soundCloudDesign module
     angular
-        .module('soundCloudDesign',
+        .module('soundcloudPluginDesign',
         [
             'ngAnimate',
             'ui.bootstrap'

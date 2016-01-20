@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="soundCloudContent">
+<html ng-app="soundCloudPluginContent">
 <head lang="en">
     <!-- CSS -->
     <link href="../../../../styles/helper.css" rel="stylesheet">
@@ -18,11 +18,12 @@
     <script src="../../../../scripts/buildfire/components/carousel/carousel.js"></script>
     <script src="../../../../scripts/buildfire/components/actionItems/sortableList.js"></script>
     <script src="app.js"></script>
+    <script src="controllers/content.home.controller.js"></script>
     <link rel="stylesheet" href="../../../../styles/transitionAnimation.css">
     <meta charset="UTF-8">
 </head>
 <body>
-<div class="item clearfix row">
+<div class="item clearfix row" ng-controller="ContentHomeCtrl as ContentHome">
     <div class="labels col-md-3 padding-right-zero pull-left">
         <span>Image Carousel</span>
     </div>

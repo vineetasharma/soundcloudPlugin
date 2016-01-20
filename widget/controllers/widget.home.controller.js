@@ -1,3 +1,11 @@
-/**
- * Created by lakshay on 20/1/16.
- */
+'use strict';
+
+(function (angular) {
+    angular
+        .module('soundCloudPluginWidget')
+        .controller('WidgetHomeCtrl', ['$scope', '$timeout',
+            function ($scope, $timeout) {
+                console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
+                var WidgetHome = this;
+            }]);
+})(window.angular);

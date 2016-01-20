@@ -2,16 +2,21 @@
     "use strict";
     //created soundCloudWidget module
     angular
-        .module('soundCloudWidget',
+        .module('soundCloudPluginWidget',
         [
             'ngAnimate',
             'ngRoute',
-            'ui.bootstrap',
-            'infinite-scroll'
+            'ui.bootstrap'
         ])
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
-        .config(['$httpProvider', function ($httpProvider) {
+        .config(['$routeProvider','$httpProvider', function ($routeProvider,$httpProvider) {
+            $routeProvider
+                .when('/', {
+                    templateUrl: 'templates/home.html',
+                    controllerAs: 'WidgetHome',
+                    controller: 'WidgetHomeCtrl'
+                });
             var interceptor = ['$q', function ($q) {
                 var counter = 0;
 
