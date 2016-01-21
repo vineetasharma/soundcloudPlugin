@@ -5,7 +5,10 @@
         .module('soundcloudPluginDesign',
         [
             'ngAnimate',
-            'ui.bootstrap'
+            'ui.bootstrap',
+            'SoundCloudDesignServices',
+            'soundCloudDesignEnums'
+
         ])
         //injected ui.bootstrap for angular bootstrap component
         .config(['$httpProvider', function ($httpProvider) {
