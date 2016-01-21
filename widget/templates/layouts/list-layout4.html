@@ -1,0 +1,55 @@
+<div class="holder padding-zero">
+    <div class="media-center-plugin list-layout layout4 text-overlay">
+        <div class="media-center-banner clearfix border-bottom-grey text-overlay">
+            <div id="carousel" build-fire-carousel=""></div>
+        </div>
+        <div class="text-left padded padding-bottom-zero clearfix text-overlay" >
+            <p ng-if="WidgetHome.showDescription()" ng-bind-html="WidgetHome.info.data.content.description | safeHtml"></p>
+        </div>
+        <div class="padded padding-top-zero text-overlay">
+            <div class="list-layout">
+                <div ng-repeat="track in WidgetHome.tracks" ng-if="$index % 2 == 0" class="row text-overlay"
+                     ng-click="WidgetHome.goToTrack($index)">
+                    <div class="list-item-odd col-xs-6 pull-left clickable ">
+                        <div class="list-item-media text-center overflow-hidden text-overlay">
+                            <div class="list-media-holder text-overlay">
+                                <img ng-if="WidgetHome.tracks[$index].artwork_url"
+                                     ng-src="{{WidgetHome.tracks[$index].artwork_url | cropImage:200:200}}">
+                                <img ng-if="!WidgetHome.tracks[$index].artwork_url"
+                                     src="assets/images/placeholder200x200.png">
+                            </div>
+                        </div>
+                        <div class="list-item-copy text-left text-overlay">
+                            <p class="text-primary ellipsis">
+                                <a class="ellipsis margin-zero text-primary">{{WidgetHome.tracks[$index].title}}</a>
+                            </p>
+
+                            <p class="summary ellipsis margin-zero">{{WidgetHome.tracks[$index].duration | millisecondsToDateTime | date:'mm:ss'}}</p>
+                            <!--<span class="list-item-date" data-ng-if="WidgetHome.tracks[$index].data.mediaDate">{{WidgetHome.tracks[$index].data.mediaDate  | jsDate | date:"MMMM dd, yyyy"}}</span>-->
+                        </div>
+                    </div>
+                    <div class="list-item-even col-xs-6 pull-left clickable text-overlay "
+                         ng-if="WidgetHome.tracks[$index + 1]">
+                        <div class="list-item-media text-center overflow-hidden text-overlay">
+                            <div class="list-media-holder text-overlay">
+                                <img ng-if="WidgetHome.tracks[$index + 1].artwork_url"
+                                     ng-src="{{WidgetHome.tracks[$index + 1].artwork_url | cropImage:200:200}}">
+                                <img ng-if="!WidgetHome.tracks[$index + 1].artwork_url"
+                                     src="assets/images/placeholder200x200.png">
+                            </div>
+                        </div>
+                        <div class="list-item-copy text-left text-overlay">
+                            <p class="text-primary ellipsis">
+                                <a class="ellipsis margin-zero text-primary">{{WidgetHome.tracks[$index +
+                                    1].title}}</a>
+                            </p>
+                            <p class="summary ellipsis margin-zero">{{WidgetHome.tracks[$index + 1].duration | millisecondsToDateTime | date:'mm:ss'}}</p>
+                            <!--<span class="list-item-date" data-ng-if="WidgetHome.tracks[$index + 1].data.mediaDate">{{WidgetHome.tracks[$index + 1].data.mediaDate  | jsDate | date:"MMMM dd, yyyy"}}</span>-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

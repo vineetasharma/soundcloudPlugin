@@ -1,1 +1,8 @@
-Widget Home Template
+<div ng-if="WidgetHome.info.data.design.itemListLayout"
+     ng-include="'templates/layouts/' + WidgetHome.info.data.design.itemListLayout + '.html'"
+     data-ng-attr-style="{{
+    WidgetHome.info.data.design.bgImage
+        ? 'background: url(' + (WidgetHome.info.data.design.bgImage | cropImage:WidgetHome.deviceWidth:WidgetHome.deviceHeight:true) + ') !important; background-size: cover;'
+        : 'background: white'
+}}">
+</div>

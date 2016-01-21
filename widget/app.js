@@ -6,7 +6,10 @@
         [
             'ngAnimate',
             'ngRoute',
-            'ui.bootstrap'
+            'ui.bootstrap',
+            'soundCloudWidgetEnums',
+            'soundCloudPluginWidgetFilters',
+            'soundCloudWidgetServices'
         ])
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
