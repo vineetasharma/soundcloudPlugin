@@ -7,6 +7,7 @@
             function ($scope, $timeout,DB,COLLECTIONS,Buildfire,DEFAULT_DATA) {
                 console.log('ContentHomeCtrl Controller Loaded-------------------------------------');
                 var ContentHome = this;
+                var timerDelay,masterInfo;
                 var soundCloud=new DB(COLLECTIONS.SoundCloudInfo);
 
                 // create a new instance of the buildfire carousel editor
@@ -14,6 +15,7 @@
 
                 // this method will be called when a new item added to the list
                 ContentHome.editor.onAddItems = function (items) {
+                    console.log('Content info==========================',ContentHome.info);
                     if (!ContentHome.info.data.content.images)
                         ContentHome.info.data.content.images = [];
                     ContentHome.info.data.content.images.push.apply(ContentHome.info.data.content.images, items);
@@ -39,10 +41,15 @@
 
                 function init(){
                     var success=function(data){
-                        if(data.data){
+                        if(data && data.data){
+                            updateMasterInfo(data.data);
                             ContentHome.info=data;
+                            if(data.data.content && data.data.content.images){
+                                ContentHome.editor.loadItems(data.data.content.images);
+                            }
                         }
                         else{
+                            updateMasterInfo(DEFAULT_DATA.SOUND_CLOUD_INFO);
                             ContentHome.info=DEFAULT_DATA.SOUND_CLOUD_INFO;
                         }
                         console.log('Got soundcloud info successfully-----------------',data);
@@ -52,9 +59,40 @@
                     };
                     soundCloud.get().then(success,error);
                 }
-
                 init();
 
+                function isUnchanged(info) {
+                    return angular.equals(info,masterInfo);
+                }
+
+                function updateMasterInfo(info) {
+                    masterInfo = angular.copy(info);
+                }
+                function saveData(_info){
+                    var saveSuccess=function(data){
+                        console.log('Data saved successfully--------------------------',data);
+                    };
+                    var saveError=function(err){
+                        console.error('Error while saving data------------------------------',err);
+                    };
+                    if(_info && _info.data)
+                    soundCloud.save(_info.data).then(saveSuccess,saveError);
+                }
+
+                function updateInfoData(_info){
+                    if (timerDelay) {
+                        clearTimeout(timerDelay);
+                    }
+                    if (!isUnchanged(_info)) {
+                        timerDelay = setTimeout(function () {
+                            saveData(_info);
+                        }, 1000);
+                    }
+                }
+
+                $scope.$watch(function () {
+                    return ContentHome.info;
+                }, updateInfoData, true);
 
             }]);
 })(window.angular);
