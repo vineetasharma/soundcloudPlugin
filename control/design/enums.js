@@ -1,7 +1,7 @@
 (function (angular) {
     "use strict";
     angular
-        .module('soundCloudContentEnums', [])
+        .module('soundCloudDesignEnums', [])
         .constant('CODES', {
             NOT_FOUND: 'NOTFOUND',
             SUCCESS: 'SUCCESS'

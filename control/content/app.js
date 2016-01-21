@@ -7,7 +7,8 @@
             'ngAnimate',
             'ui.bootstrap',
             'SoundCloudContentServices',
-            'soundCloudContentEnums'
+            'soundCloudContentEnums',
+            'ui.tinymce'
         ])
         //injected ui.bootstrap for angular bootstrap component
         .config(['$httpProvider', function ($httpProvider) {

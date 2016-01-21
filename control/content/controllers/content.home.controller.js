@@ -10,13 +10,21 @@
                 var timerDelay,masterInfo;
                 var soundCloud=new DB(COLLECTIONS.SoundCloudInfo);
 
+                //option for wysiwyg
+                ContentHome.bodyWYSIWYGOptions = {
+                    plugins: 'advlist autolink link image lists charmap print preview',
+                    skin: 'lightgray',
+                    trusted: true,
+                    theme: 'modern'
+                };
+
                 // create a new instance of the buildfire carousel editor
                 ContentHome.editor = new Buildfire.components.carousel.editor("#carousel");
 
                 // this method will be called when a new item added to the list
                 ContentHome.editor.onAddItems = function (items) {
                     console.log('Content info==========================',ContentHome.info);
-                    if (!ContentHome.info.data.content.images)
+                    if (ContentHome.info && ContentHome.info.data && ContentHome.info.data.content && !ContentHome.info.data.content.images)
                         ContentHome.info.data.content.images = [];
                     ContentHome.info.data.content.images.push.apply(ContentHome.info.data.content.images, items);
                     if (!$scope.$$phase)$scope.$digest();
@@ -41,7 +49,8 @@
 
                 function init(){
                     var success=function(data){
-                        if(data && data.data){
+                        if(data && data.data && (data.data.content || data.data.design)){
+                            console.log('Info got---------------');
                             updateMasterInfo(data.data);
                             ContentHome.info=data;
                             if(data.data.content && data.data.content.images){
@@ -52,7 +61,7 @@
                             updateMasterInfo(DEFAULT_DATA.SOUND_CLOUD_INFO);
                             ContentHome.info=DEFAULT_DATA.SOUND_CLOUD_INFO;
                         }
-                        console.log('Got soundcloud info successfully-----------------',data);
+                        console.log('Got soundcloud info successfully-----------------',data.data);
                     };
                     var error=function(err){
                         console.error('Error while getting data from db-------',err);
@@ -62,6 +71,8 @@
                 init();
 
                 function isUnchanged(info) {
+                    console.log('info------------------------------------------',info);
+                    console.log('Master info------------------------------------------',masterInfo);
                     return angular.equals(info,masterInfo);
                 }
 
@@ -83,7 +94,7 @@
                     if (timerDelay) {
                         clearTimeout(timerDelay);
                     }
-                    if (!isUnchanged(_info)) {
+                    if (_info && _info.data && !isUnchanged(_info)) {
                         timerDelay = setTimeout(function () {
                             saveData(_info);
                         }, 1000);
