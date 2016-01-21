@@ -10,6 +10,14 @@
                 var timerDelay,masterInfo;
                 var soundCloud=new DB(COLLECTIONS.SoundCloudInfo);
 
+                //option for wysiwyg
+                ContentHome.bodyWYSIWYGOptions = {
+                    plugins: 'advlist autolink link image lists charmap print preview',
+                    skin: 'lightgray',
+                    trusted: true,
+                    theme: 'modern'
+                };
+
                 // create a new instance of the buildfire carousel editor
                 ContentHome.editor = new Buildfire.components.carousel.editor("#carousel");
 
