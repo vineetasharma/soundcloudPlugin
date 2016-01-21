@@ -8,7 +8,15 @@
                 console.log('DesignHome Controller Loaded-------------------------------------');
                 var DesignHome = this;
                 var timerDelay,masterInfo;
+                DesignHome.layouts = [{name: "list-layout1"}, {name: "list-layout2"}, {name: "list-layout3"}, {name: "list-layout4"}];
                 var soundCloud=new DB(COLLECTIONS.SoundCloudInfo);
+
+                DesignHome.changeLayout = function (layoutName) {
+                    if (layoutName && DesignHome.info.data.design) {
+                        DesignHome.info.data.design.itemListLayout = layoutName;
+                    }
+                };
+
                 function init(){
                     var success=function(data){
                         if(data && data.data && (data.data.content || data.data.design)){
