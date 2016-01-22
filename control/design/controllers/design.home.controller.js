@@ -36,7 +36,7 @@
                 function init(){
                     var success=function(data){
                         if(data && data.data && (data.data.content || data.data.design)){
-                            console.log('Info got---------------');
+                            //console.log('Info got---------------');
                             updateMasterInfo(data.data);
                             DesignHome.info=data;
                             if(data.data.design.bgImage){
@@ -47,18 +47,18 @@
                             updateMasterInfo(DEFAULT_DATA.SOUND_CLOUD_INFO);
                             DesignHome.info=DEFAULT_DATA.SOUND_CLOUD_INFO;
                         }
-                        console.log('Got soundcloud info successfully-----------------',data.data);
+                        //console.log('Got soundcloud info successfully-----------------',data.data);
                     };
                     var error=function(err){
-                        console.error('Error while getting data from db-------',err);
+                        //console.error('Error while getting data from db-------',err);
                     };
                     soundCloud.get().then(success,error);
                 }
                 init();
 
                 function isUnchanged(info) {
-                    console.log('info------------------------------------------',info);
-                    console.log('Master info------------------------------------------',masterInfo);
+                    //console.log('info------------------------------------------',info);
+                    //console.log('Master info------------------------------------------',masterInfo);
                     return angular.equals(info,masterInfo);
                 }
 
@@ -67,10 +67,10 @@
                 }
                 function saveData(_info){
                     var saveSuccess=function(data){
-                        console.log('Data saved successfully--------------------------',data);
+                        //console.log('Data saved successfully--------------------------',data);
                     };
                     var saveError=function(err){
-                        console.error('Error while saving data------------------------------',err);
+                       /* console.error('Error while saving data------------------------------',err);*/
                     };
                     if(_info && _info.data)
                         soundCloud.save(_info.data).then(saveSuccess,saveError);
@@ -81,7 +81,7 @@
                         clearTimeout(timerDelay);
                     }
                     if (_info && _info.data && !isUnchanged(_info)) {
-                        timerDelay = setTimeout(function () {
+                        timerDelay = $timeout(function () {
                             saveData(_info);
                         }, 1000);
                     }
