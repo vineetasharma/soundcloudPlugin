@@ -3,8 +3,8 @@
 (function (angular) {
     angular
         .module('soundCloudPluginWidget')
-        .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI',
-            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI) {
+        .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI','$rootScope',
+            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI,$rootScope) {
                 console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
                 var WidgetHome = this, view = null;
 
@@ -12,7 +12,7 @@
                 WidgetHome.deviceHeight = window.innerHeight;
                 WidgetHome.deviceWidth = window.innerWidth;
 
-                WidgetHome.SoundCloudInfoContent = new DB(COLLECTIONS.SoundCloudInfo)
+                WidgetHome.SoundCloudInfoContent = new DB(COLLECTIONS.SoundCloudInfo);
 
 
                 WidgetHome.showDescription = function () {
@@ -40,18 +40,19 @@
                 };
 
                 WidgetHome.SoundCloudInfoContent.get().then(function success(result) {
-                        console.log('result', result);
+                        console.log('result-----------------------------------------in Widget', result);
                         if (result && result.data && result.id) {
-                            result = DEFAULT_DATA.SOUND_CLOUD_INFO;
+                            /*result = DEFAULT_DATA.SOUND_CLOUD_INFO;*/
                             WidgetHome.info = result;
                             if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
                                 soundCloudAPI.getTracks(WidgetHome.info.data.content.link, WidgetHome.info.data.content.soundcloudClientID)
                                     .then(function (data) {
                                         WidgetHome.tracks = data;
+                                        console.log('WidgetHome.tracks---------------------', WidgetHome.tracks);
                                     }, function () {
 
                                     });
-                                console.log('WidgetHome.tracks', WidgetHome.tracks);
+                                console.log('WidgetHome.tracks---------------------', WidgetHome.tracks);
                             }
                         }
                         else {
@@ -63,10 +64,9 @@
                     }
                 );
 
-                WidgetHome.goToTrack = function (ind) {
-                    var track = WidgetHome.tracks[ind];
-                    alert(track.id);
-                    //Location.go('#/media/' + id);
+                WidgetHome.goToTrack = function (track) {
+                    $rootScope.playTrack=true;
+                    WidgetHome.currentTrack=track;
                 };
 
                 $scope.$on("Carousel:LOADED", function () {
@@ -80,7 +80,5 @@
                         view.loadItems([]);
                     }
                 });
-
-
             }]);
 })(window.angular);

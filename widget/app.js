@@ -14,12 +14,12 @@
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
         .config(['$routeProvider','$httpProvider', function ($routeProvider,$httpProvider) {
-            $routeProvider
+            /*$routeProvider
                 .when('/', {
                     templateUrl: 'templates/home.html',
                     controllerAs: 'WidgetHome',
                     controller: 'WidgetHomeCtrl'
-                });
+                });*/
             var interceptor = ['$q', function ($q) {
                 var counter = 0;
 
