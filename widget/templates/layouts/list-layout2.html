@@ -1,0 +1,28 @@
+<div class="holder padding-zero">
+    <div class="media-center-plugin layout3 text-overlay">
+        <div class="media-center-banner clearfix border-bottom-grey">
+            <div id="carousel" build-fire-carousel=""></div>
+        </div>
+        <div class="text-left padded padding-bottom-zero clearfix text-overlay" ng-if="WidgetHome.showDescription()">
+            <p ng-bind-html="WidgetHome.info.data.content.description | safeHtml">
+            </p>
+        </div>
+
+        <div class="list-layout">
+            <div class="clickable list-item text-overlay" ng-repeat="track in WidgetHome.tracks"
+                 ng-click="WidgetHome.goToTrack($index)">
+                <div class="list-item-media text-left overflow-hidden">
+                    <div class="list-media-holder pull-left text-overlay" ng-if="track.artwork_url">
+                        <img ng-src="{{track.artwork_url | cropImage:110:60}}">
+                    </div>
+                    <div class="list-item-copy text-left padding-left-ten padding-right-ten text-overlay">
+                        <p class="ellipsis margin-zero text-primary"><a class="text-primary">{{track.title}}</a></p>
+
+                        <p class="summary ellipsis margin-zero">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</p>
+                        <!--<span class="list-item-date" data-ng-if="item.data.mediaDate">{{item.data.mediaDate  | jsDate | date:"MMMM dd, yyyy"}}</span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
