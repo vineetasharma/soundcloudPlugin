@@ -1,5 +1,5 @@
 <div class="holder now-playing text-center">
-    <div ng-style="{'background':'url(' + (WidgetHome.currentTrack.artwork_url ? WidgetHome.currentTrack.artwork_url : '') + ') no-repeat center center',
+    <div ng-style="{'background':'url(' + (WidgetHome.currentTrack.artwork_url ? WidgetHome.currentTrack.artwork_url : 'assets/images/now-playing.png') + ') no-repeat center center',
          '-o-filter': 'blur(10px) brightness(0.2)',
     '-moz-filter': 'blur(10px) brightness(0.2)',
     '-webkit-filter': 'blur(10px) brightness(0.2)',
@@ -20,7 +20,8 @@
         </div>
         <div class="media-holder margin-top-fifteen">
             <div class="media-inner text-center">
-                <img class="border-radius-two" ng-src="{{WidgetHome.currentTrack.artwork_url | cropImage : 260:260}}">
+                <img ng-if="WidgetHome.currentTrack.artwork_url" class="border-radius-two" ng-src="{{WidgetHome.currentTrack.artwork_url | cropImage : 260:260}}">
+                <img ng-if="!WidgetHome.currentTrack.artwork_url" class="border-radius-two" src="assets/images/now-playing.png">
             </div>
         </div>
         <div class="media-player-info margin-top-twenty">

@@ -3,9 +3,9 @@
 (function (angular) {
     angular
         .module('soundCloudPluginWidget')
-        .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI',
+        .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI','Buildfire',
             '$rootScope',
-            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI, $rootScope) {
+            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI,Buildfire, $rootScope) {
                 console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
                 $rootScope.playTrack=false;
                 var WidgetHome = this, view = null;
@@ -91,11 +91,18 @@
                 };
 
                 /**
+                 * audioPlayer is Buildfire.services.media.audioPlayer.
+                 */
+                var audioPlayer = Buildfire.services.media.audioPlayer;
+
+                /**
                  * Player related method and variables
                  */
 
                 WidgetHome.playTrack=function(){
+                    console.log('Widget HOme url----------------------',WidgetHome.currentTrack.stream_url+'?clientId='+WidgetHome.info.data.content.soundcloudClientID);
                     WidgetHome.playing=true;
+                        audioPlayer.play({url:WidgetHome.currentTrack.stream_url+'?clientId='+WidgetHome.info.data.content.soundcloudClientID});
                 };
                 WidgetHome.pauseTrack=function(){
                     WidgetHome.playing=false;
