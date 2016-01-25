@@ -7,7 +7,10 @@
             <p ng-if="WidgetHome.showDescription()" ng-bind-html="WidgetHome.info.data.content.description | safeHtml"></p>
         </div>
         <div class="padded padding-top-zero text-overlay">
-            <div class="list-layout">
+            <div class="list-layout"  infinite-scroll="WidgetHome.loadMore()"
+                 infinite-scroll-distance="1"
+                 data-infinite-container=".infinite-scroll-parent"
+                 infinite-scroll-disabled="WidgetHome.noMore">
                 <div ng-repeat="track in WidgetHome.tracks" ng-if="$index % 2 == 0" class="row text-overlay"
                      ng-click="WidgetHome.goToTrack(track)">
                     <div class="list-item-odd col-xs-6 pull-left clickable ">
@@ -24,8 +27,9 @@
                                 <a class="ellipsis margin-zero text-primary">{{WidgetHome.tracks[$index].title}}</a>
                             </p>
 
-                            <p class="summary ellipsis margin-zero">{{WidgetHome.tracks[$index].duration | millisecondsToDateTime | date:'mm:ss'}}</p>
-                            <!--<span class="list-item-date" data-ng-if="WidgetHome.tracks[$index].data.mediaDate">{{WidgetHome.tracks[$index].data.mediaDate  | jsDate | date:"MMMM dd, yyyy"}}</span>-->
+                            <p class="summary ellipsis margin-zero">{{track.user.username}}</p>
+                            <span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
+                            <span class="list-item-date">{{track.playback_count}}</span>
                         </div>
                     </div>
                     <div class="list-item-even col-xs-6 pull-left clickable text-overlay "

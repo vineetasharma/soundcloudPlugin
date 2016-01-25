@@ -21,9 +21,34 @@
         }])
         .service('soundCloudAPI', ['$http', '$q', function ($http, $q) {
             var that = this;
-            that.getTracks = function (link, clientId) {
 
-                var promise = $http.get('http://api.soundcloud.com/resolve.json?url=' + link + '&client_id=' + clientId).then(function (d) {
+            that.connect = function (clientId) {
+                SC.initialize({
+                    client_id: clientId
+                });
+            };
+
+            that.getTracks = function (link,page) {
+                var page_size = 5;
+
+                if(/^https\:\/\/www.soundcloud.com\/[^\/]+\/?$/.test(link))
+                {
+                    link += '/tracks';
+                }
+
+                if(link.indexOf('/tracks') != -1){
+                    return SC.get('/tracks', { limit: page_size , offset : (page * page_size), linked_partitioning:page });
+                }
+                else
+                {
+                   SC.resolve(link).then(function(d){
+                       return SC.get();
+                   });
+                }
+
+
+
+                /*var promise = $http.get('http://api.soundcloud.com/resolve.json?url=' + link + '&client_id=' + clientId).then(function (d) {
                     var tracks = [];
                     var result = d.data;
                     if (angular.isArray(result)) {
@@ -52,7 +77,7 @@
                 }, function () {
                     return [];
                 });
-                return promise;
+                return promise;*/
             }
         }])
         .factory("DB", ['Buildfire', '$q', 'MESSAGES', 'CODES', function (Buildfire, $q, MESSAGES, CODES) {
