@@ -13,13 +13,13 @@
         ])
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
-        .config(['$routeProvider','$httpProvider', function ($routeProvider,$httpProvider) {
+        .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
             /*$routeProvider
-                .when('/', {
-                    templateUrl: 'templates/home.html',
-                    controllerAs: 'WidgetHome',
-                    controller: 'WidgetHomeCtrl'
-                });*/
+             .when('/', {
+             templateUrl: 'templates/home.html',
+             controllerAs: 'WidgetHome',
+             controller: 'WidgetHomeCtrl'
+             });*/
             var interceptor = ['$q', function ($q) {
                 var counter = 0;
 
@@ -52,6 +52,21 @@
                 };
             }];
             $httpProvider.interceptors.push(interceptor);
+
+        }])
+        .run(['$location', '$rootScope','$timeout', function ($location, $rootScope,$timeout) {
+            buildfire.navigation.onBackButtonClick = function () {
+                if($rootScope.playTrack){
+                    $timeout(function () {
+                        $rootScope.playTrack=false;
+
+                    }, 100);
+                    if($rootScope.$$phase){$rootScope.$digest();}
+                }
+                else{
+                    buildfire.navigation.navigateHome();
+                }
+            };
 
         }]);
 })
