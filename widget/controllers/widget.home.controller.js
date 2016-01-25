@@ -3,9 +3,9 @@
 (function (angular) {
     angular
         .module('soundCloudPluginWidget')
-        .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI',
+        .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI','Buildfire',
             '$rootScope',
-            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI, $rootScope) {
+            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI,Buildfire, $rootScope) {
                 console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
                 $rootScope.playTrack = false;
                 var WidgetHome = this;
@@ -72,10 +72,10 @@
                 );
 
                 WidgetHome.goToTrack = function (track) {
-                    console.log('Goto Track called---------------------------------------', track);
-                    $rootScope.playTrack = true;
-                    WidgetHome.currentTrack = track;
-                    console.log('Goto Track called---------------$rootScope playTrack------------------------', $rootScope.playTrack);
+                    console.log('Goto Track called---------------------------------------',track);
+                    $rootScope.playTrack=true;
+                    WidgetHome.currentTrack=track;
+                    console.log('Goto Track called---------------$rootScope playTrack------------------------',$rootScope.playTrack);
                     if (!$rootScope.$$phase)$rootScope.$digest();
                 };
 
@@ -97,14 +97,46 @@
                 };
 
                 /**
+                 * audioPlayer is Buildfire.services.media.audioPlayer.
+                 */
+                var audioPlayer = Buildfire.services.media.audioPlayer;
+
+                /**
+                 * audioPlayer.onEvent callback calls when audioPlayer event fires.
+                 */
+                audioPlayer.onEvent(function (e) {
+                    console.log('Audio Player On Event callback Method------------------',e);
+                    if (e.event == "timeUpdate") {
+                        WidgetHome.currentTime = e.data.currentTime;
+                        WidgetHome.duration = e.data.duration;
+                        $scope.$apply();
+                    }
+                    else if (e.event == "audioEnded") {
+                        WidgetHome.playing = false;
+                        $scope.$apply();
+                    }
+                    else if (e.event == "pause") {
+                        WidgetHome.playing = false;
+                        $scope.$apply();
+                    }
+                });
+
+                /**
                  * Player related method and variables
                  */
-
-                WidgetHome.playTrack = function () {
-                    WidgetHome.playing = true;
+                WidgetHome.playTrack=function(){
+                    console.log('Widget HOme url----------------------',WidgetHome.currentTrack.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID);
+                    WidgetHome.playing=true;
+                    if(WidgetHome.paused){
+                        audioPlayer.play();
+                    }else{
+                        audioPlayer.play({url:WidgetHome.currentTrack.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID});
+                    }
                 };
-                WidgetHome.pauseTrack = function () {
+                WidgetHome.pauseTrack=function(){
                     WidgetHome.playing = false;
+                    WidgetHome.paused = true;
+                    audioPlayer.pause();
                 };
                 WidgetHome.openSettingsOverlay = function () {
                     WidgetHome.openSettings = true;
@@ -155,7 +187,7 @@
 
                 };
 
-                var listener = window.buildfire.datastore.onUpdate(onUpdateCallback);
+                var listener = Buildfire.datastore.onUpdate(onUpdateCallback);
 
             }]);
 })(window.angular);
