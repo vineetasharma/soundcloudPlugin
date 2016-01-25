@@ -9,7 +9,8 @@
             'ui.bootstrap',
             'soundCloudWidgetEnums',
             'soundCloudPluginWidgetFilters',
-            'soundCloudWidgetServices'
+            'soundCloudWidgetServices',
+            'infinite-scroll'
         ])
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component

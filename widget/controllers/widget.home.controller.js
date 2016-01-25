@@ -3,16 +3,18 @@
 (function (angular) {
     angular
         .module('soundCloudPluginWidget')
-        .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI','Buildfire',
+        .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI', 'Buildfire',
             '$rootScope',
-            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI,Buildfire, $rootScope) {
+            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI, Buildfire, $rootScope) {
                 console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
-                $rootScope.playTrack=false;
-                var WidgetHome = this, view = null;
-                WidgetHome.currentTime=0.0;
+                $rootScope.playTrack = false;
+                var WidgetHome = this;
+                WidgetHome.view = null;
+                WidgetHome.currentTime = 0.0;
 
                 WidgetHome.page = -1;
                 WidgetHome.noMore = false;
+                WidgetHome.isBusy = false;
 
                 /*declare the device width heights*/
                 $rootScope.deviceHeight = window.innerHeight;
@@ -29,27 +31,28 @@
                 };
 
                 /// load items
-                function loadItems(carouselItems) {
+                WidgetHome.loadItems = function (carouselItems) {
                     // create an instance and pass it the items if you don't have items yet just pass []
-                    if (view)
-                        view.loadItems(carouselItems);
+                    if (WidgetHome.view)
+                        WidgetHome.view.loadItems(carouselItems);
                 }
 
-                var initCarousel = function () {
+                WidgetHome.initCarousel = function () {
 
                     if (WidgetHome.info && WidgetHome.info.data.content.images.length) {
-                        loadItems(WidgetHome.info.data.content.images);
+                        WidgetHome.view.loadItems(WidgetHome.info.data.content.images);
                     } else {
-                        loadItems([]);
+                        WidgetHome.view.loadItems([]);
                     }
 
                 };
 
                 WidgetHome.SoundCloudInfoContent.get().then(function success(result) {
                         console.log('>>result<<', result);
-                        if (result && result.data) {
+                        if (result && result.data && result.id) {
                             WidgetHome.info = result;
-                            $rootScope.bgImage = WidgetHome.info.data.design.bgImage;
+                            if (WidgetHome.info.data && WidgetHome.info.data.design)
+                                $rootScope.bgImage = WidgetHome.info.data.design.bgImage;
                             if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
                                 soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
                                 WidgetHome.loadMore();
@@ -57,6 +60,11 @@
                         }
                         else {
                             WidgetHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
+                            if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
+                                soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
+                                WidgetHome.isBusy = false;
+                                WidgetHome.loadMore();
+                            }
                         }
                     },
                     function fail() {
@@ -65,21 +73,30 @@
                 );
 
                 WidgetHome.goToTrack = function (track) {
-                    console.log('Goto Track called---------------------------------------',track);
-                    $rootScope.playTrack=true;
-                    WidgetHome.currentTrack=track;
-                    console.log('Goto Track called---------------$rootScope playTrack------------------------',$rootScope.playTrack);
+                    console.log('Goto Track called---------------------------------------', track);
+                    $rootScope.playTrack = true;
+                    WidgetHome.currentTrack = track;
+                    console.log('Goto Track called---------------$rootScope playTrack------------------------', $rootScope.playTrack);
                     if (!$rootScope.$$phase)$rootScope.$digest();
                 };
 
                 WidgetHome.loadMore = function () {
-                    soundCloudAPI.getTracks(WidgetHome.info.data.content.link, ++WidgetHome.page)
-                        .then(function (data) {
-                            var d = data.collection;
-                            WidgetHome.tracks = WidgetHome.tracks ? WidgetHome.tracks.concat(d) : d;
-                            console.log('WidgetHome.tracks', WidgetHome.tracks);
-                            $scope.$digest();
-                        });
+                    if (WidgetHome.isBusy) {
+                        console.error('turned back');
+                        return;
+                    }
+                    console.log('WidgetHome.page', WidgetHome.page);
+                    WidgetHome.isBusy = true;
+                    if (WidgetHome.info && WidgetHome.info.data && WidgetHome.info.data.content && WidgetHome.info.data.content.link)
+                        soundCloudAPI.getTracks(WidgetHome.info.data.content.link, ++WidgetHome.page)
+                            .then(function (data) {
+                                console.log('Got tracks--------------------------', data);
+                                WidgetHome.isBusy = false;
+                                var d = data.collection;
+                                WidgetHome.tracks = WidgetHome.tracks ? WidgetHome.tracks.concat(d) : d;
+                                console.log('WidgetHome.tracks', WidgetHome.tracks);
+                                $scope.$digest();
+                            });
                 };
 
                 /**
@@ -91,7 +108,7 @@
                  * audioPlayer.onEvent callback calls when audioPlayer event fires.
                  */
                 audioPlayer.onEvent(function (e) {
-                    console.log('Audio Player On Event callback Method------------------',e);
+                    console.log('Audio Player On Event callback Method------------------', e);
                     if (e.event == "timeUpdate") {
                         WidgetHome.currentTime = e.data.currentTime;
                         WidgetHome.duration = e.data.duration;
@@ -110,52 +127,52 @@
                 /**
                  * Player related method and variables
                  */
-                WidgetHome.playTrack=function(){
-                    console.log('Widget HOme url----------------------',WidgetHome.currentTrack.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID);
-                    WidgetHome.playing=true;
-                    if(WidgetHome.paused){
+                WidgetHome.playTrack = function () {
+                    console.log('Widget HOme url----------------------', WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID);
+                    WidgetHome.playing = true;
+                    if (WidgetHome.paused) {
                         audioPlayer.play();
-                    }else{
-                        audioPlayer.play({url:WidgetHome.currentTrack.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID});
+                    } else {
+                        audioPlayer.play({url: WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID});
                     }
                 };
-                WidgetHome.pauseTrack=function(){
+                WidgetHome.pauseTrack = function () {
                     WidgetHome.playing = false;
                     WidgetHome.paused = true;
                     audioPlayer.pause();
                 };
                 WidgetHome.changeTime = function (time) {
-                    console.log('Change time method called---------------------------------',time);
-                    WidgetHome.currentTime=time/1000;
-                    audioPlayer.setTime(time/1000);
+                    console.log('Change time method called---------------------------------', time);
+                    WidgetHome.currentTime = time / 1000;
+                    audioPlayer.setTime(time / 1000);
                 };
-                WidgetHome.openSettingsOverlay=function(){
-                    WidgetHome.openSettings=true;
+                WidgetHome.openSettingsOverlay = function () {
+                    WidgetHome.openSettings = true;
                 };
-                WidgetHome.openPlayListOverlay=function(){
-                    WidgetHome.openPlaylist=true;
+                WidgetHome.openPlayListOverlay = function () {
+                    WidgetHome.openPlaylist = true;
                 };
-                WidgetHome.openMoreInfoOverlay=function(){
-                    WidgetHome.openMoreInfo=true;
+                WidgetHome.openMoreInfoOverlay = function () {
+                    WidgetHome.openMoreInfo = true;
                 };
-                WidgetHome.closeSettingsOverlay=function(){
-                    WidgetHome.openSettings=false;
+                WidgetHome.closeSettingsOverlay = function () {
+                    WidgetHome.openSettings = false;
                 };
-                WidgetHome.closePlayListOverlay=function(){
-                    WidgetHome.openPlaylist=false;
+                WidgetHome.closePlayListOverlay = function () {
+                    WidgetHome.openPlaylist = false;
                 };
-                WidgetHome.closeMoreInfoOverlay=function(){
-                    WidgetHome.openMoreInfo=false;
+                WidgetHome.closeMoreInfoOverlay = function () {
+                    WidgetHome.openMoreInfo = false;
                 };
                 $scope.$on("Carousel:LOADED", function () {
-                    if (!view) {
-                        view = new window.buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
+                    if (!WidgetHome.view) {
+                        WidgetHome.view = new window.buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                     }
-                    if (view && WidgetHome.info && WidgetHome.info.data) {
-                        initCarousel();
+                    if (WidgetHome.view && WidgetHome.info && WidgetHome.info.data) {
+                        WidgetHome.initCarousel();
                     }
                     else {
-                        view.loadItems([]);
+                        WidgetHome.view.loadItems([]);
                     }
                 });
 
@@ -168,11 +185,11 @@
                     if (event.data) {
                         WidgetHome.info = event;
                         $rootScope.bgImage = WidgetHome.info.data.design.bgImage;
-                        if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
-                            soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
-                            WidgetHome.loadMore();
-                        }
-                        initCarousel();
+                        /* if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
+                         soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
+                         WidgetHome.loadMore();
+                         }*/
+                        WidgetHome.initCarousel();
                         $scope.$apply();
                     }
 
