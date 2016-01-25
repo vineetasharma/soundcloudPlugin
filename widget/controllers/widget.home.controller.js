@@ -87,16 +87,41 @@
                 var audioPlayer = Buildfire.services.media.audioPlayer;
 
                 /**
+                 * audioPlayer.onEvent callback calls when audioPlayer event fires.
+                 */
+                audioPlayer.onEvent(function (e) {
+                    console.log('Audio Player On Event callback Method------------------',e);
+                    if (e.event == "timeUpdate") {
+                        WidgetHome.currentTime = e.data.currentTime;
+                        WidgetHome.duration = e.data.duration;
+                        $scope.$apply();
+                    }
+                    else if (e.event == "audioEnded") {
+                        WidgetHome.playing = false;
+                        $scope.$apply();
+                    }
+                    else if (e.event == "pause") {
+                        WidgetHome.playing = false;
+                        $scope.$apply();
+                    }
+                });
+
+                /**
                  * Player related method and variables
                  */
-
                 WidgetHome.playTrack=function(){
-                    console.log('Widget HOme url----------------------',WidgetHome.currentTrack.stream_url+'?clientId='+WidgetHome.info.data.content.soundcloudClientID);
+                    console.log('Widget HOme url----------------------',WidgetHome.currentTrack.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID);
                     WidgetHome.playing=true;
-                        audioPlayer.play({url:WidgetHome.currentTrack.stream_url+'?clientId='+WidgetHome.info.data.content.soundcloudClientID});
+                    if(WidgetHome.paused){
+                        audioPlayer.play();
+                    }else{
+                        audioPlayer.play({url:WidgetHome.currentTrack.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID});
+                    }
                 };
                 WidgetHome.pauseTrack=function(){
-                    WidgetHome.playing=false;
+                    WidgetHome.playing = false;
+                    WidgetHome.paused = true;
+                    audioPlayer.pause();
                 };
                 WidgetHome.openSettingsOverlay=function(){
                     WidgetHome.openSettings=true;
@@ -147,7 +172,7 @@
 
                 };
 
-                var listener = window.buildfire.datastore.onUpdate(onUpdateCallback);
+                var listener = Buildfire.datastore.onUpdate(onUpdateCallback);
 
             }]);
 })(window.angular);
