@@ -25,10 +25,10 @@
                         images: [{iconUrl:'http://imageserver.prod.s3.amazonaws.com/1453358006303-04785112652461976/1f3dd710-c019-11e5-97c2-75a2cda7b99b.png'}],
                         description: '<p>Lakshay<br></p>',
                         soundcloudClientID: 'f949db5a9d9890512dbb5827b8329b8a',
-                        link: 'https://www.soundcloud.com/laraparkerkent'
+                        link: 'https://www.soundcloud.com/skrillex'
                     },
                     design: {
-                        itemListLayout: "list-layout1",
+                        itemListLayout: "list-layout4",
                         //bgImage: "http://imageserver.prod.s3.amazonaws.com/1453358006303-04785112652461976/1f3dd710-c019-11e5-97c2-75a2cda7b99b.png"
                         bgImage: ""
                     }
