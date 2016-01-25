@@ -28,56 +28,59 @@
                 });
             };
 
-            that.getTracks = function (link,page) {
+            that.getTracks = function (link, page) {
                 var page_size = 5;
 
-                if(/^https\:\/\/www.soundcloud.com\/[^\/]+\/?$/.test(link))
-                {
-                    link += '/tracks';
+                if (true) {
+                    var q = '';
+                    if (link.indexOf('tracks') != -1)
+                        q = link.split('/').slice(-2, -1)[0];
+                    else
+                        q = link.split('/').pop();
+                    return SC.get('/tracks', {
+                        q: q,
+                        limit: page_size,
+                        offset: (page * page_size),
+                        linked_partitioning: page
+                    });
                 }
-
-                if(link.indexOf('/tracks') != -1){
-                    return SC.get('/tracks', { limit: page_size , offset : (page * page_size), linked_partitioning:page });
+                else {
+                    SC.resolve(link).then(function (d) {
+                        return SC.get();
+                    });
                 }
-                else
-                {
-                   SC.resolve(link).then(function(d){
-                       return SC.get();
-                   });
-                }
-
 
 
                 /*var promise = $http.get('http://api.soundcloud.com/resolve.json?url=' + link + '&client_id=' + clientId).then(function (d) {
-                    var tracks = [];
-                    var result = d.data;
-                    if (angular.isArray(result)) {
-                        if (result.length) {
-                            if (result[0].kind == 'track')
-                                tracks = result;
-                            else {
-                                for (var j = 0; j < result.length; j++) {
-                                    tracks = tracks.concat(result[j].tracks);
-                                }
-                            }
-                        }
-                    }
-                    else if (result.kind == 'user') {
+                 var tracks = [];
+                 var result = d.data;
+                 if (angular.isArray(result)) {
+                 if (result.length) {
+                 if (result[0].kind == 'track')
+                 tracks = result;
+                 else {
+                 for (var j = 0; j < result.length; j++) {
+                 tracks = tracks.concat(result[j].tracks);
+                 }
+                 }
+                 }
+                 }
+                 else if (result.kind == 'user') {
 
 
 
 
-                    }
-                    else if (result.kind == 'track')
-                        tracks = [result];
-                    else
-                        tracks = result.tracks;
-                    console.log('tracks', tracks);
-                    return tracks;
-                }, function () {
-                    return [];
-                });
-                return promise;*/
+                 }
+                 else if (result.kind == 'track')
+                 tracks = [result];
+                 else
+                 tracks = result.tracks;
+                 console.log('tracks', tracks);
+                 return tracks;
+                 }, function () {
+                 return [];
+                 });
+                 return promise;*/
             }
         }])
         .factory("DB", ['Buildfire', '$q', 'MESSAGES', 'CODES', function (Buildfire, $q, MESSAGES, CODES) {
