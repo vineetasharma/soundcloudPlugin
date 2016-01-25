@@ -16,7 +16,7 @@
                 $rootScope.deviceHeight = window.innerHeight;
                 $rootScope.deviceWidth = window.innerWidth;
 
-                WidgetHome.SoundCloudInfoContent = new DB(COLLECTIONS.SoundCloudInfo)
+                WidgetHome.SoundCloudInfoContent = new DB(COLLECTIONS.SoundCloudInfo);
 
 
                 WidgetHome.showDescription = function () {
@@ -71,10 +71,9 @@
                     }
                 );
 
-                WidgetHome.goToTrack = function (ind) {
-                    var track = WidgetHome.tracks[ind];
-                    alert(track.id);
-                    //Location.go('#/media/' + id);
+                WidgetHome.goToTrack = function (track) {
+                    $rootScope.playTrack=true;
+                    WidgetHome.currentTrack=track;
                 };
 
                 WidgetHome.loadMore = function () {

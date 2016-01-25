@@ -12,7 +12,7 @@
                  data-infinite-container=".infinite-scroll-parent"
                  infinite-scroll-disabled="WidgetHome.noMore">
                 <div ng-repeat="track in WidgetHome.tracks" ng-if="$index % 2 == 0" class="row text-overlay"
-                     ng-click="WidgetHome.goToTrack($index)">
+                     ng-click="WidgetHome.goToTrack(track)">
                     <div class="list-item-odd col-xs-6 pull-left clickable ">
                         <div class="list-item-media text-center overflow-hidden text-overlay">
                             <div class="list-media-holder text-overlay">
