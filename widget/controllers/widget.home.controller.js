@@ -6,6 +6,7 @@
         .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI','$rootScope',
             function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI,$rootScope) {
                 console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
+                $rootScope.playTrack=false;
                 var WidgetHome = this, view = null;
 
                 /*declare the device width heights*/
@@ -65,10 +66,41 @@
                 );
 
                 WidgetHome.goToTrack = function (track) {
+                    console.log('Goto Track called---------------------------------------',track);
                     $rootScope.playTrack=true;
                     WidgetHome.currentTrack=track;
+                    console.log('Goto Track called---------------$rootScope playTrack------------------------',$rootScope.playTrack);
+                    if (!$rootScope.$$phase)$rootScope.$digest();
                 };
 
+                /**
+                 * Player related method and variables
+                 */
+
+                WidgetHome.playTrack=function(){
+                    WidgetHome.playing=true;
+                };
+                WidgetHome.pauseTrack=function(){
+                    WidgetHome.playing=false;
+                };
+                WidgetHome.openSettingsOverlay=function(){
+                    WidgetHome.openSettings=true;
+                };
+                WidgetHome.openPlayListOverlay=function(){
+                    WidgetHome.openPlaylist=true;
+                };
+                WidgetHome.openMoreInfoOverlay=function(){
+                    WidgetHome.openMoreInfo=true;
+                };
+                WidgetHome.closeSettingsOverlay=function(){
+                    WidgetHome.openSettings=false;
+                };
+                WidgetHome.closePlayListOverlay=function(){
+                    WidgetHome.openPlaylist=false;
+                };
+                WidgetHome.closeMoreInfoOverlay=function(){
+                    WidgetHome.openMoreInfo=false;
+                };
                 $scope.$on("Carousel:LOADED", function () {
                     if (!view) {
                         view = new window.buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer

@@ -10,7 +10,7 @@
 
         <div class="list-layout">
             <div class="clickable list-item text-overlay" ng-repeat="track in WidgetHome.tracks"
-                 ng-click="WidgetHome.goToTrack($index)">
+                 ng-click="WidgetHome.goToTrack(track)">
                 <div class="list-item-media text-left overflow-hidden">
                     <div class="list-media-holder pull-left text-overlay" ng-if="track.artwork_url">
                         <img ng-src="{{track.artwork_url | cropImage:110:60}}">

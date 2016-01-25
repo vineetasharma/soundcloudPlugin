@@ -24,7 +24,7 @@
                     content: {
                         images: [],
                         description: '',
-                        soundcloudClientID: '9a09ee0e50798267cb7644fb5c238ade',
+                        soundcloudClientID: 'f949db5a9d9890512dbb5827b8329b8a',
                         link: 'https://soundcloud.com/laraparkerkent/tracks'
                     },
                     design: {
