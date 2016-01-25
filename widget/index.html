@@ -36,11 +36,11 @@
 </head>
 <body>
 <div ng-controller="WidgetHomeCtrl as WidgetHome">
-    <div ng-show="!playTrack">
+    <div ng-if="!playTrack">
         <div ng-include="'templates/home.html'">
         </div>
     </div>
-    <div ng-show="playTrack">
+    <div ng-if="playTrack">
         <div ng-include="'templates/nowPlaying.html'"></div>
     </div>
 </div>
