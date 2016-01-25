@@ -9,7 +9,10 @@
         </div>
         <div class="padded padding-top-zero text-overlay">
             <div class="list-layout">
-                <div class="row">
+                <div class="row" infinite-scroll="WidgetHome.loadMore()"
+                     infinite-scroll-distance="1"
+                     data-infinite-container=".infinite-scroll-parent"
+                     infinite-scroll-disabled="WidgetHome.noMore">
                     <div class="clickable col-xs-6 pull-left text-overlay" ng-repeat="track in WidgetHome.tracks"
                          ng-click="WidgetHome.goToTrack($index)" ng-class-odd="list-item-odd"
                          ng-class-even="list-item-even">
@@ -23,8 +26,9 @@
                             <p class="ellipsis margin-zero text-primary"><a class="text-primary">{{track.title}}</a>
                             </p>
 
-                            <p class="summary ellipsis margin-zero">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</p>
-                            <!--<span class="list-item-date" data-ng-if="item.data.mediaDate">{{item.data.mediaDate  | jsDate | date:"MMMM dd, yyyy"}}</span>-->
+                            <p class="summary ellipsis margin-zero">{{ track.user.username }}</p>
+                            <span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
+                            <span class="list-item-date">{{track.playback_count}}</span>
                         </div>
                     </div>
                 </div>

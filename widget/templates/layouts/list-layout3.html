@@ -8,7 +8,10 @@
                ng-bind-html="WidgetHome.info.data.content.description | safeHtml">
             </p>
         </div>
-        <div infinite-scroll="WidgetHome.loadMore()">
+        <div  infinite-scroll="WidgetHome.loadMore()"
+              infinite-scroll-distance="1"
+              data-infinite-container=".infinite-scroll-parent"
+              infinite-scroll-disabled="WidgetHome.noMore">
             <div class="clickable text-overlay" ng-repeat="track in WidgetHome.tracks"
                  ng-click="WidgetHome.goToTrack($index)">
                 <div class="plugin-banner clearfix text-overlay">
@@ -20,8 +23,9 @@
                     <p class="text-primary ellipsis">
                         <a class="text-primary">{{track.title}}</a>
                     </p>
-                    <p class="margin-bottom-zero">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</p>
-                    <!--<span class="list-item-date" data-ng-if="item.data.mediaDate">{{item.data.mediaDate  | jsDate | date:"MMMM dd, yyyy"}}</span>-->
+                    <p class="margin-bottom-zero">{{track.user.username}}</p>
+                    <span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
+                    <span class="list-item-date">{{track.playback_count}}</span>
                 </div>
             </div>
         </div>
