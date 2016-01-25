@@ -20,8 +20,10 @@
         </div>
         <div class="media-holder margin-top-fifteen">
             <div class="media-inner text-center">
-                <img ng-if="WidgetHome.currentTrack.artwork_url" class="border-radius-two" ng-src="{{WidgetHome.currentTrack.artwork_url | cropImage : 260:260}}">
-                <img ng-if="!WidgetHome.currentTrack.artwork_url" class="border-radius-two" src="assets/images/now-playing.png">
+                <img ng-if="WidgetHome.currentTrack.artwork_url" class="border-radius-two"
+                     ng-src="{{WidgetHome.currentTrack.artwork_url | cropImage : 260:260}}">
+                <img ng-if="!WidgetHome.currentTrack.artwork_url" class="border-radius-two"
+                     src="assets/images/now-playing.png">
             </div>
         </div>
         <div class="media-player-info margin-top-twenty">
@@ -30,7 +32,13 @@
             <p class="margin-zero ellipsis">{{WidgetHome.currentTrack.user.username}}</p>
         </div>
         <div class="slider margin-top-twenty">
-            Slide Placeholder
+            <div class="playerMP">
+                <div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | limitTo : 5}}</div>
+                <div><input type="range" min="0" max="{{WidgetHome.currentTrack.duration/1000}}"
+                            ng-model="WidgetHome.currentTime"
+                            ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/></div>
+                <div ng-if="WidgetHome.currentTrack.duration">{{WidgetHome.currentTrack.duration/1000 | limitTo :5}}</div>
+            </div>
         </div>
         <div class="text-center margin-top-fifteen">
             <span class="icon icon-dots"></span>
@@ -43,8 +51,10 @@
         <div class="media-player-btns margin-top-ten">
             <span class="icon icon-shuffle icon-sm"></span>
             <span class="icon icon-backward-circle"></span>
-            <span ng-if="!WidgetHome.playing" class="icon icon-play-circle icon-main" ng-click="WidgetHome.playTrack()"></span>
-            <span ng-if="WidgetHome.playing" class="icon icon-pause-circle icon-main" ng-click="WidgetHome.pauseTrack()"></span>
+            <span ng-if="!WidgetHome.playing" class="icon icon-play-circle icon-main"
+                  ng-click="WidgetHome.playTrack()"></span>
+            <span ng-if="WidgetHome.playing" class="icon icon-pause-circle icon-main"
+                  ng-click="WidgetHome.pauseTrack()"></span>
             <span class="icon icon-forward-circle"></span>
             <span class="icon icon-repeat icon-sm"></span>
             <span class="icon icon-repeat-one icon-sm primaryTheme hidden"></span>
@@ -154,7 +164,8 @@
     </div>
 
     <!-- More Info Overlay -->
-    <div ng-if="WidgetHome.openMoreInfo" class="overlay" style="position:fixed; top:0; left:0; width:100%; background:rgba(0,0,0,0.8);">
+    <div ng-if="WidgetHome.openMoreInfo" class="overlay"
+         style="position:fixed; top:0; left:0; width:100%; background:rgba(0,0,0,0.8);">
         <div class="overlay-content" style="postiion:absolute; top:0; left:0; height:100%; width: 100%; overflow:auto;">
             <div class="media-player-more-info">
                 <div class="media-holder margin-top-thirty">

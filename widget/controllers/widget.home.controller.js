@@ -9,6 +9,7 @@
                 console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
                 $rootScope.playTrack=false;
                 var WidgetHome = this, view = null;
+                WidgetHome.currentTime=0.0;
 
                 WidgetHome.page = -1;
                 WidgetHome.noMore = false;
@@ -122,6 +123,11 @@
                     WidgetHome.playing = false;
                     WidgetHome.paused = true;
                     audioPlayer.pause();
+                };
+                WidgetHome.changeTime = function (time) {
+                    console.log('Change time method called---------------------------------',time);
+                    WidgetHome.currentTime=time/1000;
+                    audioPlayer.setTime(time/1000);
                 };
                 WidgetHome.openSettingsOverlay=function(){
                     WidgetHome.openSettings=true;
