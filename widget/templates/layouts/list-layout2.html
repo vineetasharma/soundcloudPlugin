@@ -8,7 +8,7 @@
             </p>
         </div>
 
-        <div class="list-layout"  infinite-scroll="WidgetHome.loadMore()"
+        <div class="list-layout" infinite-scroll="WidgetHome.loadMore()"
              infinite-scroll-distance="1"
              data-infinite-container=".infinite-scroll-parent"
              infinite-scroll-disabled="WidgetHome.noMore">
@@ -21,8 +21,9 @@
                     <div class="list-item-copy text-left padding-left-ten padding-right-ten text-overlay">
                         <p class="ellipsis margin-zero text-primary"><a class="text-primary">{{track.title}}</a></p>
 
-                        <p class="summary ellipsis margin-zero">{{track.user.username}}</p>
-                        <span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
+                        <p class="summary ellipsis margin-zero">{{track.user.username}}<span class="duration-ui">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
+                        </p>
+                        <!--<span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>-->
                         <span class="list-item-date">{{track.playback_count}}</span>
                     </div>
                 </div>

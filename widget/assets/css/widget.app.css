@@ -117,3 +117,8 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
     background: #367ebd;
 }
+
+.duration-ui{
+    float: right;
+    font-size: 13px;
+}
