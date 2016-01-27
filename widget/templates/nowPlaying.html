@@ -34,7 +34,7 @@
         <div class="slider">
             <div class="playerMP">
                 <div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | secondsToDateTime |date: 'mm:ss'}}</div>
-                <div ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range" min="0.0" max="{{WidgetHome.currentTrack.duration/1000}}"
+                <div ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range" min="0.0" max="{{WidgetHome.duration}}"
                             ng-model="WidgetHome.currentTime"
                             ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/></div>
                 <div ng-if="WidgetHome.duration">{{WidgetHome.duration | secondsToDateTime | date: 'mm:ss'}}</div>

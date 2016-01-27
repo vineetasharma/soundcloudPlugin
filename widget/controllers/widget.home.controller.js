@@ -218,8 +218,7 @@
                 };
                 WidgetHome.changeTime = function (time) {
                     console.log('Change time method called---------------------------------', time);
-                    WidgetHome.currentTime = time / 1000;
-                    audioPlayer.setTime(time / 1000);
+                    audioPlayer.setTime(time);
                 };
                 WidgetHome.getSettings = function () {
                     WidgetHome.openSettings = true;
