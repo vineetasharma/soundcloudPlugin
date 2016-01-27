@@ -221,12 +221,6 @@
                     var newSettings=new AudioSettings(settings);
                     audioPlayer.settings.set(newSettings);
                 };
-                WidgetHome.openSettingsOverlay = function () {
-                    WidgetHome.openSettings = true;
-                };
-                WidgetHome.openPlayListOverlay = function () {
-                    WidgetHome.openPlaylist = true;
-                };
                 WidgetHome.openMoreInfoOverlay = function () {
                     WidgetHome.openMoreInfo = true;
                 };
