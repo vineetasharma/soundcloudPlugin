@@ -34,7 +34,7 @@
         <div class="slider">
             <div class="playerMP">
                 <div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | secondsToDateTime |date: 'mm:ss'}}</div>
-                <div ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range" min="0.0" max="{{WidgetHome.currentTrack.duration/1000}}"
+                <div ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range" min="0.0" max="{{WidgetHome.duration}}"
                             ng-model="WidgetHome.currentTime"
                             ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/></div>
                 <div ng-if="WidgetHome.duration">{{WidgetHome.duration | secondsToDateTime | date: 'mm:ss'}}</div>
@@ -43,8 +43,13 @@
         <div class="text-center margin-top-fifteen">
             <span class="icon icon-dots"></span>
         </div>
-        <div class="media-player-action-btns margin-top-twenty">
-            <span class="icon icon-volume-high icon-sm"></span>
+        <div class="media-player-action-btns">
+           <!-- &nbsp;<input class=""
+                         ng-style="WidgetHome.showVolume? {'visibility':'visible'}:{'visibility':'hidden'}" type="range"
+                         min="0.0" max="100" ng-model="WidgetHome.volume"
+                         ng-change="WidgetHome.changeVolume(WidgetHome.volume)"
+                         style="width:70%;visibility: visible;margin-top:40px;margin-left:46px"/>-->
+            <span class="icon icon-volume-high icon-sm" ng-click="WidgetHome.showVolume=!WidgetHome.showVolume"></span>
             <span class="icon icon-ellipsis icon-sm" ng-click="WidgetHome.openMoreInfoOverlay()"></span>
             <span class="icon icon-cog icon-sm" ng-click="WidgetHome.getSettings()"></span>
         </div>
