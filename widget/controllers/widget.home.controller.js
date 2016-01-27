@@ -154,6 +154,20 @@
                     else
                         audioPlayer.setTime(0);
                 };
+                WidgetHome.shufflePlaylist = function () {
+                    console.log('WidgetHome settings in shuffle---------------------',WidgetHome.settings);
+                    if(WidgetHome.settings){
+                        WidgetHome.settings.shufflePlaylist=WidgetHome.settings.shufflePlaylist?false:true;
+                    }
+                    audioPlayer.settings.set(WidgetHome.settings);
+                };
+                WidgetHome.loopPlaylist = function () {
+                    console.log('WidgetHome settings in Loop Playlist---------------------',WidgetHome.settings);
+                    if(WidgetHome.settings){
+                        WidgetHome.settings.loopPlaylist=WidgetHome.settings.loopPlaylist?false:true;
+                    }
+                    audioPlayer.settings.set(WidgetHome.settings);
+                };
                 WidgetHome.addToPlaylist = function (track) {
                     console.log('AddToPlaylist called-------------------------------');
                     var playListTrack=new Track(track.title,track.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID,track.artwork_url,track.tag_list,track.user.username);
