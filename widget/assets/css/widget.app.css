@@ -122,3 +122,24 @@ input[type=range]:focus::-ms-fill-upper {
     float: right;
     font-size: 13px;
 }
+
+.noTracksMsg
+{
+    background-color: lightgrey;
+    padding: 10px 10px 10px 90px;
+    border: 1px solid grey;
+    border-radius: 4px;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.playcount-ui:before {
+    content: "\e612";
+    font-family: 'icomoon';
+    font-size: 13px;
+    line-height: 24px;
+    left: 62%;
+    margin-right: 2px;
+  }

@@ -58,7 +58,10 @@
                         //}
                         //else {
                         method_return.then(function (d) {
-                            ContentHome.soundcloudLinksInvalid = null;
+                            ContentHome.soundcloudLinksInvalid = false;
+                            $timeout(function () {
+                                ContentHome.soundcloudLinksInvalid = null;
+                            },2000);
                             $scope.$digest();
                         }, function (e) {
                             if (e.status === 401)

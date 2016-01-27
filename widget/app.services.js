@@ -29,7 +29,7 @@
             };
 
             that.getTracks = function (link, page) {
-                var page_size = 5;
+                var page_size = 7;
 
                 /*if (true) {*/
                     var q = '';

@@ -90,11 +90,17 @@
                     if (WidgetHome.info && WidgetHome.info.data && WidgetHome.info.data.content && WidgetHome.info.data.content.link)
                         soundCloudAPI.getTracks(WidgetHome.info.data.content.link, ++WidgetHome.page)
                             .then(function (data) {
+                                WidgetHome.noTracks = false;
                                 console.log('Got tracks--------------------------', data);
                                 WidgetHome.isBusy = false;
                                 var d = data.collection;
                                 if (d.length == 0) {
                                     WidgetHome.noMore = true;
+
+                                    if(WidgetHome.page == 0)
+                                    {
+                                        WidgetHome.noTracks = true;
+                                    }
                                 }
                                 else {
                                     WidgetHome.tracks = WidgetHome.tracks.concat(d);
