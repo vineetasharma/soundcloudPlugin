@@ -76,7 +76,7 @@
                     <div class="list-item overflow-hidden" ng-repeat="track in WidgetHome.playList">
                         <div class="list-item-media text-left">
                             <div class="list-media-holder square-icon pull-left">
-                                <img ng-if="track.artwork_url" ng-src="{{track.artwork_url | cropImage : 55 :22}}">
+                                <img ng-if="track.image" ng-src="{{track.image | cropImage : 55 :22}}">
                             </div>
                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">{{track.title}}</p>
