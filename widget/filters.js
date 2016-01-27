@@ -34,5 +34,10 @@
                 var seconds = milliseconds / 1000;
                 return new Date(1970, 0, 1).setSeconds(seconds);
             };
+        }])
+        .filter('secondsToDateTime', [function() {
+            return function(seconds) {
+                return new Date(1970, 0, 1).setSeconds(seconds);
+            };
         }]);
 })(window.angular,window.buildfire);

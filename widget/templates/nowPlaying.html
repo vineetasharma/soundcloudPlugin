@@ -31,13 +31,13 @@
 
             <p class="margin-zero ellipsis">{{WidgetHome.currentTrack.user.username}}</p>
         </div>
-        <div class="slider margin-top-twenty">
+        <div class="slider">
             <div class="playerMP">
-                <div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | limitTo : 5}}</div>
-                <div><input type="range" min="0.0" max="{{WidgetHome.currentTrack.duration/1000}}"
+                <div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | secondsToDateTime |date: 'mm:ss'}}</div>
+                <div ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range" min="0.0" max="{{WidgetHome.currentTrack.duration/1000}}"
                             ng-model="WidgetHome.currentTime"
                             ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/></div>
-                <div ng-if="WidgetHome.currentTrack.duration">{{WidgetHome.currentTrack.duration/1000 | limitTo :5}}</div>
+                <div ng-if="WidgetHome.duration">{{WidgetHome.duration | secondsToDateTime | date: 'mm:ss'}}</div>
             </div>
         </div>
         <div class="text-center margin-top-fifteen">
@@ -85,78 +85,78 @@
                             </div>
                         </div>
                     </div>
-                   <!-- <div class="list-item overflow-hidden">
-                        <div class="list-item-media text-left edit">
-                            <div class="list-media-holder square-icon pull-left">
-                                <img src="http://www.placehold.it/30x80">
-                            </div>
-                            <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                    the track title This is the track title This is the track title</p>
-                            </div>
-                            <div class="btns text-center">
-                                <a class="icon icon-pause-circle"></a>
-                                <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                            </div>
-                            <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                <span>Remove</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-item overflow-hidden">
-                        <div class="list-item-media text-left">
-                            <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                <p class="margin-bottom-fifteen ellipsis margin-top-twenty">This is the track title This
-                                    is the track title This is the track title This is the track title</p>
-                            </div>
-                            <div class="btns text-center">
-                                <a class="icon icon-play-circle"></a>
-                                <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                            </div>
-                            <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                <span>Remove</span>
-                            </div>
-                            <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                <span>Remove</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-item overflow-hidden">
-                        <div class="list-item-media now-playing text-left">
-                            <div class="list-media-holder square-icon pull-left">
-                                <img src="http://www.placehold.it/30x30">
-                            </div>
-                            <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                    the track title This is the track title This is the track title</p>
-                            </div>
-                            <div class="btns text-center">
-                                <a class="icon icon-play-circle hidden"></a>
-                                <a class="icon icon-pause-circle primaryTheme"></a>
-                            </div>
-                            <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                <span>Remove</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-item overflow-hidden">
-                        <div class="list-item-media text-left">
-                            <div class="list-media-holder square-icon pull-left">
-                                <img src="http://www.placehold.it/100x60">
-                            </div>
-                            <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                    the track title This is the track title This is the track title</p>
-                            </div>
-                            <div class="btns text-center">
-                                <a class="icon icon-play-circle"></a>
-                                <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                            </div>
-                            <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                <span>Remove</span>
-                            </div>
-                        </div>
-                    </div>-->
+                    <!-- <div class="list-item overflow-hidden">
+                         <div class="list-item-media text-left edit">
+                             <div class="list-media-holder square-icon pull-left">
+                                 <img src="http://www.placehold.it/30x80">
+                             </div>
+                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
+                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
+                                     the track title This is the track title This is the track title</p>
+                             </div>
+                             <div class="btns text-center">
+                                 <a class="icon icon-pause-circle"></a>
+                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
+                             </div>
+                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
+                                 <span>Remove</span>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="list-item overflow-hidden">
+                         <div class="list-item-media text-left">
+                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
+                                 <p class="margin-bottom-fifteen ellipsis margin-top-twenty">This is the track title This
+                                     is the track title This is the track title This is the track title</p>
+                             </div>
+                             <div class="btns text-center">
+                                 <a class="icon icon-play-circle"></a>
+                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
+                             </div>
+                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
+                                 <span>Remove</span>
+                             </div>
+                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
+                                 <span>Remove</span>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="list-item overflow-hidden">
+                         <div class="list-item-media now-playing text-left">
+                             <div class="list-media-holder square-icon pull-left">
+                                 <img src="http://www.placehold.it/30x30">
+                             </div>
+                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
+                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
+                                     the track title This is the track title This is the track title</p>
+                             </div>
+                             <div class="btns text-center">
+                                 <a class="icon icon-play-circle hidden"></a>
+                                 <a class="icon icon-pause-circle primaryTheme"></a>
+                             </div>
+                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
+                                 <span>Remove</span>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="list-item overflow-hidden">
+                         <div class="list-item-media text-left">
+                             <div class="list-media-holder square-icon pull-left">
+                                 <img src="http://www.placehold.it/100x60">
+                             </div>
+                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
+                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
+                                     the track title This is the track title This is the track title</p>
+                             </div>
+                             <div class="btns text-center">
+                                 <a class="icon icon-play-circle"></a>
+                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
+                             </div>
+                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
+                                 <span>Remove</span>
+                             </div>
+                         </div>
+                     </div>-->
                 </div>
             </div>
             <a ng-click="WidgetHome.closePlayListOverlay()">Done</a>
@@ -218,7 +218,8 @@
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             <div class="checkbox checkbox-primary checked no-label margin-zero">
-                                <input type="checkbox" id="playnext" ng-model="WidgetHome.settings.autoPlayNext" ng-change="WidgetHome.setSettings(WidgetHome.settings)">
+                                <input type="checkbox" id="playnext" ng-model="WidgetHome.settings.autoPlayNext"
+                                       ng-change="WidgetHome.setSettings(WidgetHome.settings)">
                                 <label for="playnext"></label>
                             </div>
                         </div>
@@ -229,7 +230,8 @@
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             <div class="checkbox checkbox-primary checked no-label margin-zero">
-                                <input type="checkbox" id="loop" ng-model="WidgetHome.settings.loopPlaylist" ng-change="WidgetHome.setSettings(WidgetHome.settings)">
+                                <input type="checkbox" id="loop" ng-model="WidgetHome.settings.loopPlaylist"
+                                       ng-change="WidgetHome.setSettings(WidgetHome.settings)">
                                 <label for="loop"></label>
                             </div>
                         </div>
@@ -240,7 +242,8 @@
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             <div class="checkbox checkbox-primary checked no-label margin-zero">
-                                <input type="checkbox" id="repeat" ng-model="WidgetHome.settings.autoJumpToLastPosition" ng-change="WidgetHome.setSettings(WidgetHome.settings)">
+                                <input type="checkbox" id="repeat" ng-model="WidgetHome.settings.autoJumpToLastPosition"
+                                       ng-change="WidgetHome.setSettings(WidgetHome.settings)">
                                 <label for="repeat"></label>
                             </div>
                         </div>
@@ -251,7 +254,8 @@
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             <div class="checkbox checkbox-primary checked no-label margin-zero">
-                                <input type="checkbox" id="playfromLast" ng-model="WidgetHome.settings.shufflePlaylist" ng-change="WidgetHome.setSettings(WidgetHome.settings)">
+                                <input type="checkbox" id="playfromLast" ng-model="WidgetHome.settings.shufflePlaylist"
+                                       ng-change="WidgetHome.setSettings(WidgetHome.settings)">
                                 <label for="playfromLast"></label>
                             </div>
                         </div>
