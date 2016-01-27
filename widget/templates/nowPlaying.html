@@ -159,6 +159,7 @@
                     </div>
                 </div>
             </div>
+            <a ng-click="WidgetHome.closePlayListOverlay()">Done</a>
         </div>
     </div>
 
@@ -188,7 +189,7 @@
                         <a ng-click="WidgetHome.addToPlaylist(WidgetHome.currentTrack)">Add to Playlist</a>
                     </div>
                     <div class="text-center item">
-                        <a>Remove from Playlist</a>
+                        <a ng-click="WidgetHome.removeFromPlaylist(WidgetHome.currentTrack)">Remove from Playlist</a>
                     </div>
                     <div class="text-center item">
                         <a>Purchase</a>

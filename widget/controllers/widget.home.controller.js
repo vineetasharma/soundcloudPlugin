@@ -146,6 +146,23 @@
                     var playListTrack=new Track(track.title,track.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID,track.artwork_url,track.tag_list,track.user.username);
                     audioPlayer.addToPlaylist(playListTrack);
                 };
+                WidgetHome.removeFromPlaylist = function (track) {
+                    var playListTrack=new Track(track.title,track.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID,track.artwork_url,track.tag_list,track.user.username);
+                    console.log('removeFromPlaylist called-------------------------------');
+                    if(WidgetHome.playList){
+                        var trackIndex;
+                        WidgetHome.playList.filter(function(val,index){
+                            if(val.url==track.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID)
+                                audioPlayer.removeFromPlaylist(index);
+                            return index;
+
+                        });
+                        console.log('indexes------------track Index----------------------track==========',trackIndex);
+                    }
+                    /*if(trackIndex!='undefined'){
+                        audioPlayer.removeFromPlaylist(trackIndex);
+                    }*/
+                };
                 WidgetHome.getFromPlaylist = function () {
                     audioPlayer.getPlaylist(function(err,data){
                         console.log('Callback---------getList--------------',err,data);
@@ -153,6 +170,8 @@
                             WidgetHome.playList=data.tracks;
                         }
                     });
+                    WidgetHome.openMoreInfo=false;
+                    WidgetHome.openPlaylist=true;
                 };
                 WidgetHome.changeTime = function (time) {
                     console.log('Change time method called---------------------------------', time);
