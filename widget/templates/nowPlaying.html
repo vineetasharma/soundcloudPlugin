@@ -76,7 +76,7 @@
                     <div class="list-item overflow-hidden" ng-repeat="track in WidgetHome.playList">
                         <div class="list-item-media text-left">
                             <div class="list-media-holder square-icon pull-left">
-                                <img src="http://www.placehold.it/55x20">
+                                <img ng-if="track.artwork_url" ng-src="{{track.artwork_url | cropImage : 55 :22}}">
                             </div>
                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">{{track.title}}</p>
@@ -90,78 +90,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="list-item overflow-hidden">
-                         <div class="list-item-media text-left edit">
-                             <div class="list-media-holder square-icon pull-left">
-                                 <img src="http://www.placehold.it/30x80">
-                             </div>
-                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                     the track title This is the track title This is the track title</p>
-                             </div>
-                             <div class="btns text-center">
-                                 <a class="icon icon-pause-circle"></a>
-                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="list-item overflow-hidden">
-                         <div class="list-item-media text-left">
-                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                 <p class="margin-bottom-fifteen ellipsis margin-top-twenty">This is the track title This
-                                     is the track title This is the track title This is the track title</p>
-                             </div>
-                             <div class="btns text-center">
-                                 <a class="icon icon-play-circle"></a>
-                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="list-item overflow-hidden">
-                         <div class="list-item-media now-playing text-left">
-                             <div class="list-media-holder square-icon pull-left">
-                                 <img src="http://www.placehold.it/30x30">
-                             </div>
-                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                     the track title This is the track title This is the track title</p>
-                             </div>
-                             <div class="btns text-center">
-                                 <a class="icon icon-play-circle hidden"></a>
-                                 <a class="icon icon-pause-circle primaryTheme"></a>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="list-item overflow-hidden">
-                         <div class="list-item-media text-left">
-                             <div class="list-media-holder square-icon pull-left">
-                                 <img src="http://www.placehold.it/100x60">
-                             </div>
-                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                     the track title This is the track title This is the track title</p>
-                             </div>
-                             <div class="btns text-center">
-                                 <a class="icon icon-play-circle"></a>
-                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                         </div>
-                     </div>-->
                 </div>
             </div>
             <a ng-click="WidgetHome.closePlayListOverlay()">Done</a>
