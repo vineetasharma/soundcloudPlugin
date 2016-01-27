@@ -141,6 +141,19 @@
                     WidgetHome.paused = true;
                     audioPlayer.pause();
                 };
+                WidgetHome.forward = function () {
+                    if (WidgetHome.currentTime + 5 >= WidgetHome.currentTrack.duration)
+                        audioPlayer.setTime(WidgetHome.currentTrack.duration);
+                    else
+                        audioPlayer.setTime(WidgetHome.currentTime + 5);
+                };
+
+                WidgetHome.backward = function () {
+                    if (WidgetHome.currentTime - 5 > 0)
+                        audioPlayer.setTime(WidgetHome.currentTime - 5);
+                    else
+                        audioPlayer.setTime(0);
+                };
                 WidgetHome.addToPlaylist = function (track) {
                     console.log('AddToPlaylist called-------------------------------');
                     var playListTrack=new Track(track.title,track.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID,track.artwork_url,track.tag_list,track.user.username);

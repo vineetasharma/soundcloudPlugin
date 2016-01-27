@@ -50,12 +50,12 @@
         </div>
         <div class="media-player-btns margin-top-ten">
             <span class="icon icon-shuffle icon-sm"></span>
-            <span class="icon icon-backward-circle"></span>
+            <span class="icon icon-backward-circle" ng-click="WidgetHome.backward()"></span>
             <span ng-if="!WidgetHome.playing" class="icon icon-play-circle icon-main"
                   ng-click="WidgetHome.playTrack()"></span>
             <span ng-if="WidgetHome.playing" class="icon icon-pause-circle icon-main"
                   ng-click="WidgetHome.pauseTrack()"></span>
-            <span class="icon icon-forward-circle"></span>
+            <span class="icon icon-forward-circle" ng-click="WidgetHome.forward()"></span>
             <span class="icon icon-repeat icon-sm"></span>
             <span class="icon icon-repeat-one icon-sm primaryTheme hidden"></span>
             <span class="icon icon-repeat icon-sm primaryTheme hidden"></span>
