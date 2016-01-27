@@ -6,7 +6,7 @@
         [
             'ngAnimate',
             'ui.bootstrap',
-            'SoundCloudContentServices',
+            'soundCloudContentServices',
             'soundCloudContentEnums',
             'ui.tinymce'
         ])

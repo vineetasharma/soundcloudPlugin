@@ -3,12 +3,12 @@
 (function (angular) {
     angular
         .module('soundCloudPluginContent')
-        .controller('ContentHomeCtrl', ['$scope', '$timeout','DB','COLLECTIONS','Buildfire','DEFAULT_DATA',
-            function ($scope, $timeout,DB,COLLECTIONS,Buildfire,DEFAULT_DATA) {
+        .controller('ContentHomeCtrl', ['$scope', '$timeout', 'DB', 'COLLECTIONS', 'Buildfire', 'DEFAULT_DATA', 'soundCloudAPI',
+            function ($scope, $timeout, DB, COLLECTIONS, Buildfire, DEFAULT_DATA, soundCloudAPI) {
                 console.log('ContentHomeCtrl Controller Loaded-------------------------------------');
                 var ContentHome = this;
-                var timerDelay,masterInfo;
-                var soundCloud=new DB(COLLECTIONS.SoundCloudInfo);
+                var timerDelay, masterInfo;
+                var soundCloud = new DB(COLLECTIONS.SoundCloudInfo);
 
                 //option for wysiwyg
                 ContentHome.bodyWYSIWYGOptions = {
@@ -18,12 +18,14 @@
                     theme: 'modern'
                 };
 
+                ContentHome.soundcloudLinksInvalid = null;
+
                 // create a new instance of the buildfire carousel editor
                 ContentHome.editor = new Buildfire.components.carousel.editor("#carousel");
 
                 // this method will be called when a new item added to the list
                 ContentHome.editor.onAddItems = function (items) {
-                    console.log('Content info==========================',ContentHome.info);
+                    console.log('Content info==========================', ContentHome.info);
                     if (ContentHome.info && ContentHome.info.data && ContentHome.info.data.content && !ContentHome.info.data.content.images)
                         ContentHome.info.data.content.images = [];
                     ContentHome.info.data.content.images.push.apply(ContentHome.info.data.content.images, items);
@@ -47,50 +49,82 @@
                     if (!$scope.$$phase)$scope.$digest();
                 };
 
-                function init(){
-                    var success=function(data){
-                        if(data && data.data && (data.data.content || data.data.design)){
+
+                ContentHome.verifySoundcloudLinks = function () {
+                    if (ContentHome.info.data.content.soundcloudClientID && ContentHome.info.data.content.link) {
+                        var method_return = soundCloudAPI.verify(ContentHome.info.data.content.soundcloudClientID, ContentHome.info.data.content.link);
+                        //if (method_return == 'bad client failed') {
+                        //    ContentHome.soundcloudLinksInvalid = 'Client ID';
+                        //}
+                        //else {
+                        method_return.then(function (d) {
+                            ContentHome.soundcloudLinksInvalid = false;
+                            $timeout(function () {
+                                ContentHome.soundcloudLinksInvalid = null;
+                            },2000);
+                            $scope.$digest();
+                        }, function (e) {
+                            if (e.status === 401)
+                                ContentHome.soundcloudLinksInvalid = 'Client ID';
+                            else
+                                ContentHome.soundcloudLinksInvalid = 'link';
+
+                            $timeout(function () {
+                                ContentHome.soundcloudLinksInvalid = null;
+                            },2000);
+
+                            $scope.$digest();
+                        });
+                        //}
+                    }
+                };
+
+                function init() {
+                    var success = function (data) {
+                        if (data && data.data && (data.data.content || data.data.design)) {
                             console.log('Info got---------------');
                             updateMasterInfo(data.data);
-                            ContentHome.info=data;
-                            if(data.data.content && data.data.content.images){
+                            ContentHome.info = data;
+                            if (data.data.content && data.data.content.images) {
                                 ContentHome.editor.loadItems(data.data.content.images);
                             }
                         }
-                        else{
+                        else {
                             updateMasterInfo(DEFAULT_DATA.SOUND_CLOUD_INFO);
-                            ContentHome.info=DEFAULT_DATA.SOUND_CLOUD_INFO;
+                            ContentHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
                         }
-                        console.log('Got soundcloud info successfully-----------------',data.data);
+                        console.log('Got soundcloud info successfully-----------------', data.data);
                     };
-                    var error=function(err){
-                        console.error('Error while getting data from db-------',err);
+                    var error = function (err) {
+                        console.error('Error while getting data from db-------', err);
                     };
-                    soundCloud.get().then(success,error);
+                    soundCloud.get().then(success, error);
                 }
+
                 init();
 
                 function isUnchanged(info) {
-                    console.log('info------------------------------------------',info);
-                    console.log('Master info------------------------------------------',masterInfo);
-                    return angular.equals(info,masterInfo);
+                    console.log('info------------------------------------------', info);
+                    console.log('Master info------------------------------------------', masterInfo);
+                    return angular.equals(info, masterInfo);
                 }
 
                 function updateMasterInfo(info) {
                     masterInfo = angular.copy(info);
                 }
-                function saveData(_info){
-                    var saveSuccess=function(data){
-                        console.log('Data saved successfully--------------------------',data);
+
+                function saveData(_info) {
+                    var saveSuccess = function (data) {
+                        console.log('Data saved successfully--------------------------', data);
                     };
-                    var saveError=function(err){
-                        console.error('Error while saving data------------------------------',err);
+                    var saveError = function (err) {
+                        console.error('Error while saving data------------------------------', err);
                     };
-                    if(_info && _info.data)
-                    soundCloud.save(_info.data).then(saveSuccess,saveError);
+                    if (_info && _info.data)
+                        soundCloud.save(_info.data).then(saveSuccess, saveError);
                 }
 
-                function updateInfoData(_info){
+                function updateInfoData(_info) {
                     if (timerDelay) {
                         clearTimeout(timerDelay);
                     }

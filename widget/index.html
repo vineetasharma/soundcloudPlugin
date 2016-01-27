@@ -39,13 +39,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body class="infinite-scroll-parent">
-<div ng-controller="WidgetHomeCtrl as WidgetHome">
-    <div data-ng-attr-style="{{
+<body data-ng-attr-style="{{
     bgImage
         ? 'background: url(' + (bgImage | cropImage:deviceWidth:deviceHeight:true) + ') !important; background-size: cover;'
         : 'background: white'
-}}" ng-if="!playTrack">
+}}" class="infinite-scroll-parent">
+<div ng-controller="WidgetHomeCtrl as WidgetHome">
+    <div ng-if="!playTrack">
         <div ng-include="'templates/home.html'">
         </div>
     </div>

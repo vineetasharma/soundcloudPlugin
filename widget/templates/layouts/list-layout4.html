@@ -7,6 +7,9 @@
             <p ng-if="WidgetHome.showDescription()" ng-bind-html="WidgetHome.info.data.content.description | safeHtml"></p>
         </div>
         <div class="padded padding-top-zero text-overlay">
+            <div class="noTracksMsg" ng-show="WidgetHome.noTracks">
+                <span>No tracks to display!</span>
+            </div>
             <div class="list-layout"  infinite-scroll="WidgetHome.loadMore()"
                  infinite-scroll-distance="1"
                  data-infinite-container=".infinite-scroll-parent"
@@ -27,9 +30,9 @@
                                 <a class="ellipsis margin-zero text-primary">{{WidgetHome.tracks[$index].title}}</a>
                             </p>
 
-                            <p class="summary ellipsis margin-zero">{{track.user.username}}</p>
-                            <span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
-                            <span class="list-item-date">{{track.playback_count}}</span>
+                            <p class="summary ellipsis margin-zero">{{WidgetHome.tracks[$index].user.username}}</p>
+                            <span class="list-item-date duration-ui">{{WidgetHome.tracks[$index].duration | millisecondsToDateTime | date:'mm:ss'}}</span>
+                            <span class=" playcount-ui list-item-date">{{WidgetHome.tracks[$index].playback_count | number}}</span>
                         </div>
                     </div>
                     <div class="list-item-even col-xs-6 pull-left clickable text-overlay "
@@ -47,8 +50,9 @@
                                 <a class="ellipsis margin-zero text-primary">{{WidgetHome.tracks[$index +
                                     1].title}}</a>
                             </p>
-                            <p class="summary ellipsis margin-zero">{{WidgetHome.tracks[$index + 1].duration | millisecondsToDateTime | date:'mm:ss'}}</p>
-                            <!--<span class="list-item-date" data-ng-if="WidgetHome.tracks[$index + 1].data.mediaDate">{{WidgetHome.tracks[$index + 1].data.mediaDate  | jsDate | date:"MMMM dd, yyyy"}}</span>-->
+                            <p class="summary ellipsis margin-zero">{{WidgetHome.tracks[$index].user.username}}</p>
+                            <span class=" duration-ui list-item-date">{{WidgetHome.tracks[$index + 1].duration | millisecondsToDateTime | date:'mm:ss'}}</span>
+                            <span class="playcount-ui list-item-date">{{WidgetHome.tracks[$index + 1].playback_count | number}}</span>
                         </div>
                     </div>
                 </div>
