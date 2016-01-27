@@ -35,7 +35,7 @@
                     // create an instance and pass it the items if you don't have items yet just pass []
                     if (WidgetHome.view)
                         WidgetHome.view.loadItems(carouselItems);
-                }
+                };
 
                 WidgetHome.initCarousel = function () {
 
@@ -141,6 +141,19 @@
                     WidgetHome.paused = true;
                     audioPlayer.pause();
                 };
+                WidgetHome.addToPlaylist = function (track) {
+                    console.log('AddToPlaylist called-------------------------------');
+                    var playListTrack=new Track(track.title,track.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID,track.artwork_url,track.tag_list,track.user.username);
+                    audioPlayer.addToPlaylist(playListTrack);
+                };
+                WidgetHome.getFromPlaylist = function () {
+                    audioPlayer.getPlaylist(function(err,data){
+                        console.log('Callback---------getList--------------',err,data);
+                        if(data && data.tracks){
+                            WidgetHome.playList=data.tracks;
+                        }
+                    });
+                };
                 WidgetHome.changeTime = function (time) {
                     console.log('Change time method called---------------------------------', time);
                     WidgetHome.currentTime = time / 1000;
@@ -175,6 +188,32 @@
                         WidgetHome.view.loadItems([]);
                     }
                 });
+                $scope.$on("destroy currentTrack", function () {
+                    WidgetHome.currentTime = 0.0;
+                    WidgetHome.playing=false;
+                    WidgetHome.paused=false;
+                    WidgetHome.currentTrack=null;
+                });
+
+                /**
+                 * Track Smaple
+                 * @param title
+                 * @param url
+                 * @param image
+                 * @param album
+                 * @param artist
+                 * @constructor
+                 */
+
+                function Track(title, url, image, album,artist) {
+                    this.title = title;
+                    this.url = url;
+                    this.image = image;
+                    this.album = album;
+                    this.artist=artist;
+                    this.startAt = 0; // where to begin playing
+                    this.lastPosition = 0; // last played to
+                }
 
 
                 /**

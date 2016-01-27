@@ -34,7 +34,7 @@
         <div class="slider margin-top-twenty">
             <div class="playerMP">
                 <div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | limitTo : 5}}</div>
-                <div><input type="range" min="0" max="{{WidgetHome.currentTrack.duration/1000}}"
+                <div><input type="range" min="0.0" max="{{WidgetHome.currentTrack.duration/1000}}"
                             ng-model="WidgetHome.currentTime"
                             ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/></div>
                 <div ng-if="WidgetHome.currentTrack.duration">{{WidgetHome.currentTrack.duration/1000 | limitTo :5}}</div>
@@ -68,14 +68,13 @@
         <div class="overlay-content" style="postiion:absolute; top:0; left:0; height:100%; width: 100%; overflow:auto;">
             <div class="media-player-list-layout layout3">
                 <div class="list-layout has-btns">
-                    <div class="list-item overflow-hidden">
+                    <div class="list-item overflow-hidden" ng-repeat="track in WidgetHome.playList">
                         <div class="list-item-media text-left">
                             <div class="list-media-holder square-icon pull-left">
                                 <img src="http://www.placehold.it/55x20">
                             </div>
                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                    the track title This is the track title This is the track title</p>
+                                <p class="margin-bottom-zero ellipsis margin-top-twenty">{{track.title}}</p>
                             </div>
                             <div class="btns text-center">
                                 <a class="icon icon-play-circle"></a>
@@ -183,10 +182,10 @@
                 <hr class="none">
                 <div class="more-info-list padded">
                     <div class="text-center item">
-                        <a>Go to Playlist</a>
+                        <a ng-click="WidgetHome.getFromPlaylist()">Go to Playlist</a>
                     </div>
                     <div class="text-center item">
-                        <a>Add to Playlist</a>
+                        <a ng-click="WidgetHome.addToPlaylist(WidgetHome.currentTrack)">Add to Playlist</a>
                     </div>
                     <div class="text-center item">
                         <a>Remove from Playlist</a>

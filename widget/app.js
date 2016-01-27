@@ -60,7 +60,7 @@
                 if($rootScope.playTrack){
                     $timeout(function () {
                         $rootScope.playTrack=false;
-
+                        $rootScope.$broadcast("destroy currentTrack");
                     }, 100);
                     if($rootScope.$$phase){$rootScope.$digest();}
                 }
