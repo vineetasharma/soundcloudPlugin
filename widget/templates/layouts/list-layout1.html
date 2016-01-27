@@ -9,6 +9,9 @@
         </div>
         <div class="padded padding-top-zero text-overlay">
             <div class="list-layout">
+                <div class="noTracksMsg" ng-show="WidgetHome.noTracks">
+                    <span>No tracks to display!</span>
+                </div>
                 <div class="row" infinite-scroll="WidgetHome.loadMore()"
                      infinite-scroll-distance="1"
                      data-infinite-container=".infinite-scroll-parent"
@@ -27,8 +30,8 @@
                             </p>
 
                             <p class="summary ellipsis margin-zero">{{ track.user.username }}</p>
-                            <span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
-                            <span class="list-item-date">{{track.playback_count}}</span>
+                            <span class="list-item-date duration-ui">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
+                            <span class="list-item-date playcount-ui">{{track.playback_count | number}}</span>
                         </div>
                     </div>
                 </div>

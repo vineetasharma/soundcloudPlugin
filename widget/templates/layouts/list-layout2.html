@@ -7,7 +7,9 @@
             <p ng-bind-html="WidgetHome.info.data.content.description | safeHtml">
             </p>
         </div>
-
+        <div class="noTracksMsg" ng-show="WidgetHome.noTracks">
+            <span>No tracks to display!</span>
+        </div>
         <div class="list-layout" infinite-scroll="WidgetHome.loadMore()"
              infinite-scroll-distance="1"
              data-infinite-container=".infinite-scroll-parent"
@@ -24,7 +26,7 @@
                         <p class="summary ellipsis margin-zero">{{track.user.username}}<span class="duration-ui">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
                         </p>
                         <!--<span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>-->
-                        <span class="list-item-date">{{track.playback_count}}</span>
+                        <span class="playcount-ui list-item-date">{{track.playback_count | number}}</span>
                     </div>
                 </div>
             </div>
