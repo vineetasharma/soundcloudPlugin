@@ -11,6 +11,7 @@
                 var WidgetHome = this;
                 WidgetHome.view = null;
                 WidgetHome.currentTime = 0.0;
+                WidgetHome.volume=1;
 
                 WidgetHome.page = -1;
                 WidgetHome.noMore = false;
@@ -160,6 +161,21 @@
                         WidgetHome.settings.shufflePlaylist=WidgetHome.settings.shufflePlaylist?false:true;
                     }
                     audioPlayer.settings.set(WidgetHome.settings);
+                };
+                WidgetHome.changeVolume = function (volume) {
+                    console.log('Volume----------------------',volume);
+                    //audioPlayer.setVolume(volume);
+                    audioPlayer.settings.get(function (err, setting) {
+                        console.log('Settings------------------',setting);
+                        if (setting) {
+                            setting.volume = volume;
+                            audioPlayer.settings.set(setting);
+                        }
+                        else {
+                            audioPlayer.settings.set({volume: volume});
+                        }
+                    });
+
                 };
                 WidgetHome.loopPlaylist = function () {
                     console.log('WidgetHome settings in Loop Playlist---------------------',WidgetHome.settings);
