@@ -46,7 +46,7 @@
         <div class="media-player-action-btns margin-top-twenty">
             <span class="icon icon-volume-high icon-sm"></span>
             <span class="icon icon-ellipsis icon-sm" ng-click="WidgetHome.openMoreInfoOverlay()"></span>
-            <span class="icon icon-cog icon-sm" ng-click="WidgetHome.openSettingsOverlay()"></span>
+            <span class="icon icon-cog icon-sm" ng-click="WidgetHome.getSettings()"></span>
         </div>
         <div class="media-player-btns margin-top-ten">
             <span class="icon icon-shuffle icon-sm"></span>
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="list-item overflow-hidden">
+                   <!-- <div class="list-item overflow-hidden">
                         <div class="list-item-media text-left edit">
                             <div class="list-media-holder square-icon pull-left">
                                 <img src="http://www.placehold.it/30x80">
@@ -156,7 +156,7 @@
                                 <span>Remove</span>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <a ng-click="WidgetHome.closePlayListOverlay()">Done</a>
@@ -218,7 +218,7 @@
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             <div class="checkbox checkbox-primary checked no-label margin-zero">
-                                <input type="checkbox" id="playnext">
+                                <input type="checkbox" id="playnext" ng-model="WidgetHome.settings.autoPlayNext" ng-change="WidgetHome.setSettings(WidgetHome.settings)">
                                 <label for="playnext"></label>
                             </div>
                         </div>
@@ -229,36 +229,37 @@
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             <div class="checkbox checkbox-primary checked no-label margin-zero">
-                                <input type="checkbox" id="playnext">
-                                <label for="playnext"></label>
+                                <input type="checkbox" id="loop" ng-model="WidgetHome.settings.loopPlaylist" ng-change="WidgetHome.setSettings(WidgetHome.settings)">
+                                <label for="loop"></label>
                             </div>
                         </div>
                     </div>
                     <div class="item clearfix row">
                         <div class="col-md-10 pull-left text-left">
-                            <span>Loop track</span>
+                            <span>Auto Jump To LastPosition</span>
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             <div class="checkbox checkbox-primary checked no-label margin-zero">
-                                <input type="checkbox" id="playnext">
-                                <label for="playnext"></label>
+                                <input type="checkbox" id="repeat" ng-model="WidgetHome.settings.autoJumpToLastPosition" ng-change="WidgetHome.setSettings(WidgetHome.settings)">
+                                <label for="repeat"></label>
                             </div>
                         </div>
                     </div>
                     <div class="item clearfix row">
                         <div class="col-md-10 pull-left text-left">
-                            <span>Play from last position</span>
+                            <span>Shuffle Playlist</span>
                         </div>
                         <div class="col-md-2 pull-right text-right">
                             <div class="checkbox checkbox-primary checked no-label margin-zero">
-                                <input type="checkbox" id="playnext">
-                                <label for="playnext"></label>
+                                <input type="checkbox" id="playfromLast" ng-model="WidgetHome.settings.shufflePlaylist" ng-change="WidgetHome.setSettings(WidgetHome.settings)">
+                                <label for="playfromLast"></label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <hr class="none">
             </div>
+            <a ng-click="WidgetHome.closeSettingsOverlay()">Done</a>
         </div>
     </div>
 </div>

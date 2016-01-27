@@ -178,6 +178,22 @@
                     WidgetHome.currentTime = time / 1000;
                     audioPlayer.setTime(time / 1000);
                 };
+                WidgetHome.getSettings = function () {
+                    WidgetHome.openSettings = true;
+                    audioPlayer.settings.get(function(err,data){
+                        console.log('Got player settings-----------------------',err,data);
+                        if(data){
+                            WidgetHome.settings=data;
+                            if(!$scope.$$phase){$scope.$digest();}
+                        }
+                    });
+                };
+                WidgetHome.setSettings = function (settings) {
+                    console.log('Set settings called----------------------',settings);
+                    console.log('WidgetHome-------------settings------',WidgetHome.settings);
+                    var newSettings=new AudioSettings(settings);
+                    audioPlayer.settings.set(newSettings);
+                };
                 WidgetHome.openSettingsOverlay = function () {
                     WidgetHome.openSettings = true;
                 };
@@ -232,6 +248,21 @@
                     this.artist=artist;
                     this.startAt = 0; // where to begin playing
                     this.lastPosition = 0; // last played to
+                }
+
+                /**
+                 * AudioSettings sample
+                 * @param autoPlayNext
+                 * @param loop
+                 * @param autoJumpToLastPosition
+                 * @param shufflePlaylist
+                 * @constructor
+                 */
+                function AudioSettings(settings){
+                    this.autoPlayNext = settings.autoPlayNext; // once a track is finished playing go to the next track in the play list and play it
+                    this.loopPlaylist = settings.loopPlaylist; // once the end of the playlist has been reached start over again
+                    this.autoJumpToLastPosition= settings.autoJumpToLastPosition; //If a track has [lastPosition] use it to start playing the audio from there
+                    this.shufflePlaylist =settings.shufflePlaylist;// shuffle the playlist
                 }
 
 
