@@ -38,16 +38,18 @@
         <div class="slider">
             <div class="playerMP">
                 <div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | secondsToDateTime |date: 'mm:ss'}}</div>
-                <div class="audio-plyer" ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range" min="0.0"
-                                                                                  max="{{WidgetHome.duration}}"
-                                                                                  ng-model="WidgetHome.currentTime"
-                                                                                  ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/>
+                <div class="audio-plyer" ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range"
+                                                                                                      min="0.0"
+                                                                                                      max="{{WidgetHome.duration}}"
+                                                                                                      ng-model="WidgetHome.currentTime"
+                                                                                                      ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/>
                 </div>
                 <div ng-if="WidgetHome.duration">{{WidgetHome.duration | secondsToDateTime | date: 'mm:ss'}}</div>
             </div>
             <div class="volume">
                 &nbsp;<input class="volume-button rotate-270"
-                             ng-style="WidgetHome.showVolume? {'visibility':'visible'}:{'visibility':'hidden'}" type="range"
+                             ng-style="WidgetHome.showVolume? {'visibility':'visible'}:{'visibility':'hidden'}"
+                             type="range"
                              min="0.0" max="100" ng-model="WidgetHome.volume"
                              ng-change="WidgetHome.changeVolume(WidgetHome.volume)"
                              style="width: 50%;margin-top: -88px;margin-left: -12px;z-index: 1000000"/>
@@ -81,8 +83,11 @@
         <div class="overlay-content" style="postiion:absolute; top:0; left:0; height:100%; width: 100%; overflow:auto;">
             <div class="media-player-list-layout layout3">
                 <div class="list-layout has-btns">
-                    <div class="list-item overflow-hidden" ng-repeat="track in WidgetHome.playList">
-                        <div class="list-item-media text-left">
+                    <div class="list-item overflow-hidden"
+                         ng-swipe-right="WidgetHome.addEvents($event, $index, false)"
+                         ng-swipe-left="WidgetHome.addEvents($event, $index, true)"
+                         ng-repeat="track in WidgetHome.playList">
+                        <div class="list-item-media text-left" ng-class="{'edit' : WidgetHome.swiped[$index]}">
                             <div class="list-media-holder square-icon pull-left">
                                 <img ng-if="track.image" ng-src="{{track.image | cropImage : 55 :22}}">
                             </div>
@@ -92,9 +97,6 @@
                             <div class="btns text-center">
                                 <a class="icon icon-play-circle"></a>
                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                            </div>
-                            <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                <span>Remove</span>
                             </div>
                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
                                 <span>Remove</span>
