@@ -48,7 +48,7 @@
         : 'background: white'
 }}" class="infinite-scroll-parent">
 <div ng-controller="WidgetHomeCtrl as WidgetHome">
-    <div id="listDiv" style="display: none">
+    <div id="listDiv">
         <div ng-include="'templates/home.html'">
         </div>
     </div>
@@ -57,9 +57,9 @@
     </div>
 </div>
 </body>
-<script>
+<!--<script>
     $(function () {
         setTimeout(function(){$('#listDiv').show('slide', {direction: 'right'}, 120);},750);
     });
-</script>
+</script>-->
 </html>
