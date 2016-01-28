@@ -10,17 +10,20 @@
             'soundCloudWidgetEnums',
             'soundCloudPluginWidgetFilters',
             'soundCloudWidgetServices',
-            'infinite-scroll'
+            'infinite-scroll',
+            'soundCloudModals',
+            'ngTouch'
         ])
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
-        .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
-            /*$routeProvider
-             .when('/', {
-             templateUrl: 'templates/home.html',
-             controllerAs: 'WidgetHome',
-             controller: 'WidgetHomeCtrl'
-             });*/
+        .config(['$httpProvider','$compileProvider', function ($httpProvider,$compileProvider) {
+
+            /**
+             * To make href urls safe on mobile
+             */
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile|file):/);
+
+
             var interceptor = ['$q', function ($q) {
                 var counter = 0;
 
