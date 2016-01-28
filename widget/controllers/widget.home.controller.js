@@ -4,8 +4,8 @@
     angular
         .module('soundCloudPluginWidget')
         .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI', 'Buildfire',
-            '$rootScope','Modals',
-            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI, Buildfire, $rootScope,Modals) {
+            '$rootScope', 'Modals',
+            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI, Buildfire, $rootScope, Modals) {
                 console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
                 $rootScope.playTrack = false;
                 var WidgetHome = this;
@@ -40,6 +40,8 @@
                 };
 
                 WidgetHome.initCarousel = function () {
+                    if (angular.element('#carousel').html() == '') // this is true in case the layout design is changed
+                        WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
 
                     if (WidgetHome.info && WidgetHome.info.data.content.images.length) {
                         WidgetHome.view.loadItems(WidgetHome.info.data.content.images);
@@ -122,26 +124,26 @@
                  */
                 audioPlayer.onEvent(function (e) {
                     console.log('Audio Player On Event callback Method--------------------------------------', e);
-                    switch(e.event){
+                    switch (e.event) {
                         case 'timeUpdate':
                             WidgetHome.currentTime = e.data.currentTime;
                             WidgetHome.duration = e.data.duration;
                             break;
                         case 'audioEnded':
                             WidgetHome.playing = false;
-                            WidgetHome.paused=false;
+                            WidgetHome.paused = false;
                             break;
                         case 'pause':
                             WidgetHome.playing = false;
                             break;
                         case 'next':
-                            WidgetHome.currentTrack= e.data.track;
+                            WidgetHome.currentTrack = e.data.track;
                             WidgetHome.playing = true;
                             break;
                         case 'removeFromPlaylist':
                             Modals.removeTrackModal();
-                            WidgetHome.playList= e.data && e.data.newPlaylist && e.data.newPlaylist.tracks;
-                            console.log('WidgetHome.playList---------------------in removeFromPlaylist---',WidgetHome.playList);
+                            WidgetHome.playList = e.data && e.data.newPlaylist && e.data.newPlaylist.tracks;
+                            console.log('WidgetHome.playList---------------------in removeFromPlaylist---', WidgetHome.playList);
                             break;
 
                     }
