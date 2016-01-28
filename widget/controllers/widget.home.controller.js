@@ -9,6 +9,7 @@
                 console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
                 $rootScope.playTrack = false;
                 var WidgetHome = this;
+                WidgetHome.swiped=[];
                 WidgetHome.view = null;
                 WidgetHome.currentTime = 0.0;
                 WidgetHome.volume = 1;
@@ -225,11 +226,18 @@
                      audioPlayer.removeFromPlaylist(trackIndex);
                      }*/
                 };
+                WidgetHome.removeTrackFromPlayList=function(index){
+                    console.log('Track removed from playlist -------------using index----',index);
+                    if(index)
+                    audioPlayer.removeFromPlaylist(index);
+
+                };
                 WidgetHome.getFromPlaylist = function () {
                     audioPlayer.getPlaylist(function (err, data) {
                         console.log('Callback---------getList--------------', err, data);
                         if (data && data.tracks) {
                             WidgetHome.playList = data.tracks;
+                            $scope.$digest();
                         }
                     });
                     WidgetHome.openMoreInfo = false;
@@ -256,6 +264,10 @@
                     console.log('WidgetHome-------------settings------', WidgetHome.settings);
                     var newSettings = new AudioSettings(settings);
                     audioPlayer.settings.set(newSettings);
+                };
+                WidgetHome.addEvents = function (e, i, toggle) {
+                    console.log('addEvent class-------------------calles',e,i,toggle);
+                    toggle ? WidgetHome.swiped[i] = true : WidgetHome.swiped[i] = false;
                 };
                 WidgetHome.openMoreInfoOverlay = function () {
                     WidgetHome.openMoreInfo = true;
@@ -293,6 +305,7 @@
                     WidgetHome.playing = false;
                     WidgetHome.paused = false;
                     WidgetHome.currentTrack = null;
+                    WidgetHome.duration='';
                 });
 
                 /**
