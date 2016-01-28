@@ -44,7 +44,7 @@
     <hr class="none">
     <div class="item clearfix row">
         <div class="labels col-md-9 padding-right-zero pull-right">
-            <span>Don't have a SoundCloud account? Sign up <a href="https://soundcloud.com/" target="blank">here</a>.</span>
+            <span>Don't have a SoundCloud account? Sign up <a href="https://soundcloud.com/" target="_blank">here</a>.</span>
         </div>
 
     </div>
@@ -55,6 +55,7 @@
         </div>
         <div class="main pull-right col-md-9">
             <input type="text" class="form-control" placeholder="Client ID" ng-model="ContentHome.info.data.content.soundcloudClientID">
+            <span style="font-size: 11px">Note: SoundCloud Client ID is mandatory. Click <a target="_blank" href="https://developers.soundcloud.com/docs/api/terms-of-use#use">here</a> for more info.</span>
         </div>
     </div>
     <hr class="none">
@@ -69,7 +70,7 @@
     <div class="item clearfix row margin-top-ten" ng-show="ContentHome.soundcloudLinksInvalid">
         <div class="main pull-right col-md-9">
             <div class="alert alert-success alert-sm text-center ng-hide" ng-show="ContentHome.soundcloudLinksInvalid == false">Link successfully validated.</div>
-            <div class="alert alert-danger alert-sm text-center">The {{ContentHome.soundcloudLinksInvalid}} appears to be invalid.</div>
+            <div class="alert alert-danger alert-sm text-center" ng-show="ContentHome.soundcloudLinksInvalid">The {{ContentHome.soundcloudLinksInvalid}} appears to be invalid.</div>
         </div>
     </div>
     <hr class="none">

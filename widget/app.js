@@ -11,7 +11,8 @@
             'soundCloudPluginWidgetFilters',
             'soundCloudWidgetServices',
             'infinite-scroll',
-            'soundCloudModals'
+            'soundCloudModals',
+            'ngTouch'
         ])
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
