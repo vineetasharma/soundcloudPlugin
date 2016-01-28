@@ -64,11 +64,6 @@
                         }
                         else {
                             WidgetHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
-                            /*if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
-                             soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
-                             WidgetHome.isBusy = false;
-                             WidgetHome.loadMore();
-                             }*/
                         }
                     },
                     function fail() {
