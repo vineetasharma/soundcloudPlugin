@@ -231,6 +231,12 @@
                      audioPlayer.removeFromPlaylist(trackIndex);
                      }*/
                 };
+                WidgetHome.removeTrackFromPlayList=function(index){
+                    console.log('Track removed from playlist -------------using index----',index);
+                    if(index)
+                    audioPlayer.removeFromPlaylist(index);
+
+                };
                 WidgetHome.getFromPlaylist = function () {
                     audioPlayer.getPlaylist(function (err, data) {
                         console.log('Callback---------getList--------------', err, data);
