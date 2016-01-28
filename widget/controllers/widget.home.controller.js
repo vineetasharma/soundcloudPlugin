@@ -242,6 +242,7 @@
                         console.log('Callback---------getList--------------', err, data);
                         if (data && data.tracks) {
                             WidgetHome.playList = data.tracks;
+                            $scope.$digest();
                         }
                     });
                     WidgetHome.openMoreInfo = false;
@@ -309,6 +310,7 @@
                     WidgetHome.playing = false;
                     WidgetHome.paused = false;
                     WidgetHome.currentTrack = null;
+                    WidgetHome.duration='';
                 });
 
                 /**
