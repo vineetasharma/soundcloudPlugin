@@ -22,21 +22,27 @@
             <div class="media-inner text-center">
                 <img ng-if="WidgetHome.currentTrack.artwork_url" class="border-radius-two"
                      ng-src="{{WidgetHome.currentTrack.artwork_url | cropImage : 260:260}}">
-                <img ng-if="!WidgetHome.currentTrack.artwork_url" class="border-radius-two"
+                <img ng-if="(!WidgetHome.currentTrack.artwork_url) && (!WidgetHome.currentTrack.image)"
+                     class="border-radius-two"
                      src="assets/images/now-playing.png">
+                <img ng-if="WidgetHome.currentTrack.image" class="border-radius-two"
+                     ng-src="{{WidgetHome.currentTrack.image | cropImage : 260:260}}">
             </div>
         </div>
         <div class="media-player-info margin-top-twenty">
             <h4 class="margin-zero ellipsis">{{WidgetHome.currentTrack.title}}</h4>
 
-            <p class="margin-zero ellipsis">{{WidgetHome.currentTrack.user.username}}</p>
+            <p class="margin-zero ellipsis">
+                {{WidgetHome.currentTrack.user.username}}{{WidgetHome.currentTrack.artist}}</p>
         </div>
         <div class="slider">
             <div class="playerMP">
                 <div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | secondsToDateTime |date: 'mm:ss'}}</div>
-                <div ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range" min="0.0" max="{{WidgetHome.duration}}"
-                            ng-model="WidgetHome.currentTime"
-                            ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/></div>
+                <div ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range" min="0.0"
+                                                                                  max="{{WidgetHome.duration}}"
+                                                                                  ng-model="WidgetHome.currentTime"
+                                                                                  ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/>
+                </div>
                 <div ng-if="WidgetHome.duration">{{WidgetHome.duration | secondsToDateTime | date: 'mm:ss'}}</div>
             </div>
         </div>
@@ -44,11 +50,11 @@
             <span class="icon icon-dots"></span>
         </div>
         <div class="media-player-action-btns">
-           <!-- &nbsp;<input class=""
-                         ng-style="WidgetHome.showVolume? {'visibility':'visible'}:{'visibility':'hidden'}" type="range"
-                         min="0.0" max="100" ng-model="WidgetHome.volume"
-                         ng-change="WidgetHome.changeVolume(WidgetHome.volume)"
-                         style="width:70%;visibility: visible;margin-top:40px;margin-left:46px"/>-->
+            <!-- &nbsp;<input class=""
+                          ng-style="WidgetHome.showVolume? {'visibility':'visible'}:{'visibility':'hidden'}" type="range"
+                          min="0.0" max="100" ng-model="WidgetHome.volume"
+                          ng-change="WidgetHome.changeVolume(WidgetHome.volume)"
+                          style="width:70%;visibility: visible;margin-top:40px;margin-left:46px"/>-->
             <span class="icon icon-volume-high icon-sm" ng-click="WidgetHome.showVolume=!WidgetHome.showVolume"></span>
             <span class="icon icon-ellipsis icon-sm" ng-click="WidgetHome.openMoreInfoOverlay()"></span>
             <span class="icon icon-cog icon-sm" ng-click="WidgetHome.getSettings()"></span>
@@ -76,7 +82,7 @@
                     <div class="list-item overflow-hidden" ng-repeat="track in WidgetHome.playList">
                         <div class="list-item-media text-left">
                             <div class="list-media-holder square-icon pull-left">
-                                <img src="http://www.placehold.it/55x20">
+                                <img ng-if="track.image" ng-src="{{track.image | cropImage : 55 :22}}">
                             </div>
                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">{{track.title}}</p>
@@ -88,80 +94,11 @@
                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
                                 <span>Remove</span>
                             </div>
+                            <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
+                                <span>Remove</span>
+                            </div>
                         </div>
                     </div>
-                    <!-- <div class="list-item overflow-hidden">
-                         <div class="list-item-media text-left edit">
-                             <div class="list-media-holder square-icon pull-left">
-                                 <img src="http://www.placehold.it/30x80">
-                             </div>
-                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                     the track title This is the track title This is the track title</p>
-                             </div>
-                             <div class="btns text-center">
-                                 <a class="icon icon-pause-circle"></a>
-                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="list-item overflow-hidden">
-                         <div class="list-item-media text-left">
-                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                 <p class="margin-bottom-fifteen ellipsis margin-top-twenty">This is the track title This
-                                     is the track title This is the track title This is the track title</p>
-                             </div>
-                             <div class="btns text-center">
-                                 <a class="icon icon-play-circle"></a>
-                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="list-item overflow-hidden">
-                         <div class="list-item-media now-playing text-left">
-                             <div class="list-media-holder square-icon pull-left">
-                                 <img src="http://www.placehold.it/30x30">
-                             </div>
-                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                     the track title This is the track title This is the track title</p>
-                             </div>
-                             <div class="btns text-center">
-                                 <a class="icon icon-play-circle hidden"></a>
-                                 <a class="icon icon-pause-circle primaryTheme"></a>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="list-item overflow-hidden">
-                         <div class="list-item-media text-left">
-                             <div class="list-media-holder square-icon pull-left">
-                                 <img src="http://www.placehold.it/100x60">
-                             </div>
-                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                 <p class="margin-bottom-zero ellipsis margin-top-twenty">This is the track title This is
-                                     the track title This is the track title This is the track title</p>
-                             </div>
-                             <div class="btns text-center">
-                                 <a class="icon icon-play-circle"></a>
-                                 <a class="icon icon-pause-circle hidden primaryTheme"></a>
-                             </div>
-                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;">
-                                 <span>Remove</span>
-                             </div>
-                         </div>
-                     </div>-->
                 </div>
             </div>
             <a ng-click="WidgetHome.closePlayListOverlay()">Done</a>
@@ -196,12 +133,12 @@
                     <div class="text-center item">
                         <a ng-click="WidgetHome.removeFromPlaylist(WidgetHome.currentTrack)">Remove from Playlist</a>
                     </div>
-                    <div class="text-center item">
+                    <!--<div class="text-center item">
                         <a>Purchase</a>
                     </div>
                     <div class="text-center item">
                         <a>Share</a>
-                    </div>
+                    </div>-->
                     <div class="text-center item">
                         <a ng-click="WidgetHome.closeMoreInfoOverlay()">Cancel</a>
                     </div>

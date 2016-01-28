@@ -4,14 +4,14 @@
     angular
         .module('soundCloudPluginWidget')
         .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI', 'Buildfire',
-            '$rootScope',
-            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI, Buildfire, $rootScope) {
+            '$rootScope','Modals',
+            function ($scope, $timeout, DEFAULT_DATA, COLLECTIONS, DB, soundCloudAPI, Buildfire, $rootScope,Modals) {
                 console.log('WidgetHomeCtrl Controller Loaded-------------------------------------');
                 $rootScope.playTrack = false;
                 var WidgetHome = this;
                 WidgetHome.view = null;
                 WidgetHome.currentTime = 0.0;
-                WidgetHome.volume=1;
+                WidgetHome.volume = 1;
 
                 WidgetHome.page = -1;
                 WidgetHome.noMore = false;
@@ -98,8 +98,7 @@
                                 if (d.length == 0) {
                                     WidgetHome.noMore = true;
 
-                                    if(WidgetHome.page == 0)
-                                    {
+                                    if (WidgetHome.page == 0) {
                                         WidgetHome.noTracks = true;
                                     }
                                 }
@@ -121,20 +120,31 @@
                  * audioPlayer.onEvent callback calls when audioPlayer event fires.
                  */
                 audioPlayer.onEvent(function (e) {
-                    console.log('Audio Player On Event callback Method------------------', e);
-                    if (e.event == "timeUpdate") {
-                        WidgetHome.currentTime = e.data.currentTime;
-                        WidgetHome.duration = e.data.duration;
-                        $scope.$apply();
+                    console.log('Audio Player On Event callback Method--------------------------------------', e);
+                    switch(e.event){
+                        case 'timeUpdate':
+                            WidgetHome.currentTime = e.data.currentTime;
+                            WidgetHome.duration = e.data.duration;
+                            break;
+                        case 'audioEnded':
+                            WidgetHome.playing = false;
+                            WidgetHome.paused=false;
+                            break;
+                        case 'pause':
+                            WidgetHome.playing = false;
+                            break;
+                        case 'next':
+                            WidgetHome.currentTrack= e.data.track;
+                            WidgetHome.playing = true;
+                            break;
+                        case 'removeFromPlaylist':
+                            Modals.removeTrackModal();
+                            WidgetHome.playList= e.data && e.data.newPlaylist && e.data.newPlaylist.tracks;
+                            console.log('WidgetHome.playList---------------------in removeFromPlaylist---',WidgetHome.playList);
+                            break;
+
                     }
-                    else if (e.event == "audioEnded") {
-                        WidgetHome.playing = false;
-                        $scope.$apply();
-                    }
-                    else if (e.event == "pause") {
-                        WidgetHome.playing = false;
-                        $scope.$apply();
-                    }
+                    $scope.$digest();
                 });
 
                 /**
@@ -168,17 +178,17 @@
                         audioPlayer.setTime(0);
                 };
                 WidgetHome.shufflePlaylist = function () {
-                    console.log('WidgetHome settings in shuffle---------------------',WidgetHome.settings);
-                    if(WidgetHome.settings){
-                        WidgetHome.settings.shufflePlaylist=WidgetHome.settings.shufflePlaylist?false:true;
+                    console.log('WidgetHome settings in shuffle---------------------', WidgetHome.settings);
+                    if (WidgetHome.settings) {
+                        WidgetHome.settings.shufflePlaylist = WidgetHome.settings.shufflePlaylist ? false : true;
                     }
                     audioPlayer.settings.set(WidgetHome.settings);
                 };
                 WidgetHome.changeVolume = function (volume) {
-                    console.log('Volume----------------------',volume);
+                    console.log('Volume----------------------', volume);
                     //audioPlayer.setVolume(volume);
                     audioPlayer.settings.get(function (err, setting) {
-                        console.log('Settings------------------',setting);
+                        console.log('Settings------------------', setting);
                         if (setting) {
                             setting.volume = volume;
                             audioPlayer.settings.set(setting);
@@ -190,43 +200,43 @@
 
                 };
                 WidgetHome.loopPlaylist = function () {
-                    console.log('WidgetHome settings in Loop Playlist---------------------',WidgetHome.settings);
-                    if(WidgetHome.settings){
-                        WidgetHome.settings.loopPlaylist=WidgetHome.settings.loopPlaylist?false:true;
+                    console.log('WidgetHome settings in Loop Playlist---------------------', WidgetHome.settings);
+                    if (WidgetHome.settings) {
+                        WidgetHome.settings.loopPlaylist = WidgetHome.settings.loopPlaylist ? false : true;
                     }
                     audioPlayer.settings.set(WidgetHome.settings);
                 };
                 WidgetHome.addToPlaylist = function (track) {
                     console.log('AddToPlaylist called-------------------------------');
-                    var playListTrack=new Track(track.title,track.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID,track.artwork_url,track.tag_list,track.user.username);
+                    var playListTrack = new Track(track.title, track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID, track.artwork_url, track.tag_list, track.user.username);
                     audioPlayer.addToPlaylist(playListTrack);
                 };
                 WidgetHome.removeFromPlaylist = function (track) {
-                    var playListTrack=new Track(track.title,track.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID,track.artwork_url,track.tag_list,track.user.username);
+                    var playListTrack = new Track(track.title, track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID, track.artwork_url, track.tag_list, track.user.username);
                     console.log('removeFromPlaylist called-------------------------------');
-                    if(WidgetHome.playList){
+                    if (WidgetHome.playList) {
                         var trackIndex;
-                        WidgetHome.playList.filter(function(val,index){
-                            if(val.url==track.stream_url+'?client_id='+WidgetHome.info.data.content.soundcloudClientID)
+                        WidgetHome.playList.filter(function (val, index) {
+                            if (val.url == track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID)
                                 audioPlayer.removeFromPlaylist(index);
                             return index;
 
                         });
-                        console.log('indexes------------track Index----------------------track==========',trackIndex);
+                        console.log('indexes------------track Index----------------------track==========', trackIndex);
                     }
                     /*if(trackIndex!='undefined'){
-                        audioPlayer.removeFromPlaylist(trackIndex);
-                    }*/
+                     audioPlayer.removeFromPlaylist(trackIndex);
+                     }*/
                 };
                 WidgetHome.getFromPlaylist = function () {
-                    audioPlayer.getPlaylist(function(err,data){
-                        console.log('Callback---------getList--------------',err,data);
-                        if(data && data.tracks){
-                            WidgetHome.playList=data.tracks;
+                    audioPlayer.getPlaylist(function (err, data) {
+                        console.log('Callback---------getList--------------', err, data);
+                        if (data && data.tracks) {
+                            WidgetHome.playList = data.tracks;
                         }
                     });
-                    WidgetHome.openMoreInfo=false;
-                    WidgetHome.openPlaylist=true;
+                    WidgetHome.openMoreInfo = false;
+                    WidgetHome.openPlaylist = true;
                 };
                 WidgetHome.changeTime = function (time) {
                     console.log('Change time method called---------------------------------', time);
@@ -234,18 +244,20 @@
                 };
                 WidgetHome.getSettings = function () {
                     WidgetHome.openSettings = true;
-                    audioPlayer.settings.get(function(err,data){
-                        console.log('Got player settings-----------------------',err,data);
-                        if(data){
-                            WidgetHome.settings=data;
-                            if(!$scope.$$phase){$scope.$digest();}
+                    audioPlayer.settings.get(function (err, data) {
+                        console.log('Got player settings-----------------------', err, data);
+                        if (data) {
+                            WidgetHome.settings = data;
+                            if (!$scope.$$phase) {
+                                $scope.$digest();
+                            }
                         }
                     });
                 };
                 WidgetHome.setSettings = function (settings) {
-                    console.log('Set settings called----------------------',settings);
-                    console.log('WidgetHome-------------settings------',WidgetHome.settings);
-                    var newSettings=new AudioSettings(settings);
+                    console.log('Set settings called----------------------', settings);
+                    console.log('WidgetHome-------------settings------', WidgetHome.settings);
+                    var newSettings = new AudioSettings(settings);
                     audioPlayer.settings.set(newSettings);
                 };
                 WidgetHome.openMoreInfoOverlay = function () {
@@ -281,9 +293,9 @@
                 });
                 $scope.$on("destroy currentTrack", function () {
                     WidgetHome.currentTime = 0.0;
-                    WidgetHome.playing=false;
-                    WidgetHome.paused=false;
-                    WidgetHome.currentTrack=null;
+                    WidgetHome.playing = false;
+                    WidgetHome.paused = false;
+                    WidgetHome.currentTrack = null;
                 });
 
                 /**
@@ -296,12 +308,12 @@
                  * @constructor
                  */
 
-                function Track(title, url, image, album,artist) {
+                function Track(title, url, image, album, artist) {
                     this.title = title;
                     this.url = url;
                     this.image = image;
                     this.album = album;
-                    this.artist=artist;
+                    this.artist = artist;
                     this.startAt = 0; // where to begin playing
                     this.lastPosition = 0; // last played to
                 }
@@ -314,11 +326,11 @@
                  * @param shufflePlaylist
                  * @constructor
                  */
-                function AudioSettings(settings){
+                function AudioSettings(settings) {
                     this.autoPlayNext = settings.autoPlayNext; // once a track is finished playing go to the next track in the play list and play it
                     this.loopPlaylist = settings.loopPlaylist; // once the end of the playlist has been reached start over again
-                    this.autoJumpToLastPosition= settings.autoJumpToLastPosition; //If a track has [lastPosition] use it to start playing the audio from there
-                    this.shufflePlaylist =settings.shufflePlaylist;// shuffle the playlist
+                    this.autoJumpToLastPosition = settings.autoJumpToLastPosition; //If a track has [lastPosition] use it to start playing the audio from there
+                    this.shufflePlaylist = settings.shufflePlaylist;// shuffle the playlist
                 }
 
 
