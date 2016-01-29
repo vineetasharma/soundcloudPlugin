@@ -5,7 +5,6 @@
     <!-- CSS -->
     <link rel="stylesheet" href="../../../styles/bootstrap.css">
     <link rel="stylesheet" href="../../../styles/siteIcons.css">
-    <link rel="stylesheet" href="../../../styles/appStyle.css">
     <link rel="stylesheet" href="../../../styles/helper.css">
     <link href="../../../scripts/owlCarousel/owlCarousel.css" rel="stylesheet">
     <link rel="stylesheet" href="../../../styles/transitionAnimation.css">
@@ -48,7 +47,7 @@
         : 'background: white'
 }}" class="infinite-scroll-parent">
 <div ng-controller="WidgetHomeCtrl as WidgetHome">
-    <div id="listDiv">
+    <div style="display:none;" id="listDiv">
         <div ng-include="'templates/home.html'">
         </div>
     </div>
@@ -57,9 +56,9 @@
     </div>
 </div>
 </body>
-<!--<script>
+<script>
     $(function () {
         setTimeout(function(){$('#listDiv').show('slide', {direction: 'right'}, 120);},750);
     });
-</script>-->
+</script>
 </html>

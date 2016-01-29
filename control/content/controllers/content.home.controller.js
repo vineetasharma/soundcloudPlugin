@@ -8,7 +8,7 @@
                 console.log('ContentHomeCtrl Controller Loaded-------------------------------------');
                 var ContentHome = this;
                 var timerDelay, masterInfo;
-                var soundCloud = new DB(COLLECTIONS.SoundCloudInfo);
+                ContentHome.soundCloud = new DB(COLLECTIONS.SoundCloudInfo);
 
                 //option for wysiwyg
                 ContentHome.bodyWYSIWYGOptions = {
@@ -53,15 +53,16 @@
                 ContentHome.verifySoundcloudLinks = function () {
                     if (ContentHome.info.data.content.soundcloudClientID && ContentHome.info.data.content.link) {
                         var method_return = soundCloudAPI.verify(ContentHome.info.data.content.soundcloudClientID, ContentHome.info.data.content.link);
-                        //if (method_return == 'bad client failed') {
-                        //    ContentHome.soundcloudLinksInvalid = 'Client ID';
-                        //}
-                        //else {
+
                         method_return.then(function (d) {
-                            ContentHome.soundcloudLinksInvalid = false;
+                            console.log('verify d',d);
+                            if (angular.isArray(d) || ['playlist', 'track', 'user'].indexOf(d.kind) != -1)
+                                ContentHome.soundcloudLinksInvalid = false;
+                            else
+                                ContentHome.soundcloudLinksInvalid = 'link';
                             $timeout(function () {
                                 ContentHome.soundcloudLinksInvalid = null;
-                            },2000);
+                            }, 2000);
                             $scope.$digest();
                         }, function (e) {
                             if (e.status === 401)
@@ -71,18 +72,16 @@
 
                             $timeout(function () {
                                 ContentHome.soundcloudLinksInvalid = null;
-                            },2000);
+                            }, 2000);
 
                             $scope.$digest();
                         });
-                        //}
                     }
                 };
 
                 function init() {
                     var success = function (data) {
                         if (data && data.data && (data.data.content || data.data.design)) {
-                            console.log('Info got---------------');
                             updateMasterInfo(data.data);
                             ContentHome.info = data;
                             if (data.data.content && data.data.content.images) {
@@ -93,12 +92,11 @@
                             updateMasterInfo(DEFAULT_DATA.SOUND_CLOUD_INFO);
                             ContentHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
                         }
-                        console.log('Got soundcloud info successfully-----------------', data.data);
                     };
                     var error = function (err) {
                         console.error('Error while getting data from db-------', err);
                     };
-                    soundCloud.get().then(success, error);
+                    ContentHome.soundCloud.get().then(success, error);
                 }
 
                 init();
@@ -115,13 +113,13 @@
 
                 function saveData(_info) {
                     var saveSuccess = function (data) {
-                        console.log('Data saved successfully--------------------------', data);
+                        console.log('Data saved successfully---------------from content-----------', data);
                     };
                     var saveError = function (err) {
                         console.error('Error while saving data------------------------------', err);
                     };
                     if (_info && _info.data)
-                        soundCloud.save(_info.data).then(saveSuccess, saveError);
+                        ContentHome.soundCloud.save(_info.data).then(saveSuccess, saveError);
                 }
 
                 function updateInfoData(_info) {
@@ -129,7 +127,7 @@
                         clearTimeout(timerDelay);
                     }
                     if (_info && _info.data && !isUnchanged(_info)) {
-                        timerDelay = setTimeout(function () {
+                        timerDelay = $timeout(function () {
                             saveData(_info);
                         }, 1000);
                     }

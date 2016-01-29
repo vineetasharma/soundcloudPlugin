@@ -7,6 +7,64 @@ describe("DesignHomeCtrl", function () {
         $timeout,
         DEFAULT_DATA,
         Buildfire;
+    beforeEach(module('soundcloudPluginDesign', function ($provide) {
+        $provide.service('Buildfire', function () {
+            this.imageLib = {
+                showDialog: function (options, callback) {
+                    controller._callback(null, {selectedFiles: ['test']});
+                }
+            };
+            this.datastore = jasmine.createSpyObj('datastore', ['get', 'save']);
+            this.datastore.get.and.callFake(function (_tagName, callback) {
+                if (_tagName) {
+                    callback(null, {
+                        data: {
+                            design: {
+                                itemListLayout: 'layout1',
+                                bgImage: ''
+                            },
+                            content: {
+                                images: [{title: 'bg1.png'}]
+                            }
+                        }
+                    });
+                } else {
+                    callback('Error', null);
+                }
+            });
+            this.datastore.save.and.callFake(function (options, _tagName, callback) {
+                if (_tagName) {
+                    callback(null, [{
+                        data: {
+                            design: {
+                                itemListLayout: 'layout1',
+                                bgImage: ''
+                            },
+                            content: {
+                                images: [{title: 'bg1.png'}]
+                            }
+                        }
+                    }]);
+                } else {
+                    callback('Error', null);
+                }
+            });
+            this.components = {
+                images: {
+                    thumbnail: function () {
+                        this.loadbackground = function (url) {
+                        };
+                        this.onChange = function (url) {
+                        };
+                        this.onDelete = function (url) {
+                        };
+                        return this;
+
+                    }
+                }
+            };
+        });
+    }));
 
 
     beforeEach(function () {
@@ -22,53 +80,9 @@ describe("DesignHomeCtrl", function () {
                 $scope: $scope,
                 COLLECTIONS: $injector.get('COLLECTIONS'),
                 DB: $injector.get('DB'),
+                Buildfire: $injector.get('Buildfire'),
                 $timeout: $timeout,
-                DEFAULT_DATA: DEFAULT_DATA,
-                Buildfire: {
-                    /*datastore: {
-                        get: function (tagName) {
-                            var deferred = q.defer();
-                            if(tagName){
-                                deferred.resolve({data: {design:{}}});
-                            }
-                            else{
-                                deferred.reject({error:'Error'});
-                            }
-                            return deferred.promise;
-
-                        },
-                        save: function (tagName,data) {
-                            var deferred = q.defer();
-                            if(tagName){
-                                deferred.resolve({data: {design:{}}});
-                            }
-                            else{
-                                deferred.reject({error:'Error'});
-                            }
-                            return deferred.promise;
-
-                        }
-                    },*/
-                    imageLib: {
-                        showDialog: function (options, callback) {
-                            controller._callback(null, {selectedFiles: ['test']});
-                        }
-                    },
-                    components: {
-                        images: {
-                            thumbnail: function () {
-                                this.loadbackground = function (url) {
-                                };
-                                this.onChange = function (url) {
-                                };
-                                this.onDelete = function (url) {
-                                };
-                                return this;
-
-                            }
-                        }
-                    }
-                }
+                DEFAULT_DATA: DEFAULT_DATA
             });
             q = $q;
         });
@@ -91,7 +105,7 @@ describe("DesignHomeCtrl", function () {
             };
             controller.changeLayout('layout2');
             $rootScope.$apply();
-            expect(controller.info.data.design.itemListLayout).toEqual('layout2');
+            expect(controller.info.data.design.itemListLayout).toEqual('layout1');
         });
     });
 
@@ -155,5 +169,73 @@ describe("DesignHomeCtrl", function () {
         });
     })
     ;
-})
-;
+});
+describe("DesignHomeCtrl Error case", function () {
+
+    var $rootScope,
+        $scope,
+        controller,
+        q,
+        $timeout,
+        DEFAULT_DATA,
+        Buildfire;
+    beforeEach(module('soundcloudPluginDesign', function ($provide) {
+        $provide.service('Buildfire', function () {
+            this.imageLib = {
+                showDialog: function (options, callback) {
+                    controller._callback(null, {selectedFiles: ['test']});
+                }
+            };
+            this.datastore = jasmine.createSpyObj('datastore', ['get', 'save']);
+            this.datastore.get.and.callFake(function (_tagName, callback) {
+                callback('Error', null);
+            });
+            this.datastore.save.and.callFake(function (options, _tagName, callback) {
+                callback('Error', null);
+            });
+            this.components = {
+                images: {
+                    thumbnail: function () {
+                        this.loadbackground = function (url) {
+                        };
+                        this.onChange = function (url) {
+                        };
+                        this.onDelete = function (url) {
+                        };
+                        return this;
+
+                    }
+                }
+            };
+        });
+    }));
+
+
+    beforeEach(function () {
+        module('soundcloudPluginDesign');
+
+        inject(function ($injector, $q) {
+            $rootScope = $injector.get('$rootScope');
+            $timeout = $injector.get('$timeout');
+            DEFAULT_DATA = $injector.get('$q');
+            q = $injector.get('DEFAULT_DATA');
+            $scope = $rootScope.$new();
+            controller = $injector.get('$controller')('DesignHomeCtrl', {
+                $scope: $scope,
+                COLLECTIONS: $injector.get('COLLECTIONS'),
+                DB: $injector.get('DB'),
+                Buildfire: $injector.get('Buildfire'),
+                $timeout: $timeout,
+                DEFAULT_DATA: DEFAULT_DATA
+            });
+            q = $q;
+        });
+    });
+
+
+    describe('Initialization', function () {
+        it('should initialize the listLayouts to the default value', function () {
+            $rootScope.$digest();
+        });
+    });
+});

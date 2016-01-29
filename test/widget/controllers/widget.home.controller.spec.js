@@ -81,7 +81,7 @@ describe("WidgetHomeCtrl", function () {
             });
         });
 
-        it('should populate the WidgetHome.tracks', function () {
+        xit('should populate the WidgetHome.tracks', function () {
             controller.info = {
                 data: {
                     content: {link: 'a'},

@@ -8,17 +8,17 @@
                 return buildfire;
             };
         }])
-        .factory('Location', [function () {
-            var _location = location;
-            return {
-                go: function (path) {
-                    _location.href = path;
-                },
-                goToHome: function () {
-                    _location.href = _location.href.substr(0, _location.href.indexOf('#'));
-                }
-            };
-        }])
+        /*.factory('Location', [function () {
+         var _location = location;
+         return {
+         go: function (path) {
+         _location.href = path;
+         },
+         goToHome: function () {
+         _location.href = _location.href.substr(0, _location.href.indexOf('#'));
+         }
+         };
+         }])*/
         .service('soundCloudAPI', ['$http', '$q', function ($http, $q) {
             var that = this;
 
@@ -31,23 +31,64 @@
             that.getTracks = function (link, page) {
                 var page_size = 7;
 
-                /*if (true) {*/
-                    var q = '';
-                    if (link.indexOf('tracks') != -1)
-                        q = link.split('/').slice(-2, -1)[0]; // get second last route param i.e. artist's name
-                    else
-                        q = link.split('/').pop();  // get last route param i.e artist's name
-                    return SC.get('/users/' + q + '/tracks', {
-                        limit: page_size,
-                        offset: (page * page_size),
-                        linked_partitioning: page
-                    });
-              /*  }
-                else {
-                    SC.resolve(link).then(function (d) {
-                        return SC.get();
-                    });
-                }*/
+
+                return SC.resolve(link).then(function (type) {
+                    console.log('type', type);
+                    if (angular.isArray(type)) {
+                        if (type.length) {
+                            if (type[0].kind == 'track') {
+                                var q = link.split('/').slice(-2, -1)[0]; // get second last route param i.e. artist's name
+                                return SC.get('/users/' + q + '/tracks', {
+                                    limit: page_size,
+                                    offset: (page * page_size),
+                                    linked_partitioning: page
+                                });
+                            }
+                            else {
+                                var deferred = $q.defer();
+                                deferred.resolve({collection: type[0].tracks});
+                                return deferred.promise;
+                            }
+                        }
+
+                    }
+                    else if (type.kind == 'track') {
+                        var deferred = $q.defer();
+                        deferred.resolve({collection: [type]});
+                        return deferred.promise;
+                    }
+                    else if (type.kind == 'user') {
+                        var q = link.split('/').pop();  // get last route param i.e artist's name
+                        return SC.get('/users/' + q + '/tracks', {
+                            limit: page_size,
+                            offset: (page * page_size),
+                            linked_partitioning: page
+                        });
+                    }
+                    else if (type.kind == 'playlist') {
+                        var q = link.split('/').pop();  // get last route param i.e artist's name
+                        return SC.get('/playlists/' + type.id + '/tracks', {
+                            limit: page_size,
+                            offset: (page * page_size),
+                            linked_partitioning: page
+                        });
+                    }
+
+                    //return SC.get();
+                });
+
+
+                /*var q = '';
+                 if (link.indexOf('tracks') != -1)
+                 q = link.split('/').slice(-2, -1)[0]; // get second last route param i.e. artist's name
+                 else
+                 q = link.split('/').pop();  // get last route param i.e artist's name
+                 return SC.get('/users/' + q + '/tracks', {
+                 limit: page_size,
+                 offset: (page * page_size),
+                 linked_partitioning: page
+                 });*/
+
             }
         }])
         .factory("DB", ['Buildfire', '$q', 'MESSAGES', 'CODES', function (Buildfire, $q, MESSAGES, CODES) {
@@ -67,127 +108,6 @@
                     }
                     else {
                         return deferred.resolve(result);
-                    }
-                });
-                return deferred.promise;
-            };
-            DB.prototype.getById = function (id) {
-                var that = this;
-                var deferred = $q.defer();
-                Buildfire.datastore.getById(id, that._tagName, function (err, result) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    else if (result && result.data) {
-                        return deferred.resolve(result);
-                    } else {
-                        return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                    }
-                });
-                return deferred.promise;
-            };
-            DB.prototype.insert = function (items) {
-                var that = this;
-                var deferred = $q.defer();
-                if (typeof items == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.DATA_NOT_DEFINED));
-                }
-                if (Array.isArray(items)) {
-                    Buildfire.datastore.bulkInsert(items, that._tagName, function (err, result) {
-                        if (err) {
-                            return deferred.reject(err);
-                        }
-                        else if (result) {
-                            return deferred.resolve(result);
-                        } else {
-                            return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                        }
-                    });
-                } else {
-                    Buildfire.datastore.insert(items, that._tagName, false, function (err, result) {
-                        if (err) {
-                            return deferred.reject(err);
-                        }
-                        else if (result) {
-                            return deferred.resolve(result);
-                        } else {
-                            return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                        }
-                    });
-                }
-                return deferred.promise;
-            };
-            DB.prototype.find = function (options) {
-                var that = this;
-                var deferred = $q.defer();
-                if (typeof options == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.OPTION_REQUIRES));
-                }
-                Buildfire.datastore.search(options, that._tagName, function (err, result) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    else if (result) {
-                        return deferred.resolve(result);
-                    } else {
-                        return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                    }
-                });
-                return deferred.promise;
-            };
-            DB.prototype.update = function (id, item) {
-                var that = this;
-                var deferred = $q.defer();
-                if (typeof id == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.ID_NOT_DEFINED));
-                }
-                if (typeof item == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.DATA_NOT_DEFINED));
-                }
-                Buildfire.datastore.update(id, item, that._tagName, function (err, result) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    else if (result) {
-                        return deferred.resolve(result);
-                    } else {
-                        return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                    }
-                });
-                return deferred.promise;
-            };
-            DB.prototype.save = function (item) {
-                var that = this;
-                var deferred = $q.defer();
-                if (typeof item == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.DATA_NOT_DEFINED));
-                }
-                Buildfire.datastore.save(item, that._tagName, function (err, result) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    else if (result) {
-                        return deferred.resolve(result);
-                    } else {
-                        return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                    }
-                });
-                return deferred.promise;
-            };
-            DB.prototype.delete = function (id) {
-                var that = this;
-                var deferred = $q.defer();
-                if (typeof id == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.ID_NOT_DEFINED));
-                }
-                Buildfire.datastore.delete(id, that._tagName, function (err, result) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    else if (result) {
-                        return deferred.resolve(result);
-                    } else {
-                        return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
                     }
                 });
                 return deferred.promise;
