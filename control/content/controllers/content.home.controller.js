@@ -8,7 +8,7 @@
                 console.log('ContentHomeCtrl Controller Loaded-------------------------------------');
                 var ContentHome = this;
                 var timerDelay, masterInfo;
-                var soundCloud = new DB(COLLECTIONS.SoundCloudInfo);
+                ContentHome.soundCloud = new DB(COLLECTIONS.SoundCloudInfo);
 
                 //option for wysiwyg
                 ContentHome.bodyWYSIWYGOptions = {
@@ -82,7 +82,6 @@
                 function init() {
                     var success = function (data) {
                         if (data && data.data && (data.data.content || data.data.design)) {
-                            console.log('Info got---------------');
                             updateMasterInfo(data.data);
                             ContentHome.info = data;
                             if (data.data.content && data.data.content.images) {
@@ -93,12 +92,11 @@
                             updateMasterInfo(DEFAULT_DATA.SOUND_CLOUD_INFO);
                             ContentHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
                         }
-                        console.log('Got soundcloud info successfully-----------------', data.data);
                     };
                     var error = function (err) {
                         console.error('Error while getting data from db-------', err);
                     };
-                    soundCloud.get().then(success, error);
+                    ContentHome.soundCloud.get().then(success, error);
                 }
 
                 init();
@@ -121,7 +119,7 @@
                         console.error('Error while saving data------------------------------', err);
                     };
                     if (_info && _info.data)
-                        soundCloud.save(_info.data).then(saveSuccess, saveError);
+                        ContentHome.soundCloud.save(_info.data).then(saveSuccess, saveError);
                 }
 
                 function updateInfoData(_info) {
