@@ -12,7 +12,6 @@
             var that = this;
 
             that.verify = function (clientId,link) {
-                try {
                     SC.initialize({
                         client_id: clientId
                     });
@@ -23,10 +22,6 @@
                         q = link.split('/').pop();  // get last route param i.e artist's name
 
                     return SC.get('/users/' + q + '/tracks', {});
-                }
-                catch(e){
-                    return 'bad client failed';
-                }
             };
 
 
