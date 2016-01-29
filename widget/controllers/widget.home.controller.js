@@ -94,10 +94,10 @@
                                 console.log('Got tracks--------------------------', data);
                                 WidgetHome.isBusy = false;
                                 var d = data.collection;
-                                if (d.length == 0) {
+                                if (d.length < 7) {
                                     WidgetHome.noMore = true;
 
-                                    if (WidgetHome.page == 0) {
+                                    if (WidgetHome.page == 0 && d.length == 0) {
                                         WidgetHome.noTracks = true;
                                     }
                                 }
