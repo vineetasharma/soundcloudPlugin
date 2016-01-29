@@ -1,5 +1,5 @@
 <div class="holder padding-zero">
-    <div class="media-center-plugin layout3 text-overlay">
+    <div class="media-center-plugin layout2 layout3 text-overlay">
         <div class="media-center-banner clearfix border-bottom-grey">
             <div id="carousel" build-fire-carousel=""></div>
         </div>
@@ -21,12 +21,11 @@
                         <img ng-src="{{track.artwork_url | cropImage:110:60}}">
                     </div>
                     <div class="list-item-copy text-left padding-left-ten padding-right-ten text-overlay">
-                        <p class="ellipsis margin-zero text-primary"><a class="text-primary">{{track.title}}</a></p>
-
-                        <p class="summary ellipsis margin-zero">{{track.user.username}}<span class="duration-ui">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
-                        </p>
+                        <p class="track-title ellipsis margin-zero text-primary"><a class="text-primary">{{track.title}}</a></p>
+                        <p class="summary ellipsis margin-zero">{{track.user.username}}</p>
                         <!--<span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>-->
                         <span class="playcount-ui list-item-date">{{track.playback_count | number}}</span>
+						<span class="duration-ui">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
                     </div>
                 </div>
             </div>
