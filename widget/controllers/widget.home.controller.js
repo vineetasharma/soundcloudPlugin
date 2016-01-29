@@ -59,6 +59,7 @@
                                 $rootScope.bgImage = WidgetHome.info.data.design.bgImage;
                             if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
                                 soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
+                                WidgetHome.refreshTracks();
                                 WidgetHome.loadMore();
                             }
 
