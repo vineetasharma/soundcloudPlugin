@@ -15,13 +15,8 @@
                     SC.initialize({
                         client_id: clientId
                     });
-                    var q = '';
-                    if (link.indexOf('tracks') != -1)
-                        q = link.split('/').slice(-2, -1)[0]; // get second last route param i.e. artist's name
-                    else
-                        q = link.split('/').pop();  // get last route param i.e artist's name
 
-                    return SC.get('/users/' + q + '/tracks', {});
+                    return SC.resolve(link);
             };
 
 

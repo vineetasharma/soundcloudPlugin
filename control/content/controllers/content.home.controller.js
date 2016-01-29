@@ -53,15 +53,16 @@
                 ContentHome.verifySoundcloudLinks = function () {
                     if (ContentHome.info.data.content.soundcloudClientID && ContentHome.info.data.content.link) {
                         var method_return = soundCloudAPI.verify(ContentHome.info.data.content.soundcloudClientID, ContentHome.info.data.content.link);
-                        //if (method_return == 'bad client failed') {
-                        //    ContentHome.soundcloudLinksInvalid = 'Client ID';
-                        //}
-                        //else {
+
                         method_return.then(function (d) {
-                            ContentHome.soundcloudLinksInvalid = false;
+                            console.log('verify d',d);
+                            if (angular.isArray(d) || ['playlist', 'track', 'user'].indexOf(d.kind) != -1)
+                                ContentHome.soundcloudLinksInvalid = false;
+                            else
+                                ContentHome.soundcloudLinksInvalid = 'link';
                             $timeout(function () {
                                 ContentHome.soundcloudLinksInvalid = null;
-                            },2000);
+                            }, 2000);
                             $scope.$digest();
                         }, function (e) {
                             if (e.status === 401)
@@ -71,11 +72,10 @@
 
                             $timeout(function () {
                                 ContentHome.soundcloudLinksInvalid = null;
-                            },2000);
+                            }, 2000);
 
                             $scope.$digest();
                         });
-                        //}
                     }
                 };
 
