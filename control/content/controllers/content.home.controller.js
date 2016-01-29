@@ -115,7 +115,7 @@
 
                 function saveData(_info) {
                     var saveSuccess = function (data) {
-                        console.log('Data saved successfully--------------------------', data);
+                        console.log('Data saved successfully---------------from content-----------', data);
                     };
                     var saveError = function (err) {
                         console.error('Error while saving data------------------------------', err);
@@ -129,7 +129,7 @@
                         clearTimeout(timerDelay);
                     }
                     if (_info && _info.data && !isUnchanged(_info)) {
-                        timerDelay = setTimeout(function () {
+                        timerDelay = $timeout(function () {
                             saveData(_info);
                         }, 1000);
                     }
