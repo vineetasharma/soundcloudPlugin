@@ -1,6 +1,5 @@
 describe('soundcloudPluginDesign: App', function () {
     beforeEach(module('soundcloudPluginDesign'));
-    var $httpProvider;
         beforeEach(inject(
             function ($httpBackend) {
                 $httpBackend.expectGET('/')
