@@ -9,11 +9,11 @@ describe("WidgetHomeCtrl", function () {
         DB,
         soundCloudAPI = {
             getTracks: function (cb) {
-             /*   var deferred = q.defer();
-                deferred.resolve('Remote call result');
-                console.log(0);
-                //cb();
-                return deferred.promise;*/
+                /*   var deferred = q.defer();
+                 deferred.resolve('Remote call result');
+                 console.log(0);
+                 //cb();
+                 return deferred.promise;*/
             }
             ,
             connect: function () {
@@ -21,25 +21,32 @@ describe("WidgetHomeCtrl", function () {
             }
         },
         BF = {
-            services:{
-                media:{
-                    audioPlayer:{
-                        onEvent:function(){},
-                        settings:{autoPlayNext:true,set:jasmine.createSpy(),
-                            get:function(a){a(null,{});}},
-                        addToPlaylist:jasmine.createSpy(),
-                        pause:jasmine.createSpy(),
-                        play:jasmine.createSpy(),
-                        setTime:jasmine.createSpy(),
-                        set:jasmine.createSpy(),
+            services: {
+                media: {
+                    audioPlayer: {
+                        onEvent: function () {
+                        },
+                        settings: {
+                            autoPlayNext: true, set: jasmine.createSpy(),
+                            get: function (a) {
+                                a(null, {});
+                            }
+                        },
+                        addToPlaylist: jasmine.createSpy(),
+                        pause: jasmine.createSpy(),
+                        play: jasmine.createSpy(),
+                        setTime: jasmine.createSpy(),
+                        set: jasmine.createSpy(),
                         getPlaylist: function (b) {
-                            b(null,{tracks:[]});
-                        }
+                            b(null, {tracks: []});
+                        },
+                        removeFromPlaylist: jasmine.createSpy()
+
                     }
                 }
             },
-            datastore:{
-                onUpdate:function(){
+            datastore: {
+                onUpdate: function () {
 
                 }
             }
@@ -48,7 +55,7 @@ describe("WidgetHomeCtrl", function () {
 
     beforeEach(function () {
         module('soundCloudPluginWidget');
-        soundCloudAPI=jasmine.createSpyObj('soundCloudAPI',['getTracks']);
+        soundCloudAPI = jasmine.createSpyObj('soundCloudAPI', ['getTracks']);
 
         inject(function ($injector, $q) {
             $rootScope = $injector.get('$rootScope');
@@ -65,7 +72,7 @@ describe("WidgetHomeCtrl", function () {
                 $timeout: $timeout,
                 DEFAULT_DATA: DEFAULT_DATA,
                 soundCloudAPI: soundCloudAPI,
-                Buildfire:BF
+                Buildfire: BF
             });
             q = $q;
         });
@@ -74,14 +81,14 @@ describe("WidgetHomeCtrl", function () {
 
     describe('WidgetHome.loadMore', function () {
         beforeEach(function () {
-                soundCloudAPI.getTracks.and.callFake(function () {
+            soundCloudAPI.getTracks.and.callFake(function () {
                 var deferred = q.defer();
-                deferred.resolve({collection:[]});
+                deferred.resolve({collection: []});
                 return deferred.promise;
             });
         });
 
-        xit('should populate the WidgetHome.tracks', function () {
+        it('should populate the WidgetHome.tracks', function () {
             controller.info = {
                 data: {
                     content: {link: 'a'},
@@ -89,8 +96,11 @@ describe("WidgetHomeCtrl", function () {
                 }
             };
             controller.tracks = [];
+            $scope.$digest();
             controller.loadMore();
-            $scope.$apply();
+            //controller.loadMore();
+
+
             expect(controller.loadMore).toBeDefined();
         });
     });
@@ -121,7 +131,7 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.loadItems', function () {
         it('should set the images to the carousel if the carousel exists', function () {
             controller.view = {
-                loadItems:jasmine.createSpy()
+                loadItems: jasmine.createSpy()
             };
             controller.loadItems();
             expect(controller.view.loadItems).toHaveBeenCalled();
@@ -131,18 +141,18 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.initCarousel', function () {
 
         it('should initialise the carousel with images if they exist', function () {
-            controller.info = {data:{content:{images:[{id:1}]}}};
+            controller.info = {data: {content: {images: [{id: 1}]}}};
             controller.view = {
-                loadItems:jasmine.createSpy()
+                loadItems: jasmine.createSpy()
             };
             controller.initCarousel();
             expect(controller.view.loadItems).toHaveBeenCalled();
         });
 
         it('should initialise the carousel with empty array if images dont exist', function () {
-            controller.info = {data:{content:{images:[]}}};
+            controller.info = {data: {content: {images: []}}};
             controller.view = {
-                loadItems:jasmine.createSpy()
+                loadItems: jasmine.createSpy()
             };
             controller.initCarousel();
             expect(controller.view.loadItems).toHaveBeenCalledWith([]);
@@ -158,7 +168,7 @@ describe("WidgetHomeCtrl", function () {
 
     describe('WidgetHome.loopPlaylist', function () {
         it('should toggle the value of WidgetHome.settings.loopPlaylist', function () {
-            controller.settings = {loopPlaylist : true};
+            controller.settings = {loopPlaylist: true};
             controller.loopPlaylist();
             expect(controller.settings.loopPlaylist).toBeFalsy();
         });
@@ -167,8 +177,8 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.addToPlaylist', function () {
 
         it('should call the media player method addToPlaylist', function () {
-            controller.info = {data:{content:{soundcloudClientID:'a'}}};
-            controller.addToPlaylist({title:'p',user:{username:'a'}});
+            controller.info = {data: {content: {soundcloudClientID: 'a'}}};
+            controller.addToPlaylist({title: 'p', user: {username: 'a'}});
             expect(BF.services.media.audioPlayer.addToPlaylist).toHaveBeenCalled();
         });
     });
@@ -176,7 +186,7 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.pauseTrack', function () {
 
         it('should call media player pause', function () {
-            controller.info = {data:{content:{soundcloudClientID:'a'}}};
+            controller.info = {data: {content: {soundcloudClientID: 'a'}}};
             controller.pauseTrack();
             expect(BF.services.media.audioPlayer.pause).toHaveBeenCalled();
         });
@@ -185,8 +195,8 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.playTrack', function () {
 
         it('should call media player play', function () {
-            controller.info = {data:{content:{soundcloudClientID:'a'}}};
-            controller.currentTrack = {stream_url:''};
+            controller.info = {data: {content: {soundcloudClientID: 'a'}}};
+            controller.currentTrack = {stream_url: ''};
             controller.playTrack();
             expect(BF.services.media.audioPlayer.play).toHaveBeenCalled();
         });
@@ -195,8 +205,8 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.forward', function () {
 
         it('should call media player setTime', function () {
-            controller.info = {data:{content:{soundcloudClientID:'a'}}};
-            controller.currentTrack = {stream_url:''};
+            controller.info = {data: {content: {soundcloudClientID: 'a'}}};
+            controller.currentTrack = {stream_url: ''};
             controller.forward();
             expect(BF.services.media.audioPlayer.setTime).toHaveBeenCalled();
         });
@@ -205,8 +215,8 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.backward', function () {
 
         it('should call media player setTime', function () {
-            controller.info = {data:{content:{soundcloudClientID:'a'}}};
-            controller.currentTrack = {stream_url:''};
+            controller.info = {data: {content: {soundcloudClientID: 'a'}}};
+            controller.currentTrack = {stream_url: ''};
             controller.backward();
             expect(BF.services.media.audioPlayer.setTime).toHaveBeenCalled();
         });
@@ -215,7 +225,7 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.shufflePlaylist', function () {
 
         it('should call media player setTime', function () {
-            controller.info = {data:{content:{soundcloudClientID:'a'}}};
+            controller.info = {data: {content: {soundcloudClientID: 'a'}}};
             controller.settings = {};
             controller.shufflePlaylist();
             expect(BF.services.media.audioPlayer.settings.set).toHaveBeenCalled();
@@ -225,8 +235,15 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.changeVolume', function () {
 
         it('should call media player settings set', function () {
-            controller.info = {data:{content:{soundcloudClientID:'a'}}};
+            controller.info = {data: {content: {soundcloudClientID: 'a'}}};
             controller.settings = {};
+            controller.changeVolume();
+            expect(BF.services.media.audioPlayer.settings.set).toHaveBeenCalled();
+        });
+
+        it('should call media player settings set', function () {
+            controller.info = {data: {content: {soundcloudClientID: 'a'}}};
+            controller.settings = null;
             controller.changeVolume();
             expect(BF.services.media.audioPlayer.settings.set).toHaveBeenCalled();
         });
@@ -259,7 +276,7 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.setSettings', function () {
 
         it('should call settings set', function () {
-            controller.setSettings({autoPlayNext:0,loopPlaylist:0,autoJumpToLastPosition:0,shufflePlaylist:0});
+            controller.setSettings({autoPlayNext: 0, loopPlaylist: 0, autoJumpToLastPosition: 0, shufflePlaylist: 0});
             expect(BF.services.media.audioPlayer.settings.set).toHaveBeenCalled();
         });
     });
@@ -272,21 +289,107 @@ describe("WidgetHomeCtrl", function () {
         });
     });
 
-    xdescribe('WidgetHome.removeFromPlaylist', function () {
+    describe('WidgetHome.addEvents', function () {
 
-        it('should call settings set', function () {
-            controller.removeFromPlaylist();
-            //expect(BF.services.media.audioPlayer.settings.set).toHaveBeenCalled();
+        it('should make the WidgetHome.swiped index to value of toggle', function () {
+            controller.swiped = [];
+            controller.addEvents({}, 0, false);
+            expect(controller.swiped[0]).toBeFalsy();
+        });
+    });
+
+    describe('WidgetHome.removeTrackFromPlayList', function () {
+
+        it('should make the WidgetHome.swiped index to value of toggle', function () {
+            controller.removeTrackFromPlayList(1);
+            expect(BF.services.media.audioPlayer.removeFromPlaylist).toHaveBeenCalled();
+        });
+    });
+
+
+    describe('WidgetHome.playlistPlay', function () {
+
+        it('should call the play function', function () {
+            controller.playlistPlay({url: 'a'});
+            expect(BF.services.media.audioPlayer.play).toHaveBeenCalled();
+        });
+    });
+
+    describe('WidgetHome.playlistPause', function () {
+
+        it('should call the play function', function () {
+            controller.playlistPause({url: 'a'});
+            expect(BF.services.media.audioPlayer.pause).toHaveBeenCalled();
+        });
+    });
+
+    describe('WidgetHome.removeFromPlaylist', function () {
+
+        it('should remove from the playlist', function () {
+            controller.playList = [{url:'a?client_id=a',stream_url: 'a',title:'',tag_list:'',artwork_url:'',user:{username:""}}];
+            controller.info = {data:{content:{soundcloudClientID:'a'}}};
+            controller.removeFromPlaylist({stream_url: 'a',title:'',tag_list:'',artwork_url:'',user:{username:""}});
+            expect(BF.services.media.audioPlayer.removeFromPlaylist).toHaveBeenCalled();
+        });
+    });
+
+
+    describe('$scope.$on("destroy currentTrack"', function () {
+
+        it('should call WidgetHome.duration to empty string', function () {
+            $scope.$apply(function() {
+                $rootScope.$broadcast('destroy currentTrack');
+            });
+            expect(controller.duration).toEqual('');
+        });
+    });
+
+    describe('WidgetHome.onUpdateCallback', function () {
+
+        it('should call WidgetHome.duration to empty string', function () {
+            controller.initCarousel = jasmine.createSpy();
+            controller.onUpdateCallback({data:{content:{link:'',soundcloudClientID:'a'},design:{}}});
+            expect(controller.initCarousel).toHaveBeenCalled();
+        });
+    });
+
+    describe('$scope.$on("Carousel:LOADED"', function () {
+
+        it('should call initCarousel if thereis images data', function () {
+            controller.view = {};
+            controller.info = {data:{}};
+            controller.initCarousel = jasmine.createSpy();
+            $scope.$apply(function() {
+                $rootScope.$broadcast('Carousel:LOADED');
+            });
+            expect(controller.initCarousel).toHaveBeenCalled();
+        });
+
+        it('should call initCarousel if there is no images data', function () {
+            controller.view = {};
+
+            //controller.info = {data:{}};
+            controller.view.loadItems = jasmine.createSpy();
+            $scope.$apply(function() {
+                $rootScope.$broadcast('Carousel:LOADED');
+            });
+            expect(controller.view.loadItems).toHaveBeenCalled();
         });
     });
 
     xdescribe('Initial Data fetch', function () {
         it('should set the info to default data in case fetch fails', function () {
             controller.SoundCloudInfoContent = {
-                loadItems:jasmine.createSpy()
+                get: function () {
+                    var _q = q.defer();
+                    _q.resolve('');
+                    console.log(156);
+                    return _q.promise;
+                }
             };
-            controller.loadItems();
-            expect(controller.view.loadItems).toHaveBeenCalled();
+            controller.SoundCloudInfoContent.get();
+            $scope.$apply();
+            //expect(controller.view.loadItems).toHaveBeenCalled();
         });
     });
 })

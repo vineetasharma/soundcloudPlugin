@@ -159,11 +159,11 @@
                     }
                 };
                 WidgetHome.playlistPlay = function (track) {
-                    console.log('PlayList Play ---------------',track);
+                    console.log('PlayList Play ---------------', track);
                     WidgetHome.playing = true;
-                    if(track){
+                    if (track) {
                         audioPlayer.play({url: track.url});
-                        track.playing=true;
+                        track.playing = true;
                     }
                     $scope.$digest();
                 };
@@ -245,9 +245,7 @@
                      }*/
                 };
                 WidgetHome.removeTrackFromPlayList = function (index) {
-                    console.log('Track removed from playlist -------------using index----', index);
-                    if (index)
-                        audioPlayer.removeFromPlaylist(index);
+                    audioPlayer.removeFromPlaylist(index);
 
                 };
                 WidgetHome.getFromPlaylist = function () {
@@ -366,7 +364,7 @@
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
 
-                var onUpdateCallback = function (event) {
+                WidgetHome.onUpdateCallback = function (event) {
                     if (event.data) {
                         WidgetHome.info = event;
                         if (WidgetHome.info.data && WidgetHome.info.data.design)
@@ -382,7 +380,7 @@
 
                 };
 
-                var listener = Buildfire.datastore.onUpdate(onUpdateCallback);
+                var listener = Buildfire.datastore.onUpdate(WidgetHome.onUpdateCallback);
 
             }]);
 })(window.angular);
