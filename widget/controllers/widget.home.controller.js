@@ -163,6 +163,8 @@
                     }
                 };
                 WidgetHome.playlistPlay = function (track) {
+                    WidgetHome.showTrackSlider=true;
+                    WidgetHome.currentTrack=track;
                     console.log('PlayList Play ---------------', track);
                     WidgetHome.playing = true;
                     if (track) {
