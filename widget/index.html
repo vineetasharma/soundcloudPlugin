@@ -47,7 +47,7 @@
         : 'background: white'
 }}" class="infinite-scroll-parent">
 <div ng-controller="WidgetHomeCtrl as WidgetHome">
-    <div style="display:none;" id="listDiv">
+    <div ng-if="!playTrack" style="display:none;" id="listDiv">
         <div ng-include="'templates/home.html'">
         </div>
     </div>
