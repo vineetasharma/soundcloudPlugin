@@ -1,7 +1,7 @@
 {
   "author":"BuildFire"
 ,"pluginName":"SoundCloudPlugin"
-,"pluginDescription":"This plugin is used for playing audio and video media files using sound Cloud."
+,"pluginDescription":"With the SoundCloud plugin, simply enter your SoundCloud URL and automatically sync your tracks."
 ,"supportEmail":"support@buildfire.com"
 ,"control":{
   "content":{
