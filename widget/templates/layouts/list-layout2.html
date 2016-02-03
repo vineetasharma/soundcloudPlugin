@@ -14,7 +14,7 @@
              infinite-scroll-distance="1"
              data-infinite-container=".infinite-scroll-parent"
              infinite-scroll-disabled="WidgetHome.noMore">
-            <div class="clickable list-item text-overlay" ng-repeat="track in WidgetHome.tracks"
+            <div class="clickable list-item text-overlay" ng-repeat="track in WidgetHome.tracks track by track.id"
                  ng-click="WidgetHome.goToTrack(track)">
                 <div class="list-item-media text-left overflow-hidden">
                     <div class="list-media-holder pull-left text-overlay" ng-if="track.artwork_url">

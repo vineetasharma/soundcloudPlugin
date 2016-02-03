@@ -387,6 +387,13 @@
 
                 };
 
+                WidgetHome.playlistPlayPause = function (track) {
+                    if (track.playing)
+                        WidgetHome.playlistPause(track);
+                    else
+                        WidgetHome.playlistPlay(track);
+                };
+
                 var listener = Buildfire.datastore.onUpdate(WidgetHome.onUpdateCallback);
 
             }]);
