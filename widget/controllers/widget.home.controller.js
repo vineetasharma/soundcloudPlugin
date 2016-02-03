@@ -101,9 +101,7 @@
                                         WidgetHome.noTracks = true;
                                     }
                                 }
-                                else {
-                                    WidgetHome.tracks = WidgetHome.tracks.concat(d);
-                                }
+                                WidgetHome.tracks = WidgetHome.tracks.concat(d);
 
                                 console.log('WidgetHome.tracks', WidgetHome.tracks);
                                 $scope.$digest();
