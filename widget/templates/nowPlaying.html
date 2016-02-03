@@ -16,7 +16,7 @@
     'z-index': '0'}"></div>
     <div class="media-center-plugin">
         <div class="media-header-link">
-            <a ng-click="WidgetHome.getFromPlaylist()">Playlist</a>
+            <a class="whiteTheme" ng-click="WidgetHome.getFromPlaylist()">Playlist</a>
         </div>
         <div class="media-holder margin-top-fifteen">
             <div class="media-inner text-center">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="media-player-info margin-top-twenty padding-left-ten padding-right-ten">
-            <h4 class="margin-zero ellipsis">{{WidgetHome.currentTrack.title}}</h4>
+            <h4 class="margin-zero ellipsis whiteTheme">{{WidgetHome.currentTrack.title}}</h4>
 
             <p class="margin-zero whiteTheme ellipsis">{{WidgetHome.currentTrack.user.username}}{{WidgetHome.currentTrack.artist}}</p>
         </div>
@@ -55,24 +55,24 @@
             </div>
         </div>
         <div class="text-center margin-top-fifteen">
-            <span class="icon icon-dots"></span>
+            <span class="icon icon-dots whiteTheme"></span>
         </div>
         <div class="media-player-action-btns">
             <!--<span class="icon icon-volume-high icon-sm" ng-click="WidgetHome.showVolume=!WidgetHome.showVolume"></span>-->
-            <span class="icon icon-ellipsis icon-sm" ng-click="WidgetHome.openMoreInfoOverlay()"></span>
-            <span class="icon icon-cog icon-sm" ng-click="WidgetHome.getSettings()"></span>
+            <span class="icon icon-ellipsis icon-sm whiteTheme" ng-click="WidgetHome.openMoreInfoOverlay()"></span>
+            <span class="icon icon-cog icon-sm whiteTheme" ng-click="WidgetHome.getSettings()"></span>
         </div>
         <div class="media-player-btns margin-top-ten">
-            <span class="icon icon-shuffle icon-sm" ng-click="WidgetHome.shufflePlaylist()"></span>
-            <span class="icon icon-backward-circle" ng-click="WidgetHome.backward()"></span>
-            <span ng-if="!WidgetHome.playing" class="icon icon-play-circle icon-main"
+            <span class="icon icon-shuffle icon-sm whiteTheme" ng-click="WidgetHome.shufflePlaylist()"></span>
+            <span class="icon icon-backward-circle whiteTheme" ng-click="WidgetHome.backward()"></span>
+            <span ng-if="!WidgetHome.playing" class="icon icon-play-circle icon-main whiteTheme"
                   ng-click="WidgetHome.playTrack()"></span>
-            <span ng-if="WidgetHome.playing" class="icon icon-pause-circle icon-main"
+            <span ng-if="WidgetHome.playing" class="icon icon-pause-circle icon-main whiteTheme"
                   ng-click="WidgetHome.pauseTrack()"></span>
-            <span class="icon icon-forward-circle" ng-click="WidgetHome.forward()"></span>
-            <span class="icon icon-repeat icon-sm" ng-click="WidgetHome.loopPlaylist()"></span>
-            <span class="icon icon-repeat-one icon-sm primaryTheme hidden"></span>
-            <span class="icon icon-repeat icon-sm primaryTheme hidden"></span>
+            <span class="icon icon-forward-circle whiteTheme" ng-click="WidgetHome.forward()"></span>
+            <span class="icon icon-repeat icon-sm whiteTheme" ng-click="WidgetHome.loopPlaylist()"></span>
+            <span class="icon icon-repeat-one icon-sm primaryTheme hidden whiteTheme"></span>
+            <span class="icon icon-repeat icon-sm primaryTheme hidden whiteTheme"></span>
         </div>
     </div>
 
@@ -91,7 +91,7 @@
                                 <img ng-if="track.image" ng-src="{{track.image | cropImage : 55 :22}}">
                             </div>
                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                <p class="margin-bottom-zero ellipsis margin-top-twenty">{{track.title}}</p>
+                                <p class="margin-bottom-zero ellipsis margin-top-twenty whiteTheme">{{track.title}}</p>
                             </div>
                             <div class="btns text-center">
                                 <!--<a ng-if="!track.playing" class="icon icon-play-circle" ng-click="WidgetHome.playlistPlay(track)"></a>
@@ -99,13 +99,15 @@
                                 <a ng-class="track.playing ? 'icon-pause-circle primaryTheme' : 'icon-play-circle'" class="icon " ng-click="WidgetHome.playlistPlayPause(track)"></a>
                             </div>
                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;" ng-click="WidgetHome.removeTrackFromPlayList($index)">
-                                <span>Remove</span>
+                                <span class="whiteTheme">Remove</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <a ng-click="WidgetHome.closePlayListOverlay()">Done</a>
+			<div class="margin-top-ten margin-bottom-ten">
+            	<a ng-click="WidgetHome.closePlayListOverlay()" class="whiteTheme">Done</a>
+			</div>
         </div>
     </div>
 
@@ -122,19 +124,19 @@
                 </div>
                 <hr class="none">
                 <div class="media-player-info margin-top-twenty padding-left-ten padding-right-ten">
-                    <h4 class="margin-zero ellipsis">{{WidgetHome.currentTrack.title}}</h4>
+                    <h4 class="margin-zero ellipsis whiteTheme">{{WidgetHome.currentTrack.title}}</h4>
                     <p class="margin-zero ellipsis whiteTheme">{{WidgetHome.currentTrack.user.username}}</p>
                 </div>
                 <hr class="none">
                 <div class="more-info-list padded">
                     <div class="text-center item">
-                        <a ng-click="WidgetHome.getFromPlaylist()">Go to Playlist</a>
+                        <a ng-click="WidgetHome.getFromPlaylist()" class="whiteTheme">Go to Playlist</a>
                     </div>
                     <div class="text-center item">
-                        <a ng-click="WidgetHome.addToPlaylist(WidgetHome.currentTrack)">Add to Playlist</a>
+                        <a ng-click="WidgetHome.addToPlaylist(WidgetHome.currentTrack)" class="whiteTheme">Add to Playlist</a>
                     </div>
                     <div class="text-center item">
-                        <a ng-click="WidgetHome.removeFromPlaylist(WidgetHome.currentTrack)">Remove from Playlist</a>
+                        <a ng-click="WidgetHome.removeFromPlaylist(WidgetHome.currentTrack)" class="whiteTheme">Remove from Playlist</a>
                     </div>
                     <!--<div class="text-center item">
                         <a>Purchase</a>
@@ -143,7 +145,7 @@
                         <a>Share</a>
                     </div>-->
                     <div class="text-center item">
-                        <a ng-click="WidgetHome.closeMoreInfoOverlay()">Cancel</a>
+                        <a ng-click="WidgetHome.closeMoreInfoOverlay()" class="whiteTheme">Cancel</a>
                     </div>
                 </div>
             </div>
@@ -206,7 +208,9 @@
                     </div>
                 </div>
             </div>
-            <a ng-click="WidgetHome.closeSettingsOverlay()">Done</a>
+			<div class="margin-top-ten margin-bottom-ten">
+	            <a ng-click="WidgetHome.closeSettingsOverlay()" class="whiteTheme">Done</a>
+			</div>
         </div>
     </div>
 </div>
