@@ -28,9 +28,7 @@
                 });
             };
 
-            that.getTracks = function (link, page) {
-                var page_size = 7;
-
+            that.getTracks = function (link, page, page_size) {
 
                 return SC.resolve(link).then(function (type) {
                     console.log('type', type);
