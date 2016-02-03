@@ -15,6 +15,7 @@
                 WidgetHome.volume = 1;
 
                 WidgetHome.page = -1;
+                WidgetHome.pageSize = 8;
                 WidgetHome.noMore = false;
                 WidgetHome.isBusy = false;
 
@@ -74,9 +75,14 @@
                 );
 
                 WidgetHome.goToTrack = function (track) {
+                    WidgetHome.showTrackSlider=false;
                     console.log('Goto Track called---------------------------------------', track);
+                    audioPlayer.pause();
                     $rootScope.playTrack = true;
+                    WidgetHome.currentTime = null;
+                    WidgetHome.duration = null;
                     WidgetHome.currentTrack = track;
+                    console.log('In track------------------------WidgetHome.currentTime',WidgetHome.currentTime,'WidgetHome.duration========',WidgetHome.duration);
                     console.log('Goto Track called---------------$rootScope playTrack------------------------', $rootScope.playTrack);
                     if (!$rootScope.$$phase)$rootScope.$digest();
                 };
@@ -88,22 +94,20 @@
                     console.log('WidgetHome.page', WidgetHome.page);
                     WidgetHome.isBusy = true;
                     if (WidgetHome.info && WidgetHome.info.data && WidgetHome.info.data.content && WidgetHome.info.data.content.link)
-                        soundCloudAPI.getTracks(WidgetHome.info.data.content.link, ++WidgetHome.page)
+                        soundCloudAPI.getTracks(WidgetHome.info.data.content.link, ++WidgetHome.page,WidgetHome.pageSize)
                             .then(function (data) {
                                 WidgetHome.noTracks = false;
                                 console.log('Got tracks--------------------------', data);
                                 WidgetHome.isBusy = false;
                                 var d = data.collection;
-                                if (d.length < 7) {
+                                if (d.length < WidgetHome.pageSize) {
                                     WidgetHome.noMore = true;
 
                                     if (WidgetHome.page == 0 && d.length == 0) {
                                         WidgetHome.noTracks = true;
                                     }
                                 }
-                                else {
-                                    WidgetHome.tracks = WidgetHome.tracks.concat(d);
-                                }
+                                WidgetHome.tracks = WidgetHome.tracks.concat(d);
 
                                 console.log('WidgetHome.tracks', WidgetHome.tracks);
                                 $scope.$digest();
@@ -150,6 +154,7 @@
                  * Player related method and variables
                  */
                 WidgetHome.playTrack = function () {
+                    WidgetHome.showTrackSlider=true;
                     console.log('Widget HOme url----------------------', WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID);
                     WidgetHome.playing = true;
                     if (WidgetHome.paused) {
@@ -159,11 +164,13 @@
                     }
                 };
                 WidgetHome.playlistPlay = function (track) {
-                    console.log('PlayList Play ---------------',track);
+                    WidgetHome.showTrackSlider=true;
+                    WidgetHome.currentTrack=track;
+                    console.log('PlayList Play ---------------', track);
                     WidgetHome.playing = true;
-                    if(track){
+                    if (track) {
                         audioPlayer.play({url: track.url});
-                        track.playing=true;
+                        track.playing = true;
                     }
                     $scope.$digest();
                 };
@@ -245,9 +252,7 @@
                      }*/
                 };
                 WidgetHome.removeTrackFromPlayList = function (index) {
-                    console.log('Track removed from playlist -------------using index----', index);
-                    if (index)
-                        audioPlayer.removeFromPlaylist(index);
+                    audioPlayer.removeFromPlaylist(index);
 
                 };
                 WidgetHome.getFromPlaylist = function () {
@@ -319,11 +324,12 @@
                     }
                 });
                 $scope.$on("destroy currentTrack", function () {
-                    WidgetHome.currentTime = 0.0;
+                    WidgetHome.currentTime = null;
                     WidgetHome.playing = false;
                     WidgetHome.paused = false;
                     WidgetHome.currentTrack = null;
                     WidgetHome.duration = '';
+                    WidgetHome.showTrackSlider=false;
                 });
 
                 /**
@@ -366,7 +372,7 @@
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
 
-                var onUpdateCallback = function (event) {
+                WidgetHome.onUpdateCallback = function (event) {
                     if (event.data) {
                         WidgetHome.info = event;
                         if (WidgetHome.info.data && WidgetHome.info.data.design)
@@ -382,7 +388,14 @@
 
                 };
 
-                var listener = Buildfire.datastore.onUpdate(onUpdateCallback);
+                WidgetHome.playlistPlayPause = function (track) {
+                    if (track.playing)
+                        WidgetHome.playlistPause(track);
+                    else
+                        WidgetHome.playlistPlay(track);
+                };
+
+                var listener = Buildfire.datastore.onUpdate(WidgetHome.onUpdateCallback);
 
             }]);
 })(window.angular);
