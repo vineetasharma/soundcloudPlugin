@@ -16,7 +16,7 @@
                      infinite-scroll-distance="1"
                      data-infinite-container=".infinite-scroll-parent"
                      infinite-scroll-disabled="WidgetHome.noMore">
-                    <div class="clickable col-xs-6 pull-left text-overlay" ng-repeat="track in WidgetHome.tracks track by track.id"
+                    <div class="clickable col-xs-6 pull-left text-overlay" ng-repeat="track in WidgetHome.tracks"
                          ng-click="WidgetHome.goToTrack(track)" ng-class-odd="list-item-odd"
                          ng-class-even="list-item-even">
                         <div class="list-item-media text-center border-radius-three overflow-hidden text-overlay">

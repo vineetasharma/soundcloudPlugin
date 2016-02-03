@@ -15,6 +15,7 @@
                 WidgetHome.volume = 1;
 
                 WidgetHome.page = -1;
+                WidgetHome.pageSize = 8;
                 WidgetHome.noMore = false;
                 WidgetHome.isBusy = false;
 
@@ -93,13 +94,13 @@
                     console.log('WidgetHome.page', WidgetHome.page);
                     WidgetHome.isBusy = true;
                     if (WidgetHome.info && WidgetHome.info.data && WidgetHome.info.data.content && WidgetHome.info.data.content.link)
-                        soundCloudAPI.getTracks(WidgetHome.info.data.content.link, ++WidgetHome.page)
+                        soundCloudAPI.getTracks(WidgetHome.info.data.content.link, ++WidgetHome.page,WidgetHome.pageSize)
                             .then(function (data) {
                                 WidgetHome.noTracks = false;
                                 console.log('Got tracks--------------------------', data);
                                 WidgetHome.isBusy = false;
                                 var d = data.collection;
-                                if (d.length < 7) {
+                                if (d.length < WidgetHome.pageSize) {
                                     WidgetHome.noMore = true;
 
                                     if (WidgetHome.page == 0 && d.length == 0) {
