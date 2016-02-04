@@ -654,6 +654,11 @@ input.volume-button[type=range]:focus::-ms-fill-upper {
 	font-style:normal;
   }
 
+.bold{
+	font-weight: bold;
+}
+
+/*
 .pausecount-ui:before {
     content: "\e613 ";
     font-family: 'icomoon';
@@ -663,4 +668,4 @@ input.volume-button[type=range]:focus::-ms-fill-upper {
 	top:1px;
     margin-right: 3px;
 	font-style:normal;
-  }
+  }*/

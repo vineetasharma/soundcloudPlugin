@@ -14,7 +14,7 @@
              infinite-scroll-distance="1"
              data-infinite-container=".infinite-scroll-parent"
              infinite-scroll-disabled="WidgetHome.noMore">
-            <div class="clickable list-item text-overlay" ng-repeat="track in WidgetHome.tracks"
+            <div ng-class="track.isPlaying ? 'bold':''" class="clickable list-item text-overlay" ng-repeat="track in WidgetHome.tracks"
                  ng-click="WidgetHome.goToTrack(track)">
                 <div class="list-item-media text-left overflow-hidden">
                     <div class="list-media-holder pull-left text-overlay" ng-if="track.artwork_url">
@@ -24,7 +24,7 @@
                         <p class="track-title ellipsis margin-zero text-primary"><a class="text-primary">{{track.title}}</a></p>
                         <p class="summary ellipsis margin-zero">{{track.user.username}}</p>
                         <!--<span class="list-item-date">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>-->
-                        <span class="list-item-date" ng-class="track.isPlaying ? 'pausecount-ui' : 'playcount-ui'">{{track.playback_count | number}}</span>
+                        <span class="list-item-date playcount-ui">{{track.playback_count | number}}</span>
 						<span class="duration-ui">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
                     </div>
                 </div>
