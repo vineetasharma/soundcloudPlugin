@@ -178,6 +178,7 @@
                         audioPlayer.play(track);
                         track.playing = true;
                     }
+                    WidgetHome.getFromPlaylist();
                     $scope.$digest();
                 };
                 WidgetHome.pauseTrack = function () {
@@ -263,13 +264,42 @@
 
                 };
                 WidgetHome.getFromPlaylist = function () {
-                    audioPlayer.getPlaylist(function (err, data) {
-                        console.log('Callback---------getList--------------', err, data);
-                        if (data && data.tracks) {
-                            WidgetHome.playList = data.tracks;
-                            $scope.$digest();
-                        }
-                    });
+                    var trackIndex= 0,
+                        trackIndex1=0;
+                    if(WidgetHome.playList && WidgetHome.playList.length>0){
+                        WidgetHome.playList.filter(function(val,index){
+                            if(((val.url==WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex == 0)){
+                                trackIndex++;
+                                val.playing=true;
+                            }
+                            else{
+                                val.playing=false;
+                            }
+
+                        });
+                        /*forEach(WidgetHome.playList,function(val){
+                            if(val.url==)
+                        });*/
+                    }
+                    else{
+                        audioPlayer.getPlaylist(function (err, data) {
+                            console.log('Callback---------getList--------------', err, data);
+                            if (data && data.tracks) {
+                                WidgetHome.playList = data.tracks;
+                                WidgetHome.playList.filter(function(val,index){
+                                    if(((val.url==WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex1 == 0)){
+                                        trackIndex1++;
+                                        val.playing=true;
+                                    }
+                                    else{
+                                        val.playing=false;
+                                    }
+
+                                });
+                                $scope.$digest();
+                            }
+                        });
+                    }
                     WidgetHome.openMoreInfo = false;
                     WidgetHome.openPlaylist = true;
                 };
