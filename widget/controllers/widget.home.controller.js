@@ -78,6 +78,9 @@
                     WidgetHome.showTrackSlider=false;
                     console.log('Goto Track called---------------------------------------', track);
                     audioPlayer.pause();
+                    $timeout(function(){
+                        WidgetHome.playTrack();
+                    },1000);
                     $rootScope.playTrack = true;
                     WidgetHome.currentTime = null;
                     WidgetHome.duration = null;
