@@ -241,7 +241,6 @@
                     audioPlayer.addToPlaylist(playListTrack);
                 };
                 WidgetHome.removeFromPlaylist = function (track) {
-                    var playListTrack = new Track(track.title, track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID, track.artwork_url, track.tag_list, track.user.username);
                     console.log('removeFromPlaylist called-------------------------------');
                     if (WidgetHome.playList) {
                         var trackIndex = 0;
