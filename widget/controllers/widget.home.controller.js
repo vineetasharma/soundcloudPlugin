@@ -63,6 +63,7 @@
                                 WidgetHome.refreshTracks();
                                 WidgetHome.loadMore();
                             }
+                            WidgetHome.initCarousel();
 
                         }
                         else {
@@ -75,14 +76,17 @@
                 );
 
                 WidgetHome.goToTrack = function (track) {
-                    WidgetHome.showTrackSlider=false;
+                    WidgetHome.showTrackSlider = false;
+                    console.log('Goto Track called---------------------------------------', track);
                     audioPlayer.pause();
+                    $timeout(function () {
+                        WidgetHome.playTrack();
+                    }, 1000);
                     $rootScope.playTrack = true;
                     WidgetHome.currentTime = null;
                     WidgetHome.duration = null;
                     WidgetHome.currentTrack = track;
-                    console.log('Goto Track called---------------------------------------', track);
-                    console.log('In track------------------------WidgetHome.currentTime',WidgetHome.currentTime,'WidgetHome.duration========',WidgetHome.duration);
+                    console.log('In track------------------------WidgetHome.currentTime', WidgetHome.currentTime, 'WidgetHome.duration========', WidgetHome.duration);
                     console.log('Goto Track called---------------$rootScope playTrack------------------------', $rootScope.playTrack);
                     if (!$rootScope.$$phase)$rootScope.$digest();
                 };
@@ -94,7 +98,7 @@
                     console.log('WidgetHome.page', WidgetHome.page);
                     WidgetHome.isBusy = true;
                     if (WidgetHome.info && WidgetHome.info.data && WidgetHome.info.data.content && WidgetHome.info.data.content.link)
-                        soundCloudAPI.getTracks(WidgetHome.info.data.content.link, ++WidgetHome.page,WidgetHome.pageSize)
+                        soundCloudAPI.getTracks(WidgetHome.info.data.content.link, ++WidgetHome.page, WidgetHome.pageSize)
                             .then(function (data) {
                                 WidgetHome.noTracks = false;
                                 console.log('Got tracks--------------------------', data);
@@ -154,7 +158,7 @@
                  * Player related method and variables
                  */
                 WidgetHome.playTrack = function () {
-                    WidgetHome.showTrackSlider=true;
+                    WidgetHome.showTrackSlider = true;
                     console.log('Widget HOme url----------------------', WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID);
                     WidgetHome.playing = true;
                     WidgetHome.currentTrack.isPlaying = true;
@@ -166,16 +170,19 @@
                     if (WidgetHome.paused) {
                         audioPlayer.play();
                     } else {
-                        audioPlayer.play({url: WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID});
+                        audioPlayer.play({
+                            url: WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID,
+                            title: WidgetHome.currentTrack.title
+                        });
                     }
                 };
                 WidgetHome.playlistPlay = function (track) {
-                    WidgetHome.showTrackSlider=true;
-                    WidgetHome.currentTrack=track;
-                    console.log('PlayList Play ---------------', track);
+                    WidgetHome.showTrackSlider = true;
+                    WidgetHome.currentTrack = track;
+                    console.log('PlayList Play ---------------Track is played', track);
                     WidgetHome.playing = true;
                     if (track) {
-                        audioPlayer.play({url: track.url});
+                        audioPlayer.play(track);
                         track.playing = true;
                     }
                     $scope.$digest();
@@ -242,13 +249,14 @@
                     audioPlayer.addToPlaylist(playListTrack);
                 };
                 WidgetHome.removeFromPlaylist = function (track) {
-                    var playListTrack = new Track(track.title, track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID, track.artwork_url, track.tag_list, track.user.username);
                     console.log('removeFromPlaylist called-------------------------------');
                     if (WidgetHome.playList) {
-                        var trackIndex;
+                        var trackIndex = 0;
                         WidgetHome.playList.filter(function (val, index) {
-                            if (val.url == track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID)
+                            if (((val.url == track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == track.url) && (trackIndex == 0)) {
                                 audioPlayer.removeFromPlaylist(index);
+                                trackIndex++;
+                            }
                             return index;
 
                         });
@@ -319,7 +327,7 @@
                     WidgetHome.page = -1;
                 };
 
-                $scope.$on("Carousel:LOADED", function () {
+              /*  $scope.$on("Carousel:LOADED", function () {
                     if (!WidgetHome.view) {
                         WidgetHome.view = new window.buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                     }
@@ -329,14 +337,15 @@
                     else {
                         WidgetHome.view.loadItems([]);
                     }
-                });
+                });*/
+
                 $scope.$on("destroy currentTrack", function () {
                     WidgetHome.currentTime = null;
                     WidgetHome.playing = false;
                     WidgetHome.paused = false;
                     WidgetHome.currentTrack = null;
                     WidgetHome.duration = '';
-                    WidgetHome.showTrackSlider=false;
+                    WidgetHome.showTrackSlider = false;
                 });
 
                 /**
