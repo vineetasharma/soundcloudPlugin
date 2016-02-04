@@ -39,7 +39,7 @@
                             //console.log('Info got---------------');
                             updateMasterInfo(data.data);
                             DesignHome.info=data;
-                            if(data.data.design.bgImage){
+                            if(data.data.design && data.data.design.bgImage){
                                 background.loadbackground(DesignHome.info.data.design.bgImage);
                             }
                         }

@@ -76,12 +76,12 @@
 
                 WidgetHome.goToTrack = function (track) {
                     WidgetHome.showTrackSlider=false;
-                    console.log('Goto Track called---------------------------------------', track);
                     audioPlayer.pause();
                     $rootScope.playTrack = true;
                     WidgetHome.currentTime = null;
                     WidgetHome.duration = null;
                     WidgetHome.currentTrack = track;
+                    console.log('Goto Track called---------------------------------------', track);
                     console.log('In track------------------------WidgetHome.currentTime',WidgetHome.currentTime,'WidgetHome.duration========',WidgetHome.duration);
                     console.log('Goto Track called---------------$rootScope playTrack------------------------', $rootScope.playTrack);
                     if (!$rootScope.$$phase)$rootScope.$digest();
@@ -157,6 +157,12 @@
                     WidgetHome.showTrackSlider=true;
                     console.log('Widget HOme url----------------------', WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID);
                     WidgetHome.playing = true;
+                    WidgetHome.currentTrack.isPlaying = true;
+                    WidgetHome.tracks.forEach(function (track) {
+                        if(track.id != WidgetHome.currentTrack.id) {
+                            track.isPlaying = false;
+                        }
+                    });
                     if (WidgetHome.paused) {
                         audioPlayer.play();
                     } else {
@@ -177,6 +183,7 @@
                 WidgetHome.pauseTrack = function () {
                     WidgetHome.playing = false;
                     WidgetHome.paused = true;
+                    WidgetHome.currentTrack.isPlaying = false;
                     audioPlayer.pause();
                     $scope.$digest();
                 };

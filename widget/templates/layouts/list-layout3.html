@@ -27,7 +27,7 @@
                     </p>
                     <p class="margin-bottom-zero">{{track.user.username}}</p>
                     <span class="list-item-date duration-ui">{{track.duration | millisecondsToDateTime | date:'mm:ss'}}</span>
-                    <span class="playcount-ui list-item-date">{{track.playback_count | number}}</span>
+                    <span class="list-item-date" ng-class="track.isPlaying ? 'pausecount-ui' : 'playcount-ui'">{{track.playback_count | number}}</span>
                 </div>
             </div>
         </div>
