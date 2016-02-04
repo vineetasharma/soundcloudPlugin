@@ -160,7 +160,7 @@
                     if (WidgetHome.paused) {
                         audioPlayer.play();
                     } else {
-                        audioPlayer.play({url: WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID});
+                        audioPlayer.play({url: WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID, title:WidgetHome.currentTrack.title});
                     }
                 };
                 WidgetHome.playlistPlay = function (track) {
