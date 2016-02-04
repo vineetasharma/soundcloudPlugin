@@ -63,6 +63,7 @@
                                 WidgetHome.refreshTracks();
                                 WidgetHome.loadMore();
                             }
+                            WidgetHome.initCarousel();
 
                         }
                         else {
@@ -160,6 +161,12 @@
                     WidgetHome.showTrackSlider = true;
                     console.log('Widget HOme url----------------------', WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID);
                     WidgetHome.playing = true;
+                    WidgetHome.currentTrack.isPlaying = true;
+                    WidgetHome.tracks.forEach(function (track) {
+                        if(track.id != WidgetHome.currentTrack.id) {
+                            track.isPlaying = false;
+                        }
+                    });
                     if (WidgetHome.paused) {
                         audioPlayer.play();
                     } else {
@@ -184,6 +191,7 @@
                 WidgetHome.pauseTrack = function () {
                     WidgetHome.playing = false;
                     WidgetHome.paused = true;
+                    WidgetHome.currentTrack.isPlaying = false;
                     audioPlayer.pause();
                     $scope.$digest();
                 };
@@ -349,7 +357,7 @@
                     WidgetHome.page = -1;
                 };
 
-                $scope.$on("Carousel:LOADED", function () {
+              /*  $scope.$on("Carousel:LOADED", function () {
                     if (!WidgetHome.view) {
                         WidgetHome.view = new window.buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                     }
@@ -359,7 +367,8 @@
                     else {
                         WidgetHome.view.loadItems([]);
                     }
-                });
+                });*/
+
                 $scope.$on("destroy currentTrack", function () {
                     WidgetHome.currentTime = null;
                     WidgetHome.playing = false;
