@@ -63,6 +63,7 @@
                                 WidgetHome.refreshTracks();
                                 WidgetHome.loadMore();
                             }
+                            WidgetHome.initCarousel();
 
                         }
                         else {
@@ -320,7 +321,7 @@
                     WidgetHome.page = -1;
                 };
 
-                $scope.$on("Carousel:LOADED", function () {
+              /*  $scope.$on("Carousel:LOADED", function () {
                     if (!WidgetHome.view) {
                         WidgetHome.view = new window.buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                     }
@@ -330,7 +331,8 @@
                     else {
                         WidgetHome.view.loadItems([]);
                     }
-                });
+                });*/
+
                 $scope.$on("destroy currentTrack", function () {
                     WidgetHome.currentTime = null;
                     WidgetHome.playing = false;
