@@ -166,10 +166,10 @@
                 WidgetHome.playlistPlay = function (track) {
                     WidgetHome.showTrackSlider=true;
                     WidgetHome.currentTrack=track;
-                    console.log('PlayList Play ---------------', track);
+                    console.log('PlayList Play ---------------Track is played', track);
                     WidgetHome.playing = true;
                     if (track) {
-                        audioPlayer.play({url: track.url});
+                        audioPlayer.play(track);
                         track.playing = true;
                     }
                     $scope.$digest();
