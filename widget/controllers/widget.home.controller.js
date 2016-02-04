@@ -41,9 +41,10 @@
                 };
 
                 WidgetHome.initCarousel = function () {
-                    if (angular.element('#carousel').html() == '') // this is true in case the layout design is changed
+                    if (angular.element('#carousel').hasClass('plugin-slider') == false || WidgetHome.view == null) {
                         WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-
+                        console.log('came heer');
+                    }
                     if (WidgetHome.info && WidgetHome.info.data.content.images.length) {
                         WidgetHome.view.loadItems(WidgetHome.info.data.content.images);
                     } else {
@@ -63,8 +64,9 @@
                                 WidgetHome.refreshTracks();
                                 WidgetHome.loadMore();
                             }
-                            WidgetHome.initCarousel();
-
+                            $timeout(function () {
+                                WidgetHome.initCarousel();
+                            }, 1500);
                         }
                         else {
                             WidgetHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
@@ -357,17 +359,17 @@
                     WidgetHome.page = -1;
                 };
 
-              /*  $scope.$on("Carousel:LOADED", function () {
-                    if (!WidgetHome.view) {
-                        WidgetHome.view = new window.buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                    }
-                    if (WidgetHome.view && WidgetHome.info && WidgetHome.info.data) {
-                        WidgetHome.initCarousel();
-                    }
-                    else {
-                        WidgetHome.view.loadItems([]);
-                    }
-                });*/
+                /*  $scope.$on("Carousel:LOADED", function () {
+                 if (!WidgetHome.view) {
+                 WidgetHome.view = new window.buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
+                 }
+                 if (WidgetHome.view && WidgetHome.info && WidgetHome.info.data) {
+                 WidgetHome.initCarousel();
+                 }
+                 else {
+                 WidgetHome.view.loadItems([]);
+                 }
+                 });*/
 
                 $scope.$on("destroy currentTrack", function () {
                     WidgetHome.currentTime = null;
@@ -428,7 +430,9 @@
                             WidgetHome.refreshTracks();
                             WidgetHome.loadMore();
                         }
-                        WidgetHome.initCarousel();
+                        $timeout(function(){
+                            WidgetHome.initCarousel();
+                        },1500);
                         $scope.$apply();
                     }
 
