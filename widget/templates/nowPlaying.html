@@ -116,8 +116,10 @@
             <div class="media-player-more-info">
                 <div class="media-holder margin-top-thirty">
                     <div class="media-inner text-center">
-                        <img class="border-radius-two"
+                        <img ng-if="WidgetHome.currentTrack.artwork_url" class="border-radius-two"
                              ng-src="{{WidgetHome.currentTrack.artwork_url}}">
+                        <img ng-if="WidgetHome.currentTrack.image" class="border-radius-two"
+                             ng-src="{{WidgetHome.currentTrack.image}}">
                     </div>
                 </div>
                 <hr class="none">
