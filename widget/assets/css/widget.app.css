@@ -619,6 +619,7 @@ input.volume-button[type=range]:focus::-ms-fill-upper {
 	top:8px;
 }
 .playcount-ui,
+.pausecount-ui,
 .duration-ui{
 	font-size:11px;
 	font-style:italic;
@@ -652,3 +653,19 @@ input.volume-button[type=range]:focus::-ms-fill-upper {
     margin-right: 3px;
 	font-style:normal;
   }
+
+.bold{
+	font-weight: bold;
+}
+
+/*
+.pausecount-ui:before {
+    content: "\e613 ";
+    font-family: 'icomoon';
+    font-size: 13px;
+    line-height: 24px;
+    position:relative;
+	top:1px;
+    margin-right: 3px;
+	font-style:normal;
+  }*/
