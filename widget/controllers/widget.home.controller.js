@@ -82,6 +82,7 @@
                     console.log('Goto Track called---------------------------------------', track);
                     audioPlayer.pause();
                     $timeout(function () {
+                        WidgetHome.getSettings(true);
                         WidgetHome.playTrack();
                     }, 1000);
                     $rootScope.playTrack = true;
@@ -165,7 +166,7 @@
                     WidgetHome.playing = true;
                     WidgetHome.currentTrack.isPlaying = true;
                     WidgetHome.tracks.forEach(function (track) {
-                        if(track.id != WidgetHome.currentTrack.id) {
+                        if (track.id != WidgetHome.currentTrack.id) {
                             track.isPlaying = false;
                         }
                     });
@@ -274,35 +275,35 @@
 
                 };
                 WidgetHome.getFromPlaylist = function () {
-                    var trackIndex= 0,
-                        trackIndex1=0;
-                    if(WidgetHome.playList && WidgetHome.playList.length>0){
-                        WidgetHome.playList.filter(function(val,index){
-                            if(((val.url==WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex == 0)){
+                    var trackIndex = 0,
+                        trackIndex1 = 0;
+                    if (WidgetHome.playList && WidgetHome.playList.length > 0) {
+                        WidgetHome.playList.filter(function (val, index) {
+                            if (((val.url == WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex == 0)) {
                                 trackIndex++;
-                                val.playing=true;
+                                val.playing = true;
                             }
-                            else{
-                                val.playing=false;
+                            else {
+                                val.playing = false;
                             }
 
                         });
                         /*forEach(WidgetHome.playList,function(val){
-                            if(val.url==)
-                        });*/
+                         if(val.url==)
+                         });*/
                     }
-                    else{
+                    else {
                         audioPlayer.getPlaylist(function (err, data) {
                             console.log('Callback---------getList--------------', err, data);
                             if (data && data.tracks) {
                                 WidgetHome.playList = data.tracks;
-                                WidgetHome.playList.filter(function(val,index){
-                                    if(((val.url==WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex1 == 0)){
+                                WidgetHome.playList.filter(function (val, index) {
+                                    if (((val.url == WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex1 == 0)) {
                                         trackIndex1++;
-                                        val.playing=true;
+                                        val.playing = true;
                                     }
-                                    else{
-                                        val.playing=false;
+                                    else {
+                                        val.playing = false;
                                     }
 
                                 });
@@ -317,8 +318,9 @@
                     console.log('Change time method called---------------------------------', time);
                     audioPlayer.setTime(time);
                 };
-                WidgetHome.getSettings = function () {
-                    WidgetHome.openSettings = true;
+                WidgetHome.getSettings = function (dontOpen) {
+                    if (!dontOpen)
+                        WidgetHome.openSettings = true;
                     audioPlayer.settings.get(function (err, data) {
                         console.log('Got player settings-----------------------', err, data);
                         if (data) {
@@ -430,9 +432,9 @@
                             WidgetHome.refreshTracks();
                             WidgetHome.loadMore();
                         }
-                        $timeout(function(){
+                        $timeout(function () {
                             WidgetHome.initCarousel();
-                        },1500);
+                        }, 1500);
                         $scope.$apply();
                     }
 
