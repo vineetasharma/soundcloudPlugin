@@ -63,14 +63,14 @@
             <span class="icon icon-cog icon-sm whiteTheme" ng-click="WidgetHome.getSettings()"></span>
         </div>
         <div class="media-player-btns margin-top-ten">
-            <span class="icon icon-shuffle icon-sm whiteTheme" ng-click="WidgetHome.shufflePlaylist()"></span>
+            <span ng-class="(WidgetHome.settings && WidgetHome.settings.shufflePlaylist) ? 'media-player-button-selected' : ''" class="icon icon-shuffle icon-sm whiteTheme" ng-click="WidgetHome.shufflePlaylist()"></span>
             <span class="icon icon-backward-circle whiteTheme" ng-click="WidgetHome.backward()"></span>
             <span ng-if="!WidgetHome.playing" class="icon icon-play-circle icon-main whiteTheme"
                   ng-click="WidgetHome.playTrack()"></span>
             <span ng-if="WidgetHome.playing" class="icon icon-pause-circle icon-main whiteTheme"
                   ng-click="WidgetHome.pauseTrack()"></span>
             <span class="icon icon-forward-circle whiteTheme" ng-click="WidgetHome.forward()"></span>
-            <span class="icon icon-repeat icon-sm whiteTheme" ng-click="WidgetHome.loopPlaylist()"></span>
+            <span ng-class="(WidgetHome.settings && WidgetHome.settings.loopPlaylist) ? 'media-player-button-selected' : ''"  class="icon icon-repeat icon-sm whiteTheme" ng-click="WidgetHome.loopPlaylist()"></span>
             <span class="icon icon-repeat-one icon-sm primaryTheme hidden whiteTheme"></span>
             <span class="icon icon-repeat icon-sm primaryTheme hidden whiteTheme"></span>
         </div>
