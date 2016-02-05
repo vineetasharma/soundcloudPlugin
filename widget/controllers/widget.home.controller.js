@@ -255,12 +255,12 @@
                     console.log('removeFromPlaylist called-------------------------------');
                     if (WidgetHome.playList) {
                         var trackIndex = 0;
-                        WidgetHome.playList.filter(function (val, index) {
+                        WidgetHome.playList.some(function (val, index) {
                             if (((val.url == track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == track.url) && (trackIndex == 0)) {
                                 audioPlayer.removeFromPlaylist(index);
                                 trackIndex++;
                             }
-                            return index;
+                            return ((val.url == track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == track.url);
 
                         });
                         console.log('indexes------------track Index----------------------track==========', trackIndex);
@@ -276,7 +276,7 @@
                 WidgetHome.getFromPlaylist = function () {
                     var trackIndex= 0,
                         trackIndex1=0;
-                    if(WidgetHome.playList && WidgetHome.playList.length>0){
+                   /* if(WidgetHome.playList && WidgetHome.playList.length>0){
                         WidgetHome.playList.filter(function(val,index){
                             if(((val.url==WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex == 0)){
                                 trackIndex++;
@@ -287,11 +287,11 @@
                             }
 
                         });
-                        /*forEach(WidgetHome.playList,function(val){
+                        /!*forEach(WidgetHome.playList,function(val){
                             if(val.url==)
-                        });*/
+                        });*!/
                     }
-                    else{
+                    else{*/
                         audioPlayer.getPlaylist(function (err, data) {
                             console.log('Callback---------getList--------------', err, data);
                             if (data && data.tracks) {
@@ -309,7 +309,7 @@
                                 $scope.$digest();
                             }
                         });
-                    }
+                   // }
                     WidgetHome.openMoreInfo = false;
                     WidgetHome.openPlaylist = true;
                 };
