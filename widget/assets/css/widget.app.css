@@ -658,6 +658,11 @@ input.volume-button[type=range]:focus::-ms-fill-upper {
 	font-weight: bold;
 }
 
+.media-player-button-selected{
+	border-bottom: 1px solid;
+	padding-bottom: 3px;
+}
+
 /*
 .pausecount-ui:before {
     content: "\e613 ";

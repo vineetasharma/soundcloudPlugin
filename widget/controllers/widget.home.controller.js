@@ -82,6 +82,7 @@
                     console.log('Goto Track called---------------------------------------', track);
                     audioPlayer.pause();
                     $timeout(function () {
+                        WidgetHome.getSettings(true);
                         WidgetHome.playTrack();
                     }, 1000);
                     $rootScope.playTrack = true;
@@ -165,7 +166,7 @@
                     WidgetHome.playing = true;
                     WidgetHome.currentTrack.isPlaying = true;
                     WidgetHome.tracks.forEach(function (track) {
-                        if(track.id != WidgetHome.currentTrack.id) {
+                        if (track.id != WidgetHome.currentTrack.id) {
                             track.isPlaying = false;
                         }
                     });
@@ -255,12 +256,12 @@
                     console.log('removeFromPlaylist called-------------------------------');
                     if (WidgetHome.playList) {
                         var trackIndex = 0;
-                        WidgetHome.playList.filter(function (val, index) {
+                        WidgetHome.playList.some(function (val, index) {
                             if (((val.url == track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == track.url) && (trackIndex == 0)) {
                                 audioPlayer.removeFromPlaylist(index);
                                 trackIndex++;
                             }
-                            return index;
+                            return ((val.url == track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == track.url);
 
                         });
                         console.log('indexes------------track Index----------------------track==========', trackIndex);
@@ -271,45 +272,45 @@
                 };
                 WidgetHome.removeTrackFromPlayList = function (index) {
                     audioPlayer.removeFromPlaylist(index);
-
+                    WidgetHome.closeSwipeRemove();
                 };
                 WidgetHome.getFromPlaylist = function () {
-                    var trackIndex= 0,
-                        trackIndex1=0;
-                    if(WidgetHome.playList && WidgetHome.playList.length>0){
-                        WidgetHome.playList.filter(function(val,index){
-                            if(((val.url==WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex == 0)){
-                                trackIndex++;
-                                val.playing=true;
-                            }
-                            else{
-                                val.playing=false;
-                            }
+                    var trackIndex = 0,
+                        trackIndex1 = 0;
+                    /* if(WidgetHome.playList && WidgetHome.playList.length>0){
+                     WidgetHome.playList.filter(function(val,index){
+                     if(((val.url==WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex == 0)){
+                     trackIndex++;
+                     val.playing=true;
+                     }
+                     else{
+                     val.playing=false;
+                     }
 
-                        });
-                        /*forEach(WidgetHome.playList,function(val){
-                            if(val.url==)
-                        });*/
-                    }
-                    else{
-                        audioPlayer.getPlaylist(function (err, data) {
-                            console.log('Callback---------getList--------------', err, data);
-                            if (data && data.tracks) {
-                                WidgetHome.playList = data.tracks;
-                                WidgetHome.playList.filter(function(val,index){
-                                    if(((val.url==WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex1 == 0)){
-                                        trackIndex1++;
-                                        val.playing=true;
-                                    }
-                                    else{
-                                        val.playing=false;
-                                    }
+                     });
+                     /!*forEach(WidgetHome.playList,function(val){
+                     if(val.url==)
+                     });*!/
+                     }
+                     else{*/
+                    audioPlayer.getPlaylist(function (err, data) {
+                        console.log('Callback---------getList--------------', err, data);
+                        if (data && data.tracks) {
+                            WidgetHome.playList = data.tracks;
+                            WidgetHome.playList.filter(function (val, index) {
+                                if (((val.url == WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex1 == 0)) {
+                                    trackIndex1++;
+                                    val.playing = true;
+                                }
+                                else {
+                                    val.playing = false;
+                                }
 
-                                });
-                                $scope.$digest();
-                            }
-                        });
-                    }
+                            });
+                            $scope.$digest();
+                        }
+                    });
+                    // }
                     WidgetHome.openMoreInfo = false;
                     WidgetHome.openPlaylist = true;
                 };
@@ -317,8 +318,9 @@
                     console.log('Change time method called---------------------------------', time);
                     audioPlayer.setTime(time);
                 };
-                WidgetHome.getSettings = function () {
-                    WidgetHome.openSettings = true;
+                WidgetHome.getSettings = function (dontOpen) {
+                    if (!dontOpen)
+                        WidgetHome.openSettings = true;
                     audioPlayer.settings.get(function (err, data) {
                         console.log('Got player settings-----------------------', err, data);
                         if (data) {
@@ -347,9 +349,15 @@
                 };
                 WidgetHome.closePlayListOverlay = function () {
                     WidgetHome.openPlaylist = false;
+                    WidgetHome.closeSwipeRemove();
                 };
                 WidgetHome.closeMoreInfoOverlay = function () {
                     WidgetHome.openMoreInfo = false;
+                };
+                WidgetHome.closeSwipeRemove = function () {
+                    for(var _i = 0; _i < WidgetHome.swiped.length ; _i++){
+                        WidgetHome.swiped[_i] = false;
+                    }
                 };
 
                 WidgetHome.refreshTracks = function () {
@@ -430,9 +438,9 @@
                             WidgetHome.refreshTracks();
                             WidgetHome.loadMore();
                         }
-                        $timeout(function(){
+                        $timeout(function () {
                             WidgetHome.initCarousel();
-                        },1500);
+                        }, 1500);
                         $scope.$apply();
                     }
 
