@@ -337,9 +337,9 @@
                     var newSettings = new AudioSettings(settings);
                     audioPlayer.settings.set(newSettings);
                 };
-                WidgetHome.addEvents = function (e, i, toggle) {
-                    console.log('addEvent class-------------------calles', e, i, toggle);
-                    toggle ? WidgetHome.swiped[i] = true : WidgetHome.swiped[i] = false;
+                WidgetHome.addEvents = function (e, i, toggle,track) {
+                    console.log('addEvent class-------------------calles', e, i, toggle, track);
+                    toggle ? track.swiped = true : track.swiped = false;
                 };
                 WidgetHome.openMoreInfoOverlay = function () {
                     WidgetHome.openMoreInfo = true;
