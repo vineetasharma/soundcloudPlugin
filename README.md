@@ -1,4 +1,4 @@
-# soundcloudPlugin ![](https://api.travis-ci.org/BuildFire/soundcloudPlugin.svg)
+# soundcloudPlugin ![](https://api.travis-ci.org/BuildFire/SoundCloud.svg)
 BuildFire Plugin: soundcloudPlugin
 
 ##How to run and test
