@@ -291,15 +291,6 @@ describe("WidgetHomeCtrl", function () {
         });
     });
 
-    describe('WidgetHome.addEvents', function () {
-
-        it('should make the WidgetHome.swiped index to value of toggle', function () {
-            controller.swiped = [];
-            controller.addEvents({}, 0, false);
-            expect(controller.swiped[0]).toBeFalsy();
-        });
-    });
-
     describe('WidgetHome.removeTrackFromPlayList', function () {
 
         it('should make the WidgetHome.swiped index to value of toggle', function () {
