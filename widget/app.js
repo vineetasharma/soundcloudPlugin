@@ -68,7 +68,7 @@
                     if($rootScope.$$phase){$rootScope.$digest();}
                 }
                 else{
-                    buildfire.navigation.navigateHome();
+                    buildfire.navigation._goBackOne();
                 }
             };
 
