@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular) {
+(function (angular,window) {
     angular
         .module('soundCloudPluginWidget')
         .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI', 'Buildfire',
@@ -18,7 +18,7 @@
                 WidgetHome.pageSize = 8;
                 WidgetHome.noMore = false;
                 WidgetHome.isBusy = false;
-
+                //TODO: use scoped window
                 /*declare the device width heights*/
                 $rootScope.deviceHeight = window.innerHeight;
                 $rootScope.deviceWidth = window.innerWidth;
@@ -27,13 +27,14 @@
 
 
                 WidgetHome.showDescription = function () {
-                    if (WidgetHome.info.data.content.description == '<p>&nbsp;<br></p>' || WidgetHome.info.data.content.description == '<p><br data-mce-bogus="1"></p>')
+                    console.log('ShowDescription------function calling in widget section---------',WidgetHome.info);
+                    if (WidgetHome.info.data.content.description == '<p>&nbsp;<br></p>' || WidgetHome.info.data.content.description == '<p><br data-mce-bogus="1"></p>' || WidgetHome.info.data.content.description == '')
                         return false;
                     else
                         return true;
                 };
 
-                /// load items
+                // load items
                 WidgetHome.loadItems = function (carouselItems) {
                     // create an instance and pass it the items if you don't have items yet just pass []
                     if (WidgetHome.view)
@@ -456,4 +457,4 @@
                 var listener = Buildfire.datastore.onUpdate(WidgetHome.onUpdateCallback);
 
             }]);
-})(window.angular);
+})(window.angular,window);

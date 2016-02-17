@@ -8,6 +8,7 @@
                 console.log('ContentHomeCtrl Controller Loaded-------------------------------------');
                 var ContentHome = this;
                 var timerDelay, masterInfo;
+                //TODO: constant should be in capital case
                 ContentHome.soundCloud = new DB(COLLECTIONS.SoundCloudInfo);
 
                 //option for wysiwyg
@@ -17,9 +18,10 @@
                     trusted: true,
                     theme: 'modern'
                 };
-
+                //TODO: wrong assignment of null
                 ContentHome.soundcloudLinksInvalid = null;
 
+                //TODO: html/jquery code shuold be in directive
                 // create a new instance of the buildfire carousel editor
                 ContentHome.editor = new Buildfire.components.carousel.editor("#carousel");
 
@@ -28,6 +30,7 @@
                     console.log('Content info==========================', ContentHome.info);
                     if (ContentHome.info && ContentHome.info.data && ContentHome.info.data.content && !ContentHome.info.data.content.images)
                         ContentHome.info.data.content.images = [];
+                    //TODO: use concat instead of push/apply
                     ContentHome.info.data.content.images.push.apply(ContentHome.info.data.content.images, items);
                     if (!$scope.$$phase)$scope.$digest();
                 };
@@ -39,10 +42,12 @@
                 // this method will be called when you edit item details
                 ContentHome.editor.onItemChange = function (item, index) {
                     ContentHome.info.data.content.images.splice(index, 1, item);
+                    //TODO: move this to util method
                     if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when you change the order of items
                 ContentHome.editor.onOrderChange = function (item, oldIndex, newIndex) {
+                    //TODO: check for index out of bound
                     var temp = ContentHome.info.data.content.images[oldIndex];
                     ContentHome.info.data.content.images[oldIndex] = ContentHome.info.data.content.images[newIndex];
                     ContentHome.info.data.content.images[newIndex] = temp;
@@ -52,10 +57,12 @@
 
                 ContentHome.verifySoundcloudLinks = function () {
                     if (ContentHome.info.data.content.soundcloudClientID && ContentHome.info.data.content.link) {
+                        //TODO: rename it in promise
                         var method_return = soundCloudAPI.verify(ContentHome.info.data.content.soundcloudClientID, ContentHome.info.data.content.link);
 
                         method_return.then(function (d) {
                             console.log('verify d',d);
+                            //TODO: data type should be same in all case either string/bool
                             if (angular.isArray(d) || ['playlist', 'track', 'user'].indexOf(d.kind) != -1)
                                 ContentHome.soundcloudLinksInvalid = false;
                             else
@@ -63,6 +70,7 @@
                             $timeout(function () {
                                 ContentHome.soundcloudLinksInvalid = null;
                             }, 2000);
+                            //TODO: check for $$phase
                             $scope.$digest();
                         }, function (e) {
                             if (e.status === 401)
@@ -73,13 +81,14 @@
                             $timeout(function () {
                                 ContentHome.soundcloudLinksInvalid = null;
                             }, 2000);
-
+                            //TODO: no use of $scope.$digest();, remove it.
                             $scope.$digest();
                         });
                     }
                 };
 
                 function init() {
+                    //TODO: user function instead of var function literate
                     var success = function (data) {
                         if (data && data.data && (data.data.content || data.data.design)) {
                             updateMasterInfo(data.data);
@@ -112,6 +121,7 @@
                 }
 
                 function saveData(_info) {
+                    //TODO: user function instead of var function literate
                     var saveSuccess = function (data) {
                         console.log('Data saved successfully---------------from content-----------', data);
                     };
@@ -132,7 +142,6 @@
                         }, 1000);
                     }
                 }
-
                 $scope.$watch(function () {
                     return ContentHome.info;
                 }, updateInfoData, true);
