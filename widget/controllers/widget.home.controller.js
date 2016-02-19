@@ -188,21 +188,21 @@
                         track.playing = true;
                     }
                     WidgetHome.getFromPlaylist();
-                    $scope.$digest();
+//                    $scope.$digest();
                 };
                 WidgetHome.pauseTrack = function () {
                     WidgetHome.playing = false;
                     WidgetHome.paused = true;
                     WidgetHome.currentTrack.isPlaying = false;
                     audioPlayer.pause();
-                    $scope.$digest();
+//                    $scope.$digest();
                 };
                 WidgetHome.playlistPause = function (track) {
                     track.playing = false;
                     WidgetHome.playing = false;
                     WidgetHome.paused = true;
                     audioPlayer.pause();
-                    $scope.$digest();
+//                    $scope.$digest();
                 };
                 WidgetHome.forward = function () {
                     if (WidgetHome.currentTime + 5 >= WidgetHome.currentTrack.duration)
@@ -306,7 +306,7 @@
                                     }
 
                                 });
-                                $scope.$digest();
+//                                $scope.$digest();
                             }
                         });
                     }

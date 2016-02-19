@@ -13,6 +13,7 @@
         }])
         .filter('cropImage', [function () {
             return function (url, width, height, type) {
+                var url = url && url.replace('large','t300x300');
                 return buildfire.imageLib.cropImage(url, {
                     width: width,
                     height: height
