@@ -17,7 +17,7 @@
   },
   "widget": {
   },
-  "features": [{name:"BackgroundAudio"}],
+  "features": [{"name":"BackgroundAudio"}],
   "languages": [
     "en"
   ]
