@@ -24,8 +24,8 @@
                     content: {
                         images: [],
                         description: '',
-                        soundcloudClientID: '',
-                        link: ''
+                        soundcloudClientID: '9a09ee0e50798267cb7644fb5c238ade',
+                        link: 'https://soundcloud.com/skrillex'
                     },
                     design: {
                         itemListLayout: "list-layout1",

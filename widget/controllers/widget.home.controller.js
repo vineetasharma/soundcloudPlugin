@@ -71,6 +71,9 @@
                         }
                         else {
                             WidgetHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
+                            soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
+                            WidgetHome.refreshTracks();
+                            WidgetHome.loadMore();
                         }
                     },
                     function fail() {
