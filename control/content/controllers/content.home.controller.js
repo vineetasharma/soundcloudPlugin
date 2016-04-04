@@ -91,7 +91,7 @@
                     //TODO: user function instead of var function literate
                     var success = function (data) {
                         if (data && data.data && (data.data.content || data.data.design)) {
-                            updateMasterInfo(data.data);
+                            updateMasterInfo(data);
                             ContentHome.info = data;
                             if (data.data.content && data.data.content.images) {
                                 ContentHome.editor.loadItems(data.data.content.images);
