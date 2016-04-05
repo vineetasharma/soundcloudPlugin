@@ -61,7 +61,7 @@
                         var method_return = soundCloudAPI.verify(ContentHome.info.data.content.soundcloudClientID, ContentHome.info.data.content.link);
 
                         method_return.then(function (d) {
-                            console.log('verify d',d);
+                            console.log('verify d', d);
                             //TODO: data type should be same in all case either string/bool
                             if (angular.isArray(d) || ['playlist', 'track', 'user'].indexOf(d.kind) != -1)
                                 ContentHome.soundcloudLinksInvalid = false;
@@ -138,10 +138,16 @@
                     }
                     if (_info && _info.data && !isUnchanged(_info)) {
                         timerDelay = $timeout(function () {
+                            if (_info.data.default == true) {
+                                delete _info.default;
+                                _info.data.content.link = '';
+                                _info.data.content.soundcloudClientID = '';
+                            }
                             saveData(_info);
                         }, 1000);
                     }
                 }
+
                 $scope.$watch(function () {
                     return ContentHome.info;
                 }, updateInfoData, true);

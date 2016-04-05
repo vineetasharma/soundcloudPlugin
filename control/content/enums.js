@@ -21,6 +21,7 @@
         .constant('DEFAULT_DATA', {
             SOUND_CLOUD_INFO: {
                 data: {
+                    default:true,
                     content: {
                         images: [],
                         description: '',
