@@ -187,7 +187,7 @@ describe("WidgetHomeCtrl", function () {
 
         it('should call media player pause', function () {
             controller.info = {data: {content: {soundcloudClientID: 'a'}}};
-            controller.currentTrack={url:'track1'};
+            controller.currentTrack = {url: 'track1'};
             controller.pauseTrack();
             expect(BF.services.media.audioPlayer.pause).toHaveBeenCalled();
         });
@@ -197,8 +197,8 @@ describe("WidgetHomeCtrl", function () {
 
         it('should call media player play', function () {
             controller.info = {data: {content: {soundcloudClientID: 'a'}}};
-            controller.currentTrack = {stream_url: ''};
-            controller.tracks=[];
+            controller.currentTrack = {stream_url: '', user: {username: ''}};
+            controller.tracks = [];
             controller.playTrack();
             expect(BF.services.media.audioPlayer.play).toHaveBeenCalled();
         });
@@ -319,9 +319,22 @@ describe("WidgetHomeCtrl", function () {
     describe('WidgetHome.removeFromPlaylist', function () {
 
         it('should remove from the playlist', function () {
-            controller.playList = [{url:'a?client_id=a',stream_url: 'a',title:'',tag_list:'',artwork_url:'',user:{username:""}}];
-            controller.info = {data:{content:{soundcloudClientID:'a'}}};
-            controller.removeFromPlaylist({stream_url: 'a',title:'',tag_list:'',artwork_url:'',user:{username:""}});
+            controller.playList = [{
+                url: 'a?client_id=a',
+                stream_url: 'a',
+                title: '',
+                tag_list: '',
+                artwork_url: '',
+                user: {username: ""}
+            }];
+            controller.info = {data: {content: {soundcloudClientID: 'a'}}};
+            controller.removeFromPlaylist({
+                stream_url: 'a',
+                title: '',
+                tag_list: '',
+                artwork_url: '',
+                user: {username: ""}
+            });
             expect(BF.services.media.audioPlayer.removeFromPlaylist).toHaveBeenCalled();
         });
     });
@@ -330,7 +343,7 @@ describe("WidgetHomeCtrl", function () {
     describe('$scope.$on("destroy currentTrack"', function () {
 
         it('should call WidgetHome.duration to empty string', function () {
-            $scope.$apply(function() {
+            $scope.$apply(function () {
                 $rootScope.$broadcast('destroy currentTrack');
             });
             expect(controller.duration).toEqual('');
@@ -341,8 +354,8 @@ describe("WidgetHomeCtrl", function () {
 
         it('should call WidgetHome.duration to empty string', function () {
             controller.initCarousel = jasmine.createSpy();
-            controller.onUpdateCallback({data:{content:{link:'',soundcloudClientID:'a'},design:{}}});
-           // expect(controller.initCarousel).toHaveBeenCalled();
+            controller.onUpdateCallback({data: {content: {link: '', soundcloudClientID: 'a'}, design: {}}});
+            // expect(controller.initCarousel).toHaveBeenCalled();
         });
     });
 
@@ -350,10 +363,11 @@ describe("WidgetHomeCtrl", function () {
 
         it('should call initCarousel if thereis images data', function () {
             controller.view = {};
-            controller.info = {data:{}};
+            controller.info = {data: {}};
             controller.initCarousel = jasmine.createSpy('loadItems');
-            controller.initCarousel.and.loadItems.callFake(function(){});
-            $scope.$apply(function() {
+            controller.initCarousel.and.loadItems.callFake(function () {
+            });
+            $scope.$apply(function () {
                 $rootScope.$broadcast('Carousel:LOADED');
             });
             expect(controller.initCarousel.loadItems).toHaveBeenCalled();
@@ -364,7 +378,7 @@ describe("WidgetHomeCtrl", function () {
 
             //controller.info = {data:{}};
             controller.view.loadItems = jasmine.createSpy();
-            $scope.$apply(function() {
+            $scope.$apply(function () {
                 $rootScope.$broadcast('Carousel:LOADED');
             });
             expect(controller.view.loadItems).toHaveBeenCalled();

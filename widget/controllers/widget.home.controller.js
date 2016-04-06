@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular,window) {
+(function (angular, window) {
     angular
         .module('soundCloudPluginWidget')
         .controller('WidgetHomeCtrl', ['$scope', '$timeout', 'DEFAULT_DATA', 'COLLECTIONS', 'DB', 'soundCloudAPI', 'Buildfire',
@@ -27,7 +27,7 @@
 
 
                 WidgetHome.showDescription = function () {
-                    console.log('ShowDescription------function calling in widget section---------',WidgetHome.info);
+                    console.log('ShowDescription------function calling in widget section---------', WidgetHome.info);
                     if (WidgetHome.info.data.content.description == '<p>&nbsp;<br></p>' || WidgetHome.info.data.content.description == '<p><br data-mce-bogus="1"></p>' || WidgetHome.info.data.content.description == '')
                         return false;
                     else
@@ -176,7 +176,10 @@
                     } else {
                         audioPlayer.play({
                             url: WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID,
-                            title: WidgetHome.currentTrack.title
+                            title: WidgetHome.currentTrack.title,
+                            image: WidgetHome.currentTrack.artwork_url || WidgetHome.currentTrack.image,
+                            album: WidgetHome.currentTrack.tag_list,
+                            artist: WidgetHome.currentTrack.user.username
                         });
                     }
                 };
@@ -338,7 +341,7 @@
                     var newSettings = new AudioSettings(settings);
                     audioPlayer.settings.set(newSettings);
                 };
-                WidgetHome.addEvents = function (e, i, toggle,track) {
+                WidgetHome.addEvents = function (e, i, toggle, track) {
                     console.log('addEvent class-------------------calles', e, i, toggle, track);
                     toggle ? track.swiped = true : track.swiped = false;
                 };
@@ -356,7 +359,7 @@
                     WidgetHome.openMoreInfo = false;
                 };
                 WidgetHome.closeSwipeRemove = function () {
-                    for(var _i = 0; _i < WidgetHome.swiped.length ; _i++){
+                    for (var _i = 0; _i < WidgetHome.swiped.length; _i++) {
                         WidgetHome.swiped[_i] = false;
                     }
                 };
@@ -457,4 +460,4 @@
                 var listener = Buildfire.datastore.onUpdate(WidgetHome.onUpdateCallback);
 
             }]);
-})(window.angular,window);
+})(window.angular, window);
