@@ -19,7 +19,10 @@
                  ng-click="WidgetHome.goToTrack(track)">
                 <div class="plugin-banner clearfix text-overlay">
                     <div class="text-overlay" ng-if="track.artwork_url">
-                        <img ng-src="{{track.artwork_url | cropImage:340:190}}">
+                        <img load-image="16x9" data-final-src="{{track.artwork_url | cropImage:340:190}}">
+                    </div>
+                  <div class="text-overlay" ng-if="!track.artwork_url">
+                        <img src="../../../styles/media/holder-16x9.png">
                     </div>
                 </div>
                 <div class="padded padding-bottom-ten text-left text-overlay">
