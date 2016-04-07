@@ -162,6 +162,20 @@
                  * Player related method and variables
                  */
                 WidgetHome.playTrack = function () {
+                    if(WidgetHome.settings){
+                        WidgetHome.settings.isPlayingCurrentTrack=true;
+                        audioPlayer.settings.set(WidgetHome.settings);
+                    }
+                    else{
+                        audioPlayer.settings.get(function (err, data) {
+                            console.log('Got player settings-----------------------', err, data);
+                            if (data) {
+                                WidgetHome.settings = data;
+                                WidgetHome.settings.isPlayingCurrentTrack=true;
+                                audioPlayer.settings.set(WidgetHome.settings);
+                            }
+                        });
+                    }
                     WidgetHome.showTrackSlider = true;
                     console.log('Widget HOme url----------------------', WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID);
                     WidgetHome.playing = true;
@@ -181,10 +195,6 @@
                             album: WidgetHome.currentTrack.tag_list,
                             artist: WidgetHome.currentTrack.user.username
                         });
-                        if(WidgetHome.settings){
-                            WidgetHome.settings.isPlayingCurrentTrack=true;
-                            audioPlayer.settings.set(WidgetHome.settings);
-                        }
                     }
                 };
                 WidgetHome.playlistPlay = function (track) {
