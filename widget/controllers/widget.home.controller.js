@@ -181,9 +181,17 @@
                             album: WidgetHome.currentTrack.tag_list,
                             artist: WidgetHome.currentTrack.user.username
                         });
+                        if(WidgetHome.settings){
+                            WidgetHome.settings.isPlayingCurrentTrack=true;
+                            audioPlayer.settings.set(WidgetHome.settings);
+                        }
                     }
                 };
                 WidgetHome.playlistPlay = function (track) {
+                    if(WidgetHome.settings){
+                        WidgetHome.settings.isPlayingCurrentTrack=true;
+                        audioPlayer.settings.set(WidgetHome.settings);
+                    }
                     WidgetHome.showTrackSlider = true;
                     WidgetHome.currentTrack = track;
                     console.log('PlayList Play ---------------Track is played', track);
@@ -196,6 +204,10 @@
 //                    $scope.$digest();
                 };
                 WidgetHome.pauseTrack = function () {
+                    if(WidgetHome.settings){
+                        WidgetHome.settings.isPlayingCurrentTrack=false;
+                        audioPlayer.settings.set(WidgetHome.settings);
+                    }
                     WidgetHome.playing = false;
                     WidgetHome.paused = true;
                     WidgetHome.currentTrack.isPlaying = false;
@@ -203,6 +215,10 @@
 //                    $scope.$digest();
                 };
                 WidgetHome.playlistPause = function (track) {
+                    if(WidgetHome.settings){
+                        WidgetHome.settings.isPlayingCurrentTrack=false;
+                        audioPlayer.settings.set(WidgetHome.settings);
+                    }
                     track.playing = false;
                     WidgetHome.playing = false;
                     WidgetHome.paused = true;
@@ -425,6 +441,7 @@
                     this.loopPlaylist = settings.loopPlaylist; // once the end of the playlist has been reached start over again
                     this.autoJumpToLastPosition = settings.autoJumpToLastPosition; //If a track has [lastPosition] use it to start playing the audio from there
                     this.shufflePlaylist = settings.shufflePlaylist;// shuffle the playlist
+                    this.isPlayingCurrentTrack=settings.isPlayingCurrentTrack; //tells whether current track is playing or not?
                 }
 
 
