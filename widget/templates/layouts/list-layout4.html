@@ -21,9 +21,10 @@
                         <div class="list-item-media text-center overflow-hidden text-overlay">
                             <div class="list-media-holder text-overlay">
                                 <img ng-if="WidgetHome.tracks[$index].artwork_url"
-                                     ng-src="{{WidgetHome.tracks[$index].artwork_url | cropImage:200:200}}">
+                                     load-image="1x1"
+                                     data-final-src="{{WidgetHome.tracks[$index].artwork_url | cropImage:200:200}}">
                                 <img ng-if="!WidgetHome.tracks[$index].artwork_url"
-                                     src="assets/images/placeholder200x200.png">
+                                     src="../../../styles/media/holder-1x1.png">
                             </div>
                         </div>
                         <div class="list-item-copy text-left text-overlay">

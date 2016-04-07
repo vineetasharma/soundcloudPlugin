@@ -142,6 +142,10 @@
                         }, 1000);
                     }
                 }
+
+              ContentHome.clearData = function () {
+
+              };
                 $scope.$watch(function () {
                     return ContentHome.info;
                 }, updateInfoData, true);
