@@ -63,7 +63,8 @@
             <span>Link</span>
         </div>
         <div class="main pull-right col-md-9">
-            <input type="text" class="form-control" placeholder="Link" ng-model="ContentHome.info.data.content.link">
+            <input type="text" class="form-control" placeholder="Link"
+                   ng-model="ContentHome.info.data.content.link" ng-change="ContentHome.clearData()">
         </div>
     </div>
     <div class="item clearfix row margin-top-ten" ng-show="ContentHome.soundcloudLinksInvalid != null">
@@ -75,7 +76,9 @@
     <hr class="none">
     <div class="item clearfix row">
         <div class="col-md-3 pull-right">
-            <a class="btn btn-primary stretch" ng-click="ContentHome.verifySoundcloudLinks()">Verify</a>
+            <a class="btn btn-primary stretch"
+               ng-click="ContentHome.verifySoundcloudLinks()" ng-disabled="!ContentHome.info.data.content.link">
+              Verify</a>
         </div>
     </div>
 </div>
