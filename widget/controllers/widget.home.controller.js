@@ -470,12 +470,19 @@
                             WidgetHome.refreshTracks();
                             WidgetHome.loadMore();
                         }
+                        else{
+                            WidgetHome.clearTracks();
+                        }
                         $timeout(function () {
                             WidgetHome.initCarousel();
                         }, 250);
                         $scope.$apply();
                     }
 
+                };
+
+                WidgetHome.clearTracks = function(){
+                    WidgetHome.tracks = [];
                 };
 
                 WidgetHome.playlistPlayPause = function (track) {

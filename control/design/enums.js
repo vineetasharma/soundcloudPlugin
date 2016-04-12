@@ -25,8 +25,8 @@
                     content: {
                         images: [],
                         description: '',
-                        soundcloudClientID: '9a09ee0e50798267cb7644fb5c238ade',
-                        link: 'https://soundcloud.com/skrillex'
+                        soundcloudClientID: '600ae49f4ace645a50840dcd41bd35ec',
+                        link: 'https://soundcloud.com/laraparkerkent/tracks'
                     },
                     design: {
                         itemListLayout: "list-layout1",

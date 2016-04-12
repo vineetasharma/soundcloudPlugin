@@ -139,8 +139,9 @@
                     if (_info && _info.data && !isUnchanged(_info)) {
                         timerDelay = $timeout(function () {
                             if (_info.data.default == true) {
-                                delete _info.default;
-                                _info.data.content.link = '';
+                                delete _info.data.default;
+                                if (_info.data.content.link == DEFAULT_DATA.SOUND_CLOUD_INFO.data.content.link)
+                                    _info.data.content.link = '';
                                 _info.data.content.soundcloudClientID = '';
                             }
                             saveData(_info);
@@ -148,9 +149,9 @@
                     }
                 }
 
-              ContentHome.clearData = function () {
+                ContentHome.clearData = function () {
 
-              };
+                };
                 $scope.$watch(function () {
                     return ContentHome.info;
                 }, updateInfoData, true);
