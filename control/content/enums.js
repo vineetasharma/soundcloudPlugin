@@ -21,11 +21,12 @@
         .constant('DEFAULT_DATA', {
             SOUND_CLOUD_INFO: {
                 data: {
+                    default:true,
                     content: {
                         images: [],
                         description: '',
-                        soundcloudClientID: '',
-                        link: ''
+                        soundcloudClientID: '600ae49f4ace645a50840dcd41bd35ec',
+                        link: 'https://soundcloud.com/laraparkerkent/tracks'
                     },
                     design: {
                         itemListLayout: "list-layout1",

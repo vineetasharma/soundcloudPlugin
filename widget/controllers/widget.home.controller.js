@@ -43,21 +43,21 @@
 
                 WidgetHome.initCarousel = function () {
                     if (angular.element('#carousel').hasClass('plugin-slider') == false || WidgetHome.view == null) {
-                        WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                        console.log('came heer');
+                        WidgetHome.view = new Buildfire.components.carousel.view("#carousel", WidgetHome.info.data.content.images);  ///create new instance of buildfire carousel viewer
                     }
-                    if (WidgetHome.info && WidgetHome.info.data.content.images.length) {
-                        WidgetHome.view.loadItems(WidgetHome.info.data.content.images);
-                    } else {
-                        WidgetHome.view.loadItems([]);
+                    else {
+                        WidgetHome.loadItems(WidgetHome.info.data.content.images);
                     }
-
                 };
 
                 WidgetHome.SoundCloudInfoContent.get().then(function success(result) {
                         console.log('>>result<<', result);
                         if (result && result.data && result.id) {
+
                             WidgetHome.info = result;
+                            $timeout(function () {
+                                WidgetHome.initCarousel();
+                            }, 1000);
                             if (WidgetHome.info.data && WidgetHome.info.data.design)
                                 $rootScope.bgImage = WidgetHome.info.data.design.bgImage;
                             if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
@@ -65,12 +65,13 @@
                                 WidgetHome.refreshTracks();
                                 WidgetHome.loadMore();
                             }
-                            $timeout(function () {
-                                WidgetHome.initCarousel();
-                            }, 1500);
+
                         }
                         else {
                             WidgetHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
+                            soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
+                            WidgetHome.refreshTracks();
+                            WidgetHome.loadMore();
                         }
                     },
                     function fail() {
@@ -469,12 +470,19 @@
                             WidgetHome.refreshTracks();
                             WidgetHome.loadMore();
                         }
+                        else{
+                            WidgetHome.clearTracks();
+                        }
                         $timeout(function () {
                             WidgetHome.initCarousel();
-                        }, 1500);
+                        }, 250);
                         $scope.$apply();
                     }
 
+                };
+
+                WidgetHome.clearTracks = function(){
+                    WidgetHome.tracks = [];
                 };
 
                 WidgetHome.playlistPlayPause = function (track) {
