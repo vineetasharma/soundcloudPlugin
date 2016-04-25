@@ -343,7 +343,7 @@
                     });
                     // }
                     WidgetHome.openMoreInfo = false;
-                    WidgetHome.openPlaylist = true;
+                    $rootScope.openPlaylist = true;
                 };
                 WidgetHome.changeTime = function (time) {
                     console.log('Change time method called---------------------------------', time);
@@ -379,7 +379,7 @@
                     WidgetHome.openSettings = false;
                 };
                 WidgetHome.closePlayListOverlay = function () {
-                    WidgetHome.openPlaylist = false;
+                    $rootScope.openPlaylist = false;
                     WidgetHome.closeSwipeRemove();
                 };
                 WidgetHome.closeMoreInfoOverlay = function () {
