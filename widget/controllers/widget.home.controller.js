@@ -80,6 +80,7 @@
                 );
 
                 WidgetHome.goToTrack = function (track) {
+                    Buildfire.history.push('Media', { elementToShow: track.title});
                     WidgetHome.showTrackSlider = false;
                     console.log('Goto Track called---------------------------------------', track);
                     audioPlayer.pause();
@@ -342,6 +343,7 @@
                         }
                     });
                     // }
+                    Buildfire.history.push('Playlist', { elementToShow: 'Playlist'});
                     WidgetHome.openMoreInfo = false;
                     $rootScope.openPlaylist = true;
                 };
@@ -379,7 +381,8 @@
                     WidgetHome.openSettings = false;
                 };
                 WidgetHome.closePlayListOverlay = function () {
-                    $rootScope.openPlaylist = false;
+                    Buildfire.history.pop();
+                    //$rootScope.openPlaylist = false;
                     WidgetHome.closeSwipeRemove();
                 };
                 WidgetHome.closeMoreInfoOverlay = function () {

@@ -74,7 +74,8 @@
         };
       }])
         .run(['$location', '$rootScope','$timeout', function ($location, $rootScope,$timeout) {
-            buildfire.navigation.onBackButtonClick = function () {
+            buildfire.history.onPop(function(data, err){
+                console.log('buildfire.history.onPop----------------------------',data,'Error------------------',err);
                 if($rootScope.playTrack){
                     $timeout(function () {
                         if($rootScope.openPlaylist){
@@ -87,11 +88,7 @@
                     }, 100);
                     if($rootScope.$$phase){$rootScope.$digest();}
                 }
-                else{
-                    buildfire.navigation._goBackOne();
-                }
-            };
-
+            });
         }]);
 })
 (window.angular, window.buildfire);
