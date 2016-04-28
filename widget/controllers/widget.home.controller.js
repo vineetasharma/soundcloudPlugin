@@ -80,7 +80,7 @@
                 );
 
                 WidgetHome.goToTrack = function (track) {
-                    Buildfire.history.push('Media', { elementToShow: track.title});
+                    Buildfire.history.push(track.title, { elementToShow:'Media'});
                     WidgetHome.showTrackSlider = false;
                     console.log('Goto Track called---------------------------------------', track);
                     audioPlayer.pause();
