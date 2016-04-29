@@ -82,7 +82,7 @@
         <div class="overlay-content" style="postiion:absolute; top:0; left:0; height:100%; width: 100%; overflow:auto;">
             <div class="media-player-list-layout layout3">
                 <div class="list-layout has-btns">
-                    <div class="list-item overflow-hidden"
+                    <div ng-if="WidgetHome.playList.length" class="list-item overflow-hidden"
                          ng-swipe-right="WidgetHome.addEvents($event, $index, false,track)"
                          ng-swipe-left="WidgetHome.addEvents($event, $index, true,track)"
                          ng-repeat="track in WidgetHome.playList">
@@ -91,7 +91,7 @@
                                 <img ng-if="track.image" ng-src="{{track.image | cropImage : 55 :22}}">
                             </div>
                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                <p class="margin-bottom-zero ellipsis margin-top-twenty whiteTheme">{{track.title}}</p>
+                                <p class="margin-bottom-zero ellipsis margin-top-twenty bodyTextTheme">{{track.title}}</p>
                             </div>
                             <div class="btns text-center">
                                 <!--<a ng-if="!track.playing" class="icon icon-play-circle" ng-click="WidgetHome.playlistPlay(track)"></a>
@@ -103,10 +103,13 @@
                             </div>
                         </div>
                     </div>
+                    <div ng-if="!WidgetHome.playList.length">
+                        <h3 class="titleBarTheme">Playlist is empty.</h3>
+                    </div>
                 </div>
             </div>
 			<div class="margin-top-ten margin-bottom-ten">
-            	<a ng-click="WidgetHome.closePlayListOverlay()" class="whiteTheme">Done</a>
+            	<a ng-click="WidgetHome.closePlayListOverlay()" class="primaryTheme" >Done</a>
 			</div>
         </div>
     </div>
