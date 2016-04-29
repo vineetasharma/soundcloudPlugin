@@ -374,6 +374,11 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 /* End Plugin CSS */
 
 
+/* To overlay texts on background */
+.text-overlay {
+	position: relative
+}
+
 .list-layout .list-item-copy p.summary{
 	margin:-5px 0 !important;
 }
@@ -391,6 +396,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 .layout3 .text-overlay .padded p.track-title{
 	
 }
+
 
 /*Styles for slider*/
 .playerMP {
@@ -712,4 +718,9 @@ input.volume-button[type=range]:focus::-ms-fill-upper {
 .list-layout.has-btns .btns .icon{
 	font-size:24px;
 	color:#fff;
+}
+
+.audio-player{
+	z-index:1 ;
+	position: relative;
 }
