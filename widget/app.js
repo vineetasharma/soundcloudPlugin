@@ -77,8 +77,13 @@
             buildfire.navigation.onBackButtonClick = function () {
                 if($rootScope.playTrack){
                     $timeout(function () {
-                        $rootScope.playTrack=false;
-                        $rootScope.$broadcast("destroy currentTrack");
+                        if($rootScope.openPlaylist){
+                            $rootScope.openPlaylist=false;
+                        }
+                        else{
+                            $rootScope.playTrack=false;
+                            $rootScope.$broadcast("destroy currentTrack");
+                        }
                     }, 100);
                     if($rootScope.$$phase){$rootScope.$digest();}
                 }
