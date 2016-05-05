@@ -21,7 +21,7 @@
                 //TODO: use scoped window
                 /*declare the device width heights*/
                 $rootScope.deviceHeight = window.innerHeight;
-                $rootScope.deviceWidth = window.innerWidth;
+                $rootScope.deviceWidth = window.innerWidth || 320;
 
                 WidgetHome.SoundCloudInfoContent = new DB(COLLECTIONS.SoundCloudInfo);
 
