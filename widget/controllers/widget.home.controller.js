@@ -239,8 +239,10 @@
                 WidgetHome.forward = function () {
                     if (WidgetHome.currentTime + 5 >= WidgetHome.currentTrack.duration)
                         audioPlayer.setTime(WidgetHome.currentTrack.duration);
-                    else
+                    else if((WidgetHome.currentTime + 5)<=WidgetHome.currentTrack.duration)
                         audioPlayer.setTime(WidgetHome.currentTime + 5);
+                    else
+                        audioPlayer.setTime(WidgetHome.currentTrack.duration);
                 };
 
                 WidgetHome.backward = function () {
