@@ -21,7 +21,7 @@
                 //TODO: use scoped window
                 /*declare the device width heights*/
                 $rootScope.deviceHeight = window.innerHeight;
-                $rootScope.deviceWidth = window.innerWidth;
+                $rootScope.deviceWidth = window.innerWidth || 320;
 
                 WidgetHome.SoundCloudInfoContent = new DB(COLLECTIONS.SoundCloudInfo);
 
@@ -239,8 +239,10 @@
                 WidgetHome.forward = function () {
                     if (WidgetHome.currentTime + 5 >= WidgetHome.currentTrack.duration)
                         audioPlayer.setTime(WidgetHome.currentTrack.duration);
-                    else
+                    else if((WidgetHome.currentTime + 5)<=WidgetHome.currentTrack.duration)
                         audioPlayer.setTime(WidgetHome.currentTime + 5);
+                    else
+                        audioPlayer.setTime(WidgetHome.currentTrack.duration);
                 };
 
                 WidgetHome.backward = function () {
@@ -328,6 +330,7 @@
                         console.log('Callback---------getList--------------', err, data);
                         if (data && data.tracks) {
                             WidgetHome.playList = data.tracks;
+                            if (WidgetHome.playing)
                             WidgetHome.playList.filter(function (val, index) {
                                 if (((val.url == WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == WidgetHome.currentTrack.url) && (trackIndex1 == 0)) {
                                     trackIndex1++;
@@ -485,11 +488,29 @@
                     WidgetHome.tracks = [];
                 };
 
-                WidgetHome.playlistPlayPause = function (track) {
-                    if (track.playing)
-                        WidgetHome.playlistPause(track);
-                    else
-                        WidgetHome.playlistPlay(track);
+                WidgetHome.playlistPlayPause = function (track,index) {
+                    if (WidgetHome.playing) {
+                        if (track.playing) {
+                            WidgetHome.playlistPause(track);
+                        }
+                        else {
+                            WidgetHome.playlistPlay(track,index);
+                        }
+                    }
+                    else if (WidgetHome.paused) {
+                        if (track.url == WidgetHome.currentTrack.url) {
+                            WidgetHome.settings.isPlayingCurrentTrack = true;
+                            WidgetHome.playing = true;
+                            track.playing = true;
+                            audioPlayer.play();
+                        }
+                        else {
+                            WidgetHome.playlistPlay(track,index);
+                        }
+                    }
+                    else {
+                        WidgetHome.playlistPlay(track,index);
+                    }
                 };
 
                 var listener = Buildfire.datastore.onUpdate(WidgetHome.onUpdateCallback);
