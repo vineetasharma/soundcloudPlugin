@@ -77,8 +77,8 @@
     </div>
 
     <!-- Playlist Overlay -->
-    <div ng-if="openPlaylist" class="overlay slide"
-         style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8);">
+    <div ng-if="openPlaylist" class="overlay backgroundColorTheme slide"
+         style="position:fixed; top:0; left:0; width:100%; height:100%;">
         <div class="overlay-content" style="postiion:absolute; top:0; left:0; height:100%; width: 100%; overflow:auto;">
             <div class="media-player-list-layout layout3">
                 <div class="list-layout has-btns">
@@ -96,7 +96,7 @@
                             <div class="btns text-center">
                                 <!--<a ng-if="!track.playing" class="icon icon-play-circle" ng-click="WidgetHome.playlistPlay(track)"></a>
                                 <a ng-if="track.playing" class="icon icon-pause-circle primaryTheme" ng-click="WidgetHome.playlistPause(track)"></a>-->
-                                <a ng-class="track.playing ? 'icon-pause-circle primaryTheme' : 'icon-play-circle'" class="icon " ng-click="WidgetHome.playlistPlayPause(track,$index)"></a>
+                                <a ng-class="track.playing ? 'icon-pause-circle' : 'icon-play-circle'" class="icon primaryTheme" ng-click="WidgetHome.playlistPlayPause(track,$index)"></a>
                             </div>
                             <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;" ng-click="WidgetHome.removeTrackFromPlayList($index)">
                                 <span class="whiteTheme">Remove</span>
