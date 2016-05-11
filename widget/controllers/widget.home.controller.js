@@ -88,7 +88,7 @@
                         WidgetHome.playTrack();
                     }, 1000);
                     $rootScope.playTrack = true;
-                    WidgetHome.currentTime = null;
+                    WidgetHome.currentTime = 0;
                     WidgetHome.duration = null;
                     WidgetHome.currentTrack = track;
                     console.log('In track------------------------WidgetHome.currentTime', WidgetHome.currentTime, 'WidgetHome.duration========', WidgetHome.duration);

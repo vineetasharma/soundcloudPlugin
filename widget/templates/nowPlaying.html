@@ -1,5 +1,5 @@
 <div class="holder now-playing text-center">
-    <div ng-style="{'background':'url(' + (WidgetHome.currentTrack.artwork_url ? WidgetHome.currentTrack.artwork_url : 'http://app.buildfire.com/app/media/now-playing.png') + ') no-repeat center center',
+    <div ng-style="{'background':'url(' + ((WidgetHome.currentTrack.artwork_url || WidgetHome.currentTrack.image) ? (WidgetHome.currentTrack.artwork_url || WidgetHome.currentTrack.image): 'http://app.buildfire.com/app/media/now-playing.png') + ') no-repeat center center',
          '-o-filter': 'blur(10px) brightness(0.2)',
     '-moz-filter': 'blur(10px) brightness(0.2)',
     '-webkit-filter': 'blur(10px) brightness(0.2)',
@@ -14,7 +14,7 @@
     'height': '110%',
     'width': '110%',
     'z-index': '0'}"></div>
-    <div class="media-center-plugin">
+    <div class="media-center-plugin" ng-if="!(WidgetHome.openMoreInfo || WidgetHome.openSettings)">
         <div class="media-header-link">
             <a class="whiteTheme" ng-click="WidgetHome.getFromPlaylist()">Open Playlist</a>
         </div>
@@ -32,18 +32,31 @@
         <div class="media-player-info margin-top-twenty padding-left-ten padding-right-ten">
             <h4 class="margin-zero ellipsis whiteTheme">{{WidgetHome.currentTrack.title}}</h4>
 
-            <p class="margin-zero whiteTheme ellipsis">{{WidgetHome.currentTrack.user.username}}{{WidgetHome.currentTrack.artist}}</p>
+            <p class="margin-zero whiteTheme ellipsis">
+                {{WidgetHome.currentTrack.user.username}}{{WidgetHome.currentTrack.artist}}</p>
         </div>
         <div class="slider">
-            <div class="playerMP" ng-show="WidgetHome.showTrackSlider">
-                <div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | secondsToDateTime |date: 'mm:ss'}}</div>
-                <div class="audio-plyer" ng-if="WidgetHome.currentTime && WidgetHome.duration"><input type="range"
-                                                                                                      min="0.0"
-                                                                                                      max="{{WidgetHome.duration}}"
-                                                                                                      ng-model="WidgetHome.currentTime"
-                                                                                                      ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/>
+            <div>
+                <!--<div ng-if="WidgetHome.currentTime">{{WidgetHome.currentTime | secondsToDateTime |date: 'mm:ss'}}</div>-->
+                <div class="audio-plyer"><input type="range"
+                                                min="0.0"
+                                                max="{{WidgetHome.duration}}"
+                                                ng-model="WidgetHome.currentTime"
+                                                ng-change="WidgetHome.changeTime(WidgetHome.currentTime)"/>
                 </div>
-                <div ng-if="WidgetHome.duration">{{WidgetHome.duration | secondsToDateTime | date: 'mm:ss'}}</div>
+                <div ng-if="WidgetHome.currentTime!=0" class="time-indicator" style="float:left">
+                    {{WidgetHome.currentTime | secondsToDateTime |date: 'mm:ss'}}
+                </div>
+                <div ng-if="WidgetHome.currentTime==0" class="time-indicator" style="float: left;">
+                    {{"--:--"}}
+                </div>
+                <div ng-if="WidgetHome.duration" class="time-indicator" style="float: right;">
+                    {{(WidgetHome.duration | secondsToDateTime | date: 'mm:ss')}}
+                </div>
+                <div ng-if="!WidgetHome.duration" class="time-indicator" style="float: right;">
+                    {{"--:--"}}
+                </div>
+                <!--<div ng-if="WidgetHome.duration">{{WidgetHome.duration | secondsToDateTime | date: 'mm:ss'}}</div>-->
             </div>
             <div class="volume">
                 &nbsp;<input class="volume-button rotate-270"
@@ -63,14 +76,16 @@
             <span class="icon icon-cog icon-sm whiteTheme" ng-click="WidgetHome.getSettings()"></span>
         </div>
         <div class="media-player-btns margin-top-ten">
-            <span ng-class="(WidgetHome.settings && WidgetHome.settings.shufflePlaylist) ? 'primaryTheme bold' : 'whiteTheme'" class="icon icon-shuffle icon-sm " ng-click="WidgetHome.shufflePlaylist()"></span>
+            <span ng-class="(WidgetHome.settings && WidgetHome.settings.shufflePlaylist) ? 'primaryTheme bold' : 'whiteTheme'"
+                  class="icon icon-shuffle icon-sm " ng-click="WidgetHome.shufflePlaylist()"></span>
             <span class="icon icon-backward-circle whiteTheme" ng-click="WidgetHome.backward()"></span>
             <span ng-if="!WidgetHome.playing" class="icon icon-play-circle icon-main whiteTheme"
                   ng-click="WidgetHome.playTrack()"></span>
             <span ng-if="WidgetHome.playing" class="icon icon-pause-circle icon-main whiteTheme"
                   ng-click="WidgetHome.pauseTrack()"></span>
             <span class="icon icon-forward-circle whiteTheme" ng-click="WidgetHome.forward()"></span>
-            <span ng-class="(WidgetHome.settings && WidgetHome.settings.loopPlaylist) ? 'primaryTheme bold' : 'whiteTheme'"  class="icon icon-repeat icon-sm" ng-click="WidgetHome.loopPlaylist()"></span>
+            <span ng-class="(WidgetHome.settings && WidgetHome.settings.loopPlaylist) ? 'primaryTheme bold' : 'whiteTheme'"
+                  class="icon icon-repeat icon-sm" ng-click="WidgetHome.loopPlaylist()"></span>
             <span class="icon icon-repeat-one icon-sm primaryTheme hidden whiteTheme"></span>
             <span class="icon icon-repeat icon-sm primaryTheme hidden whiteTheme"></span>
         </div>
@@ -91,14 +106,17 @@
                                 <img ng-if="track.image" ng-src="{{track.image | cropImage : 55 :22}}">
                             </div>
                             <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                <p class="margin-bottom-zero ellipsis margin-top-twenty bodyTextTheme">{{track.title}}</p>
+                                <p class="margin-bottom-zero ellipsis margin-top-twenty bodyTextTheme">
+                                    {{track.title}}</p>
                             </div>
                             <div class="btns text-center">
                                 <!--<a ng-if="!track.playing" class="icon icon-play-circle" ng-click="WidgetHome.playlistPlay(track)"></a>
                                 <a ng-if="track.playing" class="icon icon-pause-circle primaryTheme" ng-click="WidgetHome.playlistPause(track)"></a>-->
-                                <a ng-class="track.playing ? 'icon-pause-circle' : 'icon-play-circle'" class="icon primaryTheme" ng-click="WidgetHome.playlistPlayPause(track,$index)"></a>
+                                <a ng-class="track.playing ? 'icon-pause-circle' : 'icon-play-circle'"
+                                   class="icon primaryTheme" ng-click="WidgetHome.playlistPlayPause(track,$index)"></a>
                             </div>
-                            <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;" ng-click="WidgetHome.removeTrackFromPlayList($index)">
+                            <div class="remove-btn text-center dangerBackgroundTheme" style="background:red;"
+                                 ng-click="WidgetHome.removeTrackFromPlayList($index)">
                                 <span class="whiteTheme">Remove</span>
                             </div>
                         </div>
@@ -108,16 +126,16 @@
                     </div>
                 </div>
             </div>
-			<div class="margin-top-ten margin-bottom-ten">
-            	<a ng-click="WidgetHome.closePlayListOverlay()" class="primaryTheme" >Done</a>
-			</div>
+            <div class="margin-top-ten margin-bottom-ten">
+                <a ng-click="WidgetHome.closePlayListOverlay()" class="primaryTheme">Done</a>
+            </div>
         </div>
     </div>
 
     <!-- More Info Overlay -->
     <div ng-if="WidgetHome.openMoreInfo" class="overlay"
-         style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8);">
-        <div class="overlay-content" style="postiion:absolute; top:0; left:0; height:100%; width: 100%; overflow:auto;">
+         style="position:fixed; top:0; left:0; width:100%; height:100%;">
+        <div class="overlay-content" style="position:absolute; top:0; left:0; height:100%; width: 100%; overflow:auto;">
             <div class="media-player-more-info">
                 <div class="media-holder margin-top-thirty">
                     <div class="media-inner text-center">
@@ -130,6 +148,7 @@
                 <hr class="none">
                 <div class="media-player-info margin-top-twenty padding-left-ten padding-right-ten">
                     <h4 class="margin-zero ellipsis whiteTheme">{{WidgetHome.currentTrack.title}}</h4>
+
                     <p class="margin-zero ellipsis whiteTheme">{{WidgetHome.currentTrack.user.username}}</p>
                 </div>
                 <hr class="none">
@@ -138,10 +157,12 @@
                         <a ng-click="WidgetHome.getFromPlaylist()" class="whiteTheme">Go to Playlist</a>
                     </div>
                     <div class="text-center item">
-                        <a ng-click="WidgetHome.addToPlaylist(WidgetHome.currentTrack)" class="whiteTheme">Add to Playlist</a>
+                        <a ng-click="WidgetHome.addToPlaylist(WidgetHome.currentTrack)" class="whiteTheme">Add to
+                            Playlist</a>
                     </div>
                     <div class="text-center item">
-                        <a ng-click="WidgetHome.removeFromPlaylist(WidgetHome.currentTrack)" class="whiteTheme">Remove from Playlist</a>
+                        <a ng-click="WidgetHome.removeFromPlaylist(WidgetHome.currentTrack)" class="whiteTheme">Remove
+                            from Playlist</a>
                     </div>
                     <!--<div class="text-center item">
                         <a>Purchase</a>
@@ -159,8 +180,8 @@
 
     <!-- Settings Overlay -->
     <div ng-if="WidgetHome.openSettings" class="overlay"
-         style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8);">
-        <div class="overlay-content" style="postiion:absolute; top:0; left:0; height:100%; width: 100%; overflow:auto;">
+         style="position:fixed; top:0; left:0; width:100%; height:100%;">
+        <div class="overlay-content" style="position:absolute; top:0; left:0; height:100%; width: 100%; overflow:auto;">
             <div class="media-player-settings">
                 <div class="settings-list padded padding-top-zero">
                     <div class="item clearfix row">
@@ -213,9 +234,9 @@
                     </div>
                 </div>
             </div>
-			<div class="margin-bottom-ten">
-	            <a ng-click="WidgetHome.closeSettingsOverlay()" class="whiteTheme">Done</a>
-			</div>
+            <div class="margin-bottom-ten">
+                <a ng-click="WidgetHome.closeSettingsOverlay()" class="whiteTheme">Done</a>
+            </div>
         </div>
     </div>
 </div>
