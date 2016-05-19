@@ -48,9 +48,23 @@
                 // this method will be called when you change the order of items
                 ContentHome.editor.onOrderChange = function (item, oldIndex, newIndex) {
                     //TODO: check for index out of bound
-                    var temp = ContentHome.info.data.content.images[oldIndex];
-                    ContentHome.info.data.content.images[oldIndex] = ContentHome.info.data.content.images[newIndex];
-                    ContentHome.info.data.content.images[newIndex] = temp;
+
+                  var items = ContentHome.info.data.content.images;
+
+                  var tmp = items[oldIndex];
+
+                  if (oldIndex < newIndex) {
+                    for (var i = oldIndex + 1; i <= newIndex; i++) {
+                      items[i - 1] = items[i];
+                    }
+                  } else {
+                    for (var i = oldIndex - 1; i >= newIndex; i--) {
+                      items[i + 1] = items[i];
+                    }
+                  }
+                  items[newIndex] = tmp;
+
+                  ContentHome.info.data.content.images = items;
                     if (!$scope.$$phase)$scope.$digest();
                 };
 
@@ -61,7 +75,7 @@
                         var method_return = soundCloudAPI.verify(ContentHome.info.data.content.soundcloudClientID, ContentHome.info.data.content.link);
 
                         method_return.then(function (d) {
-                            console.log('verify d',d);
+                            //console.log('verify d',d);
                             //TODO: data type should be same in all case either string/bool
                             if (angular.isArray(d) || ['playlist', 'track', 'user'].indexOf(d.kind) != -1)
                                 ContentHome.soundcloudLinksInvalid = false;
@@ -91,7 +105,7 @@
                     //TODO: user function instead of var function literate
                     var success = function (data) {
                         if (data && data.data && (data.data.content || data.data.design)) {
-                            updateMasterInfo(data.data);
+                            updateMasterInfo(data);
                             ContentHome.info = data;
                             if (data.data.content && data.data.content.images) {
                                 ContentHome.editor.loadItems(data.data.content.images);
@@ -138,10 +152,20 @@
                     }
                     if (_info && _info.data && !isUnchanged(_info)) {
                         timerDelay = $timeout(function () {
+                            if (_info.data.default == true) {
+                                delete _info.data.default;
+                                if (_info.data.content.link == DEFAULT_DATA.SOUND_CLOUD_INFO.data.content.link)
+                                    _info.data.content.link = '';
+                                _info.data.content.soundcloudClientID = '';
+                            }
                             saveData(_info);
                         }, 1000);
                     }
                 }
+
+                ContentHome.clearData = function () {
+
+                };
                 $scope.$watch(function () {
                     return ContentHome.info;
                 }, updateInfoData, true);

@@ -1,9 +1,10 @@
 <div class="holder padding-zero">
     <div class="media-center-plugin layout2 layout3 text-overlay">
         <div class="media-center-banner clearfix border-bottom-grey">
-            <div id="carousel" build-fire-carousel=""></div>
+            <div id="carousel" build-fire-carousel="" style="z-index: -1"
+                 ng-style="WidgetHome.info.data.content.images.length > 0 ? {'min-height': (9 * deviceWidth / 16) + 'px' } : {}"></div>
         </div>
-        <div class="text-left padded padding-bottom-zero clearfix text-overlay" ng-if="WidgetHome.showDescription()">
+        <div class="text-left padded padding-bottom-zero clearfix text-overlay wordwrap" ng-if="WidgetHome.showDescription()">
             <p ng-bind-html="WidgetHome.info.data.content.description | safeHtml">
             </p>
         </div>
@@ -18,7 +19,7 @@
                  ng-click="WidgetHome.goToTrack(track)">
                 <div class="list-item-media text-left overflow-hidden">
                     <div class="list-media-holder pull-left text-overlay" ng-if="track.artwork_url">
-                        <img ng-src="{{track.artwork_url | cropImage:110:60}}">
+                        <img load-image="16x9" data-final-src="{{track.artwork_url | cropImage:110:60}}">
                     </div>
                     <div class="list-item-copy text-left padding-left-ten padding-right-ten text-overlay">
                         <p class="track-title ellipsis margin-zero text-primary"><a class="text-primary">{{track.title}}</a></p>

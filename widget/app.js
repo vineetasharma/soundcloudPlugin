@@ -58,12 +58,32 @@
             $httpProvider.interceptors.push(interceptor);
 
         }])
+      .directive("loadImage", [function () {
+        return {
+          restrict: 'A',
+          link: function (scope, element, attrs) {
+            element.attr("src", "../../../styles/media/holder-" + attrs.loadImage + ".gif");
+
+            var elem = $("<img>");
+            elem[0].onload = function () {
+              element.attr("src", attrs.finalSrc);
+              elem.remove();
+            };
+            elem.attr("src", attrs.finalSrc);
+          }
+        };
+      }])
         .run(['$location', '$rootScope','$timeout', function ($location, $rootScope,$timeout) {
             buildfire.navigation.onBackButtonClick = function () {
                 if($rootScope.playTrack){
                     $timeout(function () {
-                        $rootScope.playTrack=false;
-                        $rootScope.$broadcast("destroy currentTrack");
+                        if($rootScope.openPlaylist){
+                            $rootScope.openPlaylist=false;
+                        }
+                        else{
+                            $rootScope.playTrack=false;
+                            $rootScope.$broadcast("destroy currentTrack");
+                        }
                     }, 100);
                     if($rootScope.$$phase){$rootScope.$digest();}
                 }
