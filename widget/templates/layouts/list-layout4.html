@@ -22,7 +22,7 @@
                             <div class="list-media-holder text-overlay">
                                 <img ng-if="WidgetHome.tracks[$index].artwork_url"
                                      load-image="1x1"
-                                     data-final-src="{{WidgetHome.tracks[$index].artwork_url | cropImage:200:200}}">
+                                     data-final-src="{{WidgetHome.tracks[$index].artwork_url}}"  crop-width="200" crop-height="200" crop-type="crop">
                                 <img ng-if="!WidgetHome.tracks[$index].artwork_url"
                                      src="../../../styles/media/holder-1x1.png">
                             </div>
@@ -41,8 +41,8 @@
                          ng-if="WidgetHome.tracks[$index + 1]">
                         <div class="list-item-media text-center overflow-hidden text-overlay">
                             <div class="list-media-holder text-overlay">
-                                <img ng-if="WidgetHome.tracks[$index + 1].artwork_url"
-                                     ng-src="{{WidgetHome.tracks[$index + 1].artwork_url | cropImage:200:200}}">
+                                <img ng-if="WidgetHome.tracks[$index + 1].artwork_url"  load-image="1x1"
+                                     data-final-src="{{WidgetHome.tracks[$index + 1].artwork_url}}"   crop-width="200" crop-height="200" crop-type="crop">
                                 <img ng-if="!WidgetHome.tracks[$index + 1].artwork_url"
                                      src="assets/images/placeholder200x200.png">
                             </div>
@@ -50,7 +50,7 @@
                         <div class="list-item-copy text-left text-overlay">
                             <p class="text-primary ellipsis margin-bottom-five">
                                 <a class="ellipsis margin-zero text-primary">{{WidgetHome.tracks[$index +
-                                    1].title}}</a>
+                                    1].title}}</a> load-image="1x1"
                             </p>
                             <p class="summary ellipsis margin-zero">{{WidgetHome.tracks[$index + 1].user.username}}</p>
                             <span class="duration-ui list-item-date">{{WidgetHome.tracks[$index + 1].duration | millisecondsToDateTime | date:'mm:ss'}}</span>
