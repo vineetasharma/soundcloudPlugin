@@ -8,6 +8,7 @@
                 console.log('DesignHome Controller Loaded-------------------------------------');
                 var DesignHome = this;
                 var timerDelay,masterInfo;
+                DesignHome.info = null;
                 DesignHome.layouts = [{name: "list-layout1"}, {name: "list-layout2"}, {name: "list-layout3"}, {name: "list-layout4"}];
                 var soundCloud=new DB(COLLECTIONS.SoundCloudInfo);
 
@@ -57,9 +58,9 @@
                 init();
 
                 function isUnchanged(info) {
-                    //console.log('info------------------------------------------',info);
+                    //console.log('info------------------------------------------',info.data, masterInfo, angular.equals(info.data,masterInfo));
                     //console.log('Master info------------------------------------------',masterInfo);
-                    return angular.equals(info,masterInfo);
+                    return angular.equals(info.data,masterInfo);
                 }
 
                 function updateMasterInfo(info) {
@@ -67,7 +68,7 @@
                 }
                 function saveData(_info){
                     var saveSuccess=function(data){
-                        //console.log('Data saved successfully--------------------------',data);
+                        console.log('Data saved successfully--------------------------',data);
                     };
                     var saveError=function(err){
                        /* console.error('Error while saving data------------------------------',err);*/
@@ -80,6 +81,8 @@
                     if (timerDelay) {
                         clearTimeout(timerDelay);
                     }
+                    //console.log('Data saved successfully-1111-------------------------',_info,isUnchanged(_info) );
+
                     if (_info && _info.data && !isUnchanged(_info)) {
                         timerDelay = $timeout(function () {
                             saveData(_info);
