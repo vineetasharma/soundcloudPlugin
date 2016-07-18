@@ -515,7 +515,7 @@
 
                 var listener = Buildfire.datastore.onUpdate(WidgetHome.onUpdateCallback);
 
-                Buildfire.datastore.onRefresh(function(){
+                buildfire.datastore.onRefresh(function(){
                     WidgetHome.tracks = [];
                     WidgetHome.noMore = false;
                     WidgetHome.isBusy = false;
