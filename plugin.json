@@ -1,7 +1,7 @@
 {
   "author": "BuildFire",
   "pluginName": "SoundCloud",
-  "pluginDescription": "With the SoundCloud plugin, simply enter your SoundCloud URL and automatically sync your tracks.MP4",
+  "pluginDescription": "With the SoundCloud plugin, simply enter your SoundCloud URL and automatically sync your tracks.MP4,stream",
   "supportEmail": "support@buildfire.com",
     "supportSite":"http://support.appdocumentation.com/knowledge-base/soundcloud-plugin-tutorial/",
   "pluginIcon": "icon.png",
