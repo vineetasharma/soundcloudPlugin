@@ -515,5 +515,39 @@
 
                 var listener = Buildfire.datastore.onUpdate(WidgetHome.onUpdateCallback);
 
+                Buildfire.datastore.onRefresh(function(){
+                    WidgetHome.tracks = [];
+                    WidgetHome.noMore = false;
+                    WidgetHome.isBusy = false;
+                    WidgetHome.page = -1;
+                    WidgetHome.SoundCloudInfoContent.get().then(function success(result) {
+                          console.log('>>result<<', result);
+                          if (result && result.data && result.id) {
+
+                              WidgetHome.info = result;
+                              $timeout(function () {
+                                  WidgetHome.initCarousel();
+                              }, 1000);
+                              if (WidgetHome.info.data && WidgetHome.info.data.design)
+                                  $rootScope.bgImage = WidgetHome.info.data.design.bgImage;
+                              if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
+                                  soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
+                                  WidgetHome.refreshTracks();
+                                  WidgetHome.loadMore();
+                              }
+
+                          }
+                          else {
+                              WidgetHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
+                              soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
+                              WidgetHome.refreshTracks();
+                              WidgetHome.loadMore();
+                          }
+                      },
+                      function fail() {
+                          WidgetHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
+                      }
+                    );
+                })
             }]);
 })(window.angular, window);
