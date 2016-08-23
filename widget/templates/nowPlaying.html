@@ -16,6 +16,7 @@
     'z-index': '0'}"></div>
     <div class="media-center-plugin" ng-if="!(WidgetHome.openMoreInfo || WidgetHome.openSettings)">
         <div class="media-header-link">
+            <a class="whiteTheme" ng-show="WidgetHome.settings.isPlayingCurrentTrack" >Playing | </a>
             <a class="whiteTheme" ng-click="WidgetHome.getFromPlaylist()">Open Playlist</a>
         </div>
         <div class="media-holder margin-top-fifteen">
