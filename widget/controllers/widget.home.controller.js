@@ -421,6 +421,9 @@
                     WidgetHome.currentTrack = null;
                     WidgetHome.duration = '';
                     WidgetHome.showTrackSlider = false;
+                    WidgetHome.openSettings=false;
+                    WidgetHome.openMoreInfo = false;
+
                 });
 
                 /**
