@@ -109,7 +109,7 @@
                                 console.log('Got tracks--------------------------', data);
                                 WidgetHome.isBusy = false;
                                 var d = data.collection;
-                                if (d.length < WidgetHome.pageSize) {
+                                if (d.length < WidgetHome.pageSize && !data.next_href) {
                                     WidgetHome.noMore = true;
 
                                     if (WidgetHome.page == 0 && d.length == 0) {
@@ -117,9 +117,10 @@
                                     }
                                 }
                                 WidgetHome.tracks = WidgetHome.tracks.concat(d);
-
                                 console.log('WidgetHome.tracks', WidgetHome.tracks);
                                 $scope.$digest();
+                                if (d.length < WidgetHome.pageSize && data.next_href && WidgetHome.tracks && WidgetHome.tracks.length < WidgetHome.pageSize)
+                                    WidgetHome.loadMore();
                             });
                 };
 
@@ -192,7 +193,7 @@
                         audioPlayer.play({
                             url: WidgetHome.currentTrack.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID,
                             title: WidgetHome.currentTrack.title,
-                            image: WidgetHome.currentTrack.artwork_url || WidgetHome.currentTrack.image,
+                            image: WidgetHome.currentTrack.artwork_url || WidgetHome.currentTrack.image || WidgetHome.currentTrack.user.avatar_url,
                             album: WidgetHome.currentTrack.tag_list,
                             artist: WidgetHome.currentTrack.user.username
                         });
@@ -282,7 +283,7 @@
                 };
                 WidgetHome.addToPlaylist = function (track) {
                     console.log('AddToPlaylist called-------------------------------');
-                    var playListTrack = new Track(track.title, track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID, track.artwork_url, track.tag_list, track.user.username);
+                    var playListTrack = new Track(track.title, track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID, (track.artwork_url || track.image || track.user.avatar_url), track.tag_list, track.user.username);
                     audioPlayer.addToPlaylist(playListTrack);
                 };
                 WidgetHome.removeFromPlaylist = function (track) {
@@ -515,5 +516,39 @@
 
                 var listener = Buildfire.datastore.onUpdate(WidgetHome.onUpdateCallback);
 
+                buildfire.datastore.onRefresh(function(){
+                    WidgetHome.tracks = [];
+                    WidgetHome.noMore = false;
+                    WidgetHome.isBusy = false;
+                    WidgetHome.page = -1;
+                    WidgetHome.SoundCloudInfoContent.get().then(function success(result) {
+                          console.log('>>result<<', result);
+                          if (result && result.data && result.id) {
+
+                              WidgetHome.info = result;
+                              $timeout(function () {
+                                  WidgetHome.initCarousel();
+                              }, 1000);
+                              if (WidgetHome.info.data && WidgetHome.info.data.design)
+                                  $rootScope.bgImage = WidgetHome.info.data.design.bgImage;
+                              if (WidgetHome.info.data.content.link && WidgetHome.info.data.content.soundcloudClientID) {
+                                  soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
+                                  WidgetHome.refreshTracks();
+                                  WidgetHome.loadMore();
+                              }
+
+                          }
+                          else {
+                              WidgetHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
+                              soundCloudAPI.connect(WidgetHome.info.data.content.soundcloudClientID);
+                              WidgetHome.refreshTracks();
+                              WidgetHome.loadMore();
+                          }
+                      },
+                      function fail() {
+                          WidgetHome.info = DEFAULT_DATA.SOUND_CLOUD_INFO;
+                      }
+                    );
+                })
             }]);
 })(window.angular, window);
