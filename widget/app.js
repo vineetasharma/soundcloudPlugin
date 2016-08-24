@@ -80,8 +80,11 @@
                     $timeout(function () {
                         if($rootScope.openPlaylist){
                             $rootScope.openPlaylist=false;
-                        }
-                        else{
+                        } else if($rootScope.openSettings) {
+                            $rootScope.openSettings = false;
+                        } else if($rootScope.openMoreInfo) {
+                            $rootScope.openMoreInfo = false;
+                        } else {
                             $rootScope.playTrack=false;
                             $rootScope.$broadcast("destroy currentTrack");
                         }
