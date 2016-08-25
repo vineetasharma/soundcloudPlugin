@@ -10,7 +10,8 @@
                 var timerDelay, masterInfo;
                 //TODO: constant should be in capital case
                 ContentHome.soundCloud = new DB(COLLECTIONS.SoundCloudInfo);
-
+                ContentHome.soundcloudClientID='600ae49f4ace645a50840dcd41bd35ec';
+                ContentHome.link='https://soundcloud.com/laraparkerkent/tracks';
                 //option for wysiwyg
                 ContentHome.bodyWYSIWYGOptions = {
                     plugins: 'advlist autolink link image lists charmap print preview',
@@ -70,17 +71,24 @@
 
 
                 ContentHome.verifySoundcloudLinks = function () {
-                    if (ContentHome.info.data.content.soundcloudClientID && ContentHome.info.data.content.link) {
+                    if (ContentHome.soundcloudClientID && ContentHome.link) {
                         //TODO: rename it in promise
-                        var method_return = soundCloudAPI.verify(ContentHome.info.data.content.soundcloudClientID, ContentHome.info.data.content.link);
+                        //ContentHome.info.data.content.soundcloudClientID
+                        //ContentHome.info.data.content.link
+                        var method_return = soundCloudAPI.verify(ContentHome.soundcloudClientID, ContentHome.link);
 
                         method_return.then(function (d) {
                             //console.log('verify d',d);
                             //TODO: data type should be same in all case either string/bool
-                            if (angular.isArray(d) || ['playlist', 'track', 'user'].indexOf(d.kind) != -1)
+                            if (angular.isArray(d) || ['playlist', 'track', 'user'].indexOf(d.kind) != -1){
                                 ContentHome.soundcloudLinksInvalid = false;
-                            else
+                                ContentHome.info.data.content.soundcloudClientID=ContentHome.soundcloudClientID;
+                                ContentHome.info.data.content.link=ContentHome.link;
+                            }
+                            else{
                                 ContentHome.soundcloudLinksInvalid = 'link';
+                            }
+
                             $timeout(function () {
                                 ContentHome.soundcloudLinksInvalid = null;
                             }, 2000);

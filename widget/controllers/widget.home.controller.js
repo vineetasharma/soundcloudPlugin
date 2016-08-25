@@ -324,6 +324,7 @@
                         WidgetHome.playList.some(function (val, index) {
                             if (((val.url == track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == track.url) && (trackIndex == 0)) {
                                 audioPlayer.removeFromPlaylist(index);
+                                WidgetHome.pauseTrack();
                                 trackIndex++;
                             }
                             return ((val.url == track.stream_url + '?client_id=' + WidgetHome.info.data.content.soundcloudClientID) || val.url == track.url);
