@@ -115,6 +115,14 @@
                         if (data && data.data && (data.data.content || data.data.design)) {
                             updateMasterInfo(data);
                             ContentHome.info = data;
+                            if(ContentHome.info.data.content.soundcloudClientID && ContentHome.info.data.content.link){
+                                ContentHome.soundcloudClientID=ContentHome.info.data.content.soundcloudClientID;
+                                ContentHome.link=ContentHome.info.data.content.link;
+                            }else{
+                                ContentHome.soundcloudClientID='';
+                                ContentHome.link='';
+                            }
+
                             if (data.data.content && data.data.content.images) {
                                 ContentHome.editor.loadItems(data.data.content.images);
                             }
@@ -162,9 +170,13 @@
                         timerDelay = $timeout(function () {
                             if (_info.data.default == true) {
                                 delete _info.data.default;
-                                if (_info.data.content.link == DEFAULT_DATA.SOUND_CLOUD_INFO.data.content.link)
+                                if (_info.data.content.link == DEFAULT_DATA.SOUND_CLOUD_INFO.data.content.link){
                                     _info.data.content.link = '';
-                                _info.data.content.soundcloudClientID = '';
+                                    _info.data.content.soundcloudClientID = '';
+                                    ContentHome.soundcloudClientID='';
+                                    ContentHome.link='';
+                                }
+
                             }
                             saveData(_info);
                         }, 1000);
